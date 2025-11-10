@@ -5,6 +5,7 @@ import {
   PieceType,
   ALL_PIECE_TYPES,
   getPieceSymbol,
+  getPieceImage,
   getPieceName,
   fileLabel,
   rankLabel,
@@ -76,6 +77,11 @@ export class AllPieces {
   getSymbol(p: Piece): string {
     if (!p) return '';
     return getPieceSymbol(p as PieceType);
+  }
+
+  getImage(p: Piece): string {
+    if (!p) return '';
+    return getPieceImage(p as PieceType);
   }
 
   // Return squares threatened by the current board

@@ -77,7 +77,7 @@
               [class.visited]="cell.visited"
               [class.valid-move]="isValidMoveSquare(r, c)"
               (click)="clickSquare(r, c)">
-              <span *ngIf="knightPosition && knightPosition.row === r && knightPosition.col === c" class="knight-piece">♞</span>
+              <div *ngIf="knightPosition && knightPosition.row === r && knightPosition.col === c" class="knight-piece" style="background-image: url('/pieces/alpha/wN.svg'); width: 85%; height: 85%; background-size: contain; background-repeat: no-repeat; background-position: center;"></div>
               <span *ngIf="cell.visited && cell.order > 0" class="visit-order">{{ cell.order }}</span>
             </div>
           </div>

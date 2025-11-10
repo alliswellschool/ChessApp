@@ -2,12 +2,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
 
 .piece {
-  font-size: 2.2em;
-  color: #fff;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  width: 85%;
+  height: 85%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   pointer-events: none;
-  font-family: 'Noto Sans', Arial, sans-serif;
-  font-weight: 400;
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
 }
 
 .dominance-container {
@@ -149,8 +150,12 @@
 }
 
 .piece-symbol {
-  font-size: 2.5em;
-  line-height: 1;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
 }
 
 .piece-name {

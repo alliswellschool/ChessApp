@@ -46,7 +46,7 @@
             [class.selected]="selectedPiece === piece.type"
             (click)="selectPiece(piece.type)"
             [title]="piece.name">
-            <span class="piece-symbol">{{ piece.symbol }}</span>
+            <div class="piece-symbol" [style.background-image]="'url(' + piece.image + ')'"></div>
             <span class="piece-count">
               {{ getPieceCount(piece.type) }} / {{ getRequiredPieces(piece.type) }}
             </span>
@@ -106,7 +106,7 @@
               [class.has-piece]="board[r][c]"
               [class.blocked]="highlightDominated && !board[r][c] && !canPlacePiece(r, c)"
               (click)="placeOrRemovePiece(r, c)">
-              <span *ngIf="board[r][c]" class="piece">{{ getPieceSymbol(board[r][c]) }}</span>
+              <div *ngIf="board[r][c]" class="piece" [style.background-image]="'url(' + getPieceImage(board[r][c]) + ')'"></div>
             </div>
           </div>
         </div>

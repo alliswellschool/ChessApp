@@ -1,0 +1,182 @@
+﻿Chess Alpha
+a True Type Font for chess diagrams and figurine notation.
+Copyright Eric Bentzen, 1998.
+
+
+“Chess Alpha” is free for personal non commercial use. If distributed please include all files. To display or print this document correctly the font must be installed. If you don’t know how, this is the time to exercise your Windows help! 
+1222222223
+ÇtJnWlNjT5
+ÆOoOoOoOo5
+Å + + + +5
+Ä+ + + + 5
+Ã + + + +5
+Â+ + + + 5
+ÁpPpPpPpP5
+ÀRhBqKbHr9
+6ÈÉÊËÌÍÎÏ8
+Example diagram 18 points
+Usually the diagram will look far better on print than on screen. Co-ordinates and hourglass (move indicator) are optional.
+
+
+I wanted to make a chess font suited for diagrams in e.g. club newsletters, where the output device is usually a printer and/or photocopier. Most traditional chess fonts are drawn with many details (lines and ornaments) that tend to get lost or fuzzy when printed and maybe later photocopied, and the black squares are often made with lines so thin, that a disturbing interference effect (like Moiré) appears when you print smaller diagrams (font size 15-16 points or less) – even a 600 DPI laser printer cannot print the lines properly.
+
+
+So to obtain clarity and easy reading you need simplicity. On the other hand I know that chess players are creatures of habit; if the pieces in a font “don’t look like they use to”, most chessplayers don’t like it, or it is at best described as “a bit fancy”. So I’ve tried to make a compromise: a traditional design, but with less details. Depending on the resolution of your printer (or output device) black squares smaller than 15-16 points may have the above mentioned interference – my only advice is to experiment with different font sizes until it looks okay.
+
+
+Making diagrams with a chess font would be hard work if you had to do it manually. Luckily there is an excellent freeware program “EPD2diag” by Manfred Rosenboom that can do the work for you. You can either make the diagram with your mouse (drag and drop) or you can import the game in PGN format. Just save or copy the position as RTF (Rich Text Format) and paste it into your word processor. Practically all word processors of today reads RTF-format. If you want borders with co-ordinates (1-8 and a-h) you must add these manually. You can download EPD2diag from: http://www.rebel.nl/epd2diag.htm
+
+
+“Chess Alpha” can be used for diagrams and figurine notation. Beware that you don’t use the same characters for both! The pieces for diagrams have a fixed width and a slightly elevated baseline and will not look good as figurine characters. The width and baseline of the pieces intended for figurine notation is “correct”: your lines will not look “jumpy” (not like hb4, but like †b4), and the white space between piece and board co-ordinates will be more appropriate.
+
+
+Keys for diagrams:
+You can either use the character (e.g. small k for white king on white square), or you can use the ASCII sequence by typing ALT + number, which means: press the ALT-key and type the number on the numeric keypad.
+
+
+
+
+White:
+k        King white square        k        (0107)
+K        King black square        K        (075)
+q        Queen white square        q        (0113)
+Q        Queen black square        Q        (081)
+r        Rook white square        r        (0114)
+R        Rook black square        R        (082)
+b        Bishop white square        b        (098)
+B        Bishop black square        B        (066)
+h        Knight white square        h        (0104)
+H        Knight black square        H        (072)
+p        Pawn white square        p        (0112)
+P        Pawn black square        P        (080)
+
+
+Black:
+l        King white square        l        (0108)
+L        King black square        L        (076)
+w        Queen white square        w        (0119)
+W        Queen black square        W        (087)
+t        Rook white square        t        (0116)
+T        Rook black square        T        (084)
+n        Bishop white square        n        (0110)
+N        Bishop black square        N        (078)
+j        Knight white square        j        (0106)
+J        Knight black square        J        (074)
+o        Pawn white square        o        (0111)
+O        Pawn black square        O        (079)
+
+
+Other diagram keys:
++        Empty black square        +        (043)
+         Empty white square        space
+Border (double):
+North west corner        1        (049)
+North border                2        (050)
+North east corner        3        (051)
+Western border        4        (052)
+Eastern border        5        (053)
+South west corner        6        (054)
+South border                7        (055)
+South east border        8        (056)
+Eastern b. with hourglass        9        (057)
+
+
+Border (single):
+North west corner        !        (033)
+North border                “        (034)
+North east corner        #        (035)
+Western border        $        (036)
+Eastern border        %        (037)
+South west corner        &        (038)
+South border                ‘        (039)
+South east border        (        (040)
+Eastern b. with hourglass        )        (041)
+
+
+Border (double) with co-ordinates:
+1        À        (0192)
+2        Á                (0193)
+3        Â                (0194)
+4        Ã                (0195)
+5        Ä                (0196)
+6        Å                (0197)
+7        Æ                (0198)
+8        Ç                (0199)
+a        È                (0200)
+b        É                (0201)
+c        Ê                (0202)
+d        Ë                (0203)
+e        Ì                (0204)
+f        Í                (0205)
+g        Î                (0206)
+h        Ï                (0207)
+
+
+
+
+
+
+
+
+Border (single) with co-ordinates:
+1        à        (0224)
+2        á                (0225)
+3        â                (0226)
+4        ã                (0227)
+5        ä                (0228)
+6        å                (0229)
+7        æ                (0230)
+8        ç                (0231)
+a        è                (0232)
+b        é                (0233)
+c        ê                (0234)
+d        ë                (0235)
+e        ì                (0236)
+f        í                (0237)
+g        î                (0238)
+h        ï                (0239)
+
+
+
+
+
+
+
+
+
+
+
+
+Keys for figurine notation:
+White:
+‚        King        ‚        Alt + 0130
+ƒ        Queen        ƒ        Alt + 0131
+„        Rook        „        Alt + 0132
+…        Bishop        …        Alt + 0133
+†        Knight        †        Alt + 0134
+‡        Pawn        ‡        Alt + 0135
+
+
+Black:
+ˆ        King        ˆ        Alt + 0136
+‰        Queen        ‰        Alt + 0137
+Š        Rook        Š        Alt + 0138
+‹        Bishop        ‹        Alt + 0139
+Œ        Knight        Œ        Alt + 0140
+‘        Pawn        ‘        Alt + 0145
+
+
+
+
+Any comments, questions and suggestions are likely to be considered – maybe even answered! If the font doesn’t behave properly on your computer, please let me know.
+
+
+January 1998,
+Eric Bentzen
+Email: ebhkp@mail1.stofanet.dk        http://home1.stofanet.dk/chess/
+
+
+Home address:
+Birkevej 13
+DK-9000 Aalborg
+Denmark

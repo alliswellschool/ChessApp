@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EightQueens } from '../independence-components/eight-queens/eight-queens';
@@ -19,7 +19,11 @@ type ModeKey = 'queens' | 'bishops' | 'knights' | 'rooks' | 'kings' | 'pawns' | 
   styleUrls: ['./independents.css']
 })
 
+
 export class Independents {
+  @ViewChild('allPiecesComponent') allPiecesComponent?: AllPieces;
+  
+  mode: 'single' | 'team' = 'single';
   selected: ModeKey = 'queens';
 
   // shared board size for individual puzzle modes (4..8)
@@ -27,6 +31,16 @@ export class Independents {
   readonly availableSizes = [4,5,6,7,8];
 
   setSize(n: number){ if (n>=4 && n<=8) this.size = n; }
+
+  setMode(m: 'single' | 'team') {
+    this.mode = m;
+    if (m === 'team') {
+      this.selected = 'all';
+      this.size = 8;
+    } else {
+      this.selected = 'queens';
+    }
+  }
 
   readonly modes: Array<{ key: ModeKey, label: string }> = [
     { key: 'queens', label: 'Queens' },
@@ -48,7 +62,21 @@ export class Independents {
     all: '\u263A'
   };
 
+  modeImages: Record<ModeKey, string> = {
+    queens: '/pieces/alpha/wQ.svg',
+    bishops: '/pieces/alpha/wB.svg',
+    knights: '/pieces/alpha/wN.svg',
+    rooks: '/pieces/alpha/wR.svg',
+    kings: '/pieces/alpha/wK.svg',
+    pawns: '/pieces/alpha/wP.svg',
+    all: '/pieces/alpha/wK.svg' // Using King for "all pieces" mode
+  };
+
   getSymbol(k: ModeKey): string {
     return this.modeSymbols[k] ?? '';
+  }
+
+  getImage(k: ModeKey): string {
+    return this.modeImages[k] ?? '';
   }
 }

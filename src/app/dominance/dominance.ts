@@ -7,6 +7,7 @@ import {
   CHESS_PIECES, 
   ALL_PIECE_TYPES, 
   getPieceSymbol,
+  getPieceImage,
   fileLabel,
   rankLabel,
   DOMINANCE_OPTIMAL_COUNTS
@@ -176,6 +177,11 @@ export class Dominance {
   getPieceSymbol(type: PieceType | ''): string {
     if (!type) return '';
     return getPieceSymbol(type);
+  }
+
+  getPieceImage(type: PieceType | ''): string {
+    if (!type) return '';
+    return getPieceImage(type);
   }
   
   // Team helpers removed

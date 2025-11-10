@@ -61,7 +61,7 @@
                  [class.dominated]="highlightPath && threatenedSquares[r][c] && cell === 0"
                  [class.blocked]="highlightPath && threatenedSquares[r][c] && cell === 0"
                  (click)="placeBishop(r, c)">
-              <span *ngIf="cell >= 1" class="piece" [class.invalid-piece]="cell === 2">&#9815;</span>
+              <div *ngIf="cell >= 1" class="piece" [class.invalid-piece]="cell === 2" style="background-image: url('/pieces/alpha/wB.svg')"></div>
             </div>
           </div>
         </div>

@@ -4,25 +4,31 @@ export type PieceType = 'queen' | 'rook' | 'bishop' | 'knight' | 'king' | 'pawn'
 export interface PieceInfo {
   type: PieceType;
   symbol: string;
+  image: string;
   name: string;
 }
 
-// Chess pieces with consistent symbols and naming
+// Chess pieces with SVG images
 export const CHESS_PIECES: Record<PieceType, PieceInfo> = {
-  queen: { type: 'queen', symbol: '\u2655', name: 'Queen' },
-  rook: { type: 'rook', symbol: '\u2656', name: 'Rook' },
-  bishop: { type: 'bishop', symbol: '\u2657', name: 'Bishop' },
-  knight: { type: 'knight', symbol: '\u2658', name: 'Knight' },
-  king: { type: 'king', symbol: '\u2654', name: 'King' },
-  pawn: { type: 'pawn', symbol: '\u2659', name: 'Pawn' }
+  queen: { type: 'queen', symbol: '\u2655', image: '/pieces/alpha/wQ.svg', name: 'Queen' },
+  rook: { type: 'rook', symbol: '\u2656', image: '/pieces/alpha/wR.svg', name: 'Rook' },
+  bishop: { type: 'bishop', symbol: '\u2657', image: '/pieces/alpha/wB.svg', name: 'Bishop' },
+  knight: { type: 'knight', symbol: '\u2658', image: '/pieces/alpha/wN.svg', name: 'Knight' },
+  king: { type: 'king', symbol: '\u2654', image: '/pieces/alpha/wK.svg', name: 'King' },
+  pawn: { type: 'pawn', symbol: '\u2659', image: '/pieces/alpha/wP.svg', name: 'Pawn' }
 };
 
 // Array of all piece types (for iteration)
 export const ALL_PIECE_TYPES: PieceType[] = ['queen', 'rook', 'bishop', 'knight', 'king', 'pawn'];
 
-// Helper function to get piece symbol
+// Helper function to get piece symbol (Unicode fallback)
 export function getPieceSymbol(type: PieceType): string {
   return CHESS_PIECES[type].symbol;
+}
+
+// Helper function to get piece image path
+export function getPieceImage(type: PieceType): string {
+  return CHESS_PIECES[type].image;
 }
 
 // Helper function to get piece name (capitalized)

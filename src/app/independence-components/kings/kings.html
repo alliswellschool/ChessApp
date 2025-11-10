@@ -59,8 +59,8 @@
                  [class.dominated]="highlightPath && threatenedSquares[r][c] && cell === 0"
                  [class.blocked]="highlightPath && threatenedSquares[r][c] && cell === 0"
                  (click)="placeKing(r, c)">
-              <span *ngIf="cell === 1" class="piece">&#9812;</span>
-              <span *ngIf="cell === 2" class="piece invalid-piece">&#9812;</span>
+              <div *ngIf="cell === 1" class="piece" style="background-image: url('/pieces/alpha/wK.svg')"></div>
+              <div *ngIf="cell === 2" class="piece invalid-piece" style="background-image: url('/pieces/alpha/wK.svg')"></div>
             </div>
           </div>
         </div>
