@@ -1,0 +1,6 @@
+1) Create a landing page for a chess activities website
+2) The landing page should have a clean and modern design and must have a announcement section
+3) Add one more module for taking chess quizzes
+4) The chess quizzes must be adaptive meaning based on the user's performance the difficulty level should change
+5) I have the quiz questions in an excel sheet I should be able to import the an excel sheet in set format that will automatically add to the pool of questions, my sheet will contain the questions along with answers and the difficulty 
+6) Create an admin panel where I can upload and manage the quiz questions, view user performance and analytics

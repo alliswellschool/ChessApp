@@ -1,0 +1,47 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="hero-title">♔ Chess Activities ♔</h1>
+    <p class="hero-subtitle">Master chess through interactive puzzles and training exercises</p>
+  </section>
+
+  <!-- Announcements Section -->
+  <section class="announcements">
+    <h2 class="section-title">📢 Announcements</h2>
+    <div class="announcements-grid">
+      <div 
+        *ngFor="let announcement of announcements" 
+        class="announcement-card"
+        [class.info]="announcement.type === 'info'"
+        [class.success]="announcement.type === 'success'"
+        [class.warning]="announcement.type === 'warning'">
+        <div class="announcement-header">
+          <h3>{{ announcement.title }}</h3>
+          <span class="announcement-date">{{ announcement.date | date: 'MMM d, yyyy' }}</span>
+        </div>
+        <p class="announcement-content">{{ announcement.content }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Activities Section -->
+  <section class="activities">
+    <h2 class="section-title">🎯 Activities</h2>
+    <div class="activities-grid">
+      <a 
+        *ngFor="let activity of activities" 
+        [routerLink]="activity.route"
+        class="activity-card">
+        <div class="activity-icon">{{ activity.icon }}</div>
+        <h3 class="activity-title">{{ activity.title }}</h3>
+        <p class="activity-description">{{ activity.description }}</p>
+        <span class="activity-link">Start →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Chess Activities | Learn, Practice, Master</p>
+  </footer>
+</div>

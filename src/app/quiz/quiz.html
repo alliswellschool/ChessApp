@@ -1,0 +1,125 @@
+<div class="quiz-container">
+  <div class="quiz-header">
+    <h1>🧠 Adaptive Chess Quiz</h1>
+    <p class="quiz-subtitle">Test your knowledge with questions that adapt to your skill level</p>
+  </div>
+
+  <!-- Quiz Not Started or In Progress -->
+  <div *ngIf="!quizState.isComplete" class="quiz-content">
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat">
+        <span class="stat-label">Question</span>
+        <span class="stat-value">{{ quizState.totalAnswered + 1 }}/10</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Score</span>
+        <span class="stat-value">{{ quizState.score }}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Streak</span>
+        <span class="stat-value">🔥 {{ quizState.streak }}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Difficulty</span>
+        <span class="stat-value difficulty-badge" [style.background-color]="getDifficultyColor(quizState.currentDifficulty)">
+          {{ quizState.currentDifficulty }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="question-card" *ngIf="currentQuestion">
+      <div class="question-header">
+        <span class="question-number">Question {{ quizState.totalAnswered + 1 }}</span>
+        <span class="difficulty-indicator" [style.color]="getDifficultyColor(currentQuestion.difficulty)">
+          {{ currentQuestion.difficulty }}
+        </span>
+      </div>
+      
+      <h2 class="question-text">{{ currentQuestion.question }}</h2>
+      
+      <p class="question-hint" *ngIf="!hasAnswered && currentQuestion.correctAnswers.length > 1">
+        💡 This question has multiple correct answers. Select all that apply.
+      </p>
+      
+      <div class="options-container">
+        <button
+          *ngFor="let option of currentQuestion.options; let i = index"
+          class="option-button"
+          [class.selected]="isAnswerSelected(i)"
+          [class.correct]="hasAnswered && isAnswerCorrect(i)"
+          [class.incorrect]="hasAnswered && isAnswerSelected(i) && !isAnswerCorrect(i)"
+          [disabled]="hasAnswered"
+          (click)="toggleAnswer(i)">
+          <span class="option-letter">{{ 'ABCD'[i] }}</span>
+          <span class="option-text">{{ option }}</span>
+          <span class="option-icon" *ngIf="hasAnswered && isAnswerCorrect(i)">✓</span>
+          <span class="option-icon" *ngIf="hasAnswered && isAnswerSelected(i) && !isAnswerCorrect(i)">✗</span>
+        </button>
+      </div>
+
+      <!-- Explanation -->
+      <div class="explanation" *ngIf="showExplanation && currentQuestion.explanation">
+        <h3>📖 Explanation</h3>
+        <p>{{ currentQuestion.explanation }}</p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button 
+          class="btn btn-primary"
+          *ngIf="!hasAnswered"
+          [disabled]="selectedAnswers.size === 0"
+          (click)="submitAnswer()">
+          Submit Answer{{ selectedAnswers.size > 1 ? 's' : '' }}
+        </button>
+        <button 
+          class="btn btn-success"
+          *ngIf="hasAnswered"
+          (click)="nextQuestion()">
+          Next Question →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz Complete -->
+  <div *ngIf="quizState.isComplete" class="results-container">
+    <div class="results-card">
+      <h2 class="results-title">🎉 Quiz Complete!</h2>
+      
+      <div class="results-stats">
+        <div class="result-stat">
+          <span class="result-label">Final Score</span>
+          <span class="result-value score">{{ quizState.score }}</span>
+        </div>
+        <div class="result-stat">
+          <span class="result-label">Accuracy</span>
+          <span class="result-value">{{ getAccuracy() }}%</span>
+        </div>
+        <div class="result-stat">
+          <span class="result-label">Correct Answers</span>
+          <span class="result-value">{{ quizState.correctAnswers }}/{{ quizState.totalAnswered }}</span>
+        </div>
+        <div class="result-stat">
+          <span class="result-label">Best Streak</span>
+          <span class="result-value">🔥 {{ quizState.streak }}</span>
+        </div>
+      </div>
+
+      <div class="performance-message">
+        <p>{{ getPerformanceMessage() }}</p>
+      </div>
+
+      <div class="results-actions">
+        <button class="btn btn-primary btn-large" (click)="restartQuiz()">
+          Try Again
+        </button>
+        <a routerLink="/" class="btn btn-secondary btn-large">
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

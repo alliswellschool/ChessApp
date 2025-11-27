@@ -4,11 +4,16 @@
 			{{ navbarClosed ? '☰' : '✖' }}
 		</button>
 		<div class="nav-content" *ngIf="!navbarClosed">
-			<h3>Navigation</h3>
+			<h3>♔ Chess Activities</h3>
 			<ul>
-				<li><a routerLink="/">Home</a></li>
-			<li><a routerLink="/puzzles">Puzzles</a></li>
-				<li><a routerLink="/settings">Settings</a></li>
+				<li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+				<li><a routerLink="/dominance" routerLinkActive="active">Dominance</a></li>
+				<li><a routerLink="/independents" routerLinkActive="active">Independence</a></li>
+				<li><a routerLink="/coordinates" routerLinkActive="active">Coordinates</a></li>
+				<li><a routerLink="/knights-tour" routerLinkActive="active">Knight's Tour</a></li>
+				<li><a routerLink="/quiz" routerLinkActive="active">Quiz</a></li>
+				<li><a routerLink="/puzzles" routerLinkActive="active">Puzzles</a></li>
+				<li><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
 			</ul>
 		</div>
 	</div>

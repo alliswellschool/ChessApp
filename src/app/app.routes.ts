@@ -2,6 +2,10 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
     {
+        path: '',
+        loadComponent: () => import('./home/home').then(m => m.Home)
+    },
+    {
         path: 'puzzles',
         loadComponent: () => import('./puzzles/puzzles').then(m => m.Puzzles)
     },
@@ -22,8 +26,11 @@ export const routes: Routes = [
         loadComponent: () => import('./knights-tour/knights-tour').then(m => m.KnightsTour)
     },
     {
-        path: '',
-        redirectTo: 'puzzles',
-        pathMatch: 'full'
+        path: 'quiz',
+        loadComponent: () => import('./quiz/quiz').then(m => m.Quiz)
+    },
+    {
+        path: 'admin',
+        loadComponent: () => import('./admin/admin').then(m => m.Admin)
     }
 ];

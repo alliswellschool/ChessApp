@@ -1,0 +1,353 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>🔧 Admin Panel</h1>
+    <p class="admin-subtitle">Manage quiz questions and view analytics</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button 
+      class="tab" 
+      [class.active]="activeTab === 'questions'"
+      (click)="activeTab = 'questions'">
+      📝 Questions ({{ questions.length }})
+    </button>
+    <button 
+      class="tab" 
+      [class.active]="activeTab === 'import'"
+      (click)="activeTab = 'import'">
+      📁 Import
+    </button>
+    <button 
+      class="tab" 
+      [class.active]="activeTab === 'analytics'"
+      (click)="activeTab = 'analytics'; loadPerformance()">
+      📊 Analytics
+    </button>
+  </div>
+
+  <!-- Questions Tab -->
+  <div *ngIf="activeTab === 'questions'" class="tab-content">
+    <!-- Add New Question -->
+    <div class="card">
+      <h2>➕ Add New Question</h2>
+      <div class="form-group">
+        <label>Question</label>
+        <input 
+          type="text" 
+          [(ngModel)]="newQuestion.question" 
+          placeholder="Enter question text"
+          class="input-text">
+      </div>
+
+      <div class="form-group">
+        <label>Options</label>
+        <div class="options-grid">
+          <input 
+            *ngFor="let opt of newQuestion.options; let i = index" 
+            type="text" 
+            [(ngModel)]="newQuestion.options![i]"
+            [placeholder]="'Option ' + (i + 1)"
+            class="input-text">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Correct Answers (select one or more)</label>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" [checked]="newQuestion.correctAnswers?.includes(0)" 
+                (change)="toggleCorrectAnswer(0, true)">
+              Option 1
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [checked]="newQuestion.correctAnswers?.includes(1)" 
+                (change)="toggleCorrectAnswer(1, true)">
+              Option 2
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [checked]="newQuestion.correctAnswers?.includes(2)" 
+                (change)="toggleCorrectAnswer(2, true)">
+              Option 3
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" [checked]="newQuestion.correctAnswers?.includes(3)" 
+                (change)="toggleCorrectAnswer(3, true)">
+              Option 4
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Difficulty (1-9 scale)</label>
+          <select [(ngModel)]="newQuestion.difficulty" class="input-select">
+            <option [value]="1">Level 1 - Very Easy</option>
+            <option [value]="2">Level 2 - Easy</option>
+            <option [value]="3">Level 3 - Easy+</option>
+            <option [value]="4">Level 4 - Medium-</option>
+            <option [value]="5">Level 5 - Medium</option>
+            <option [value]="6">Level 6 - Medium+</option>
+            <option [value]="7">Level 7 - Hard-</option>
+            <option [value]="8">Level 8 - Hard</option>
+            <option [value]="9">Level 9 - Extremely Hard</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Explanation (Optional)</label>
+        <textarea 
+          [(ngModel)]="newQuestion.explanation" 
+          placeholder="Enter explanation"
+          class="input-textarea"
+          rows="3"></textarea>
+      </div>
+
+      <button class="btn btn-primary" (click)="addQuestion()">Add Question</button>
+    </div>
+
+    <!-- Questions List -->
+    <div class="card">
+      <div class="card-header">
+        <h2>📋 All Questions</h2>
+        <div class="header-actions">
+          <button class="btn btn-secondary btn-small" (click)="exportQuestions()">📥 Export</button>
+          <button class="btn btn-danger btn-small" (click)="clearAllData()">🗑️ Clear All</button>
+        </div>
+      </div>
+
+      <div class="questions-list">
+        <div *ngFor="let question of questions; let i = index" class="question-item">
+          <div *ngIf="editingQuestion?.id !== question.id" class="question-view">
+            <div class="question-header">
+              <span class="question-number">#{{ i + 1 }}</span>
+              <span class="difficulty-badge" [style.background-color]="getDifficultyColor(question.difficulty)">
+                {{ question.difficulty }}
+              </span>
+            </div>
+            <p class="question-text">{{ question.question }}</p>
+            <div class="options-list">
+              <div 
+                *ngFor="let opt of question.options; let j = index" 
+                class="option-item"
+                [class.correct]="question.correctAnswers.includes(j)">
+                <span class="option-letter">{{ 'ABCD'[j] }}</span>
+                <span>{{ opt }}</span>
+                <span *ngIf="question.correctAnswers.includes(j)" class="correct-indicator">✓</span>
+              </div>
+            </div>
+            <p *ngIf="question.explanation" class="explanation-text">
+              <strong>Explanation:</strong> {{ question.explanation }}
+            </p>
+            <div class="question-actions">
+              <button class="btn btn-small btn-secondary" (click)="editQuestion(question)">✏️ Edit</button>
+              <button class="btn btn-small btn-danger" (click)="deleteQuestion(question.id)">🗑️ Delete</button>
+            </div>
+          </div>
+
+          <!-- Edit Mode -->
+          <div *ngIf="editingQuestion?.id === question.id && editingQuestion" class="question-edit">
+            <div class="form-group">
+              <label>Question</label>
+              <input type="text" [(ngModel)]="editingQuestion!.question" class="input-text">
+            </div>
+
+            <div class="form-group">
+              <label>Options</label>
+              <div class="options-grid">
+                <input 
+                  *ngFor="let opt of editingQuestion!.options; let j = index" 
+                  type="text" 
+                  [(ngModel)]="editingQuestion!.options[j]"
+                  class="input-text">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Correct Answers (select one or more)</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" [checked]="editingQuestion!.correctAnswers.includes(0)" 
+                      (change)="toggleCorrectAnswer(0, false)">
+                    Option 1
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" [checked]="editingQuestion!.correctAnswers.includes(1)" 
+                      (change)="toggleCorrectAnswer(1, false)">
+                    Option 2
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" [checked]="editingQuestion!.correctAnswers.includes(2)" 
+                      (change)="toggleCorrectAnswer(2, false)">
+                    Option 3
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" [checked]="editingQuestion!.correctAnswers.includes(3)" 
+                      (change)="toggleCorrectAnswer(3, false)">
+                    Option 4
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Difficulty (1-9 scale)</label>
+                <select [(ngModel)]="editingQuestion!.difficulty" class="input-select">
+                  <option [value]="1">Level 1 - Very Easy</option>
+                  <option [value]="2">Level 2 - Easy</option>
+                  <option [value]="3">Level 3 - Easy+</option>
+                  <option [value]="4">Level 4 - Medium-</option>
+                  <option [value]="5">Level 5 - Medium</option>
+                  <option [value]="6">Level 6 - Medium+</option>
+                  <option [value]="7">Level 7 - Hard-</option>
+                  <option [value]="8">Level 8 - Hard</option>
+                  <option [value]="9">Level 9 - Extremely Hard</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Explanation</label>
+              <textarea [(ngModel)]="editingQuestion!.explanation" class="input-textarea" rows="3"></textarea>
+            </div>
+
+            <div class="edit-actions">
+              <button class="btn btn-primary" (click)="updateQuestion()">💾 Save</button>
+              <button class="btn btn-secondary" (click)="cancelEdit()">❌ Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="questions.length === 0" class="empty-state">
+          <p>No questions yet. Add your first question above or import from Excel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Tab -->
+  <div *ngIf="activeTab === 'import'" class="tab-content">
+    <div class="card">
+      <h2>📁 Import Questions from Excel</h2>
+      
+      <div class="import-instructions">
+        <h3>Excel Format Requirements:</h3>
+        <ol>
+          <li>Column A: Question text</li>
+          <li>Column B-E: Four options</li>
+          <li>Column F: Correct answers (0-3, comma-separated for multiple correct answers, e.g., "0,2")</li>
+          <li>Column G: Difficulty (1-9, where 1=Very Easy, 9=Extremely Hard)</li>
+          <li>Column H: Explanation (optional)</li>
+        </ol>
+        <button class="btn btn-secondary" (click)="downloadTemplate()">📥 Download Template</button>
+      </div>
+
+      <div class="file-upload">
+        <input 
+          type="file" 
+          accept=".xlsx,.xls" 
+          (change)="onFileSelect($event)"
+          class="file-input">
+        <p *ngIf="importFile" class="file-name">Selected: {{ importFile.name }}</p>
+      </div>
+
+      <button 
+        class="btn btn-primary" 
+        (click)="importExcel()"
+        [disabled]="!importFile">
+        📤 Import Questions
+      </button>
+
+      <div *ngIf="importStatus" class="alert alert-success">{{ importStatus }}</div>
+      <div *ngIf="importError" class="alert alert-error">{{ importError }}</div>
+    </div>
+  </div>
+
+  <!-- Analytics Tab -->
+  <div *ngIf="activeTab === 'analytics'" class="tab-content">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-value">{{ stats.totalQuizzes || 0 }}</div>
+        <div class="stat-label">Total Quizzes</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value">{{ stats.avgScore || 0 }}</div>
+        <div class="stat-label">Average Score</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value">{{ stats.avgAccuracy || 0 }}%</div>
+        <div class="stat-label">Average Accuracy</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">📝</div>
+        <div class="stat-value">{{ stats.totalQuestions || 0 }}</div>
+        <div class="stat-label">Questions Answered</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📊 Question Distribution by Difficulty</h2>
+      <div class="difficulty-stats">
+        <div class="difficulty-stat" *ngFor="let level of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+          <span class="difficulty-label" [style.color]="getDifficultyColor(level)">
+            Level {{ level }}
+          </span>
+          <div class="difficulty-bar">
+            <div 
+              class="difficulty-fill" 
+              [style.width.%]="questions.length > 0 ? (getQuestionCountByDifficulty()['Level ' + level] / questions.length * 100) : 0"
+              [style.background-color]="getDifficultyColor(level)">
+            </div>
+          </div>
+          <span class="difficulty-count">{{ getQuestionCountByDifficulty()['Level ' + level] }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>📈 Recent Performance</h2>
+        <button class="btn btn-danger btn-small" (click)="clearPerformanceData()">🗑️ Clear Data</button>
+      </div>
+      
+      <div class="performance-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Score</th>
+              <th>Questions</th>
+              <th>Correct</th>
+              <th>Accuracy</th>
+              <th>Difficulty</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let perf of getRecentPerformance()">
+              <td>{{ perf.timestamp | date: 'short' }}</td>
+              <td>{{ perf.score }}</td>
+              <td>{{ perf.totalQuestions }}</td>
+              <td>{{ perf.correctAnswers }}</td>
+              <td>{{ perf.accuracy }}%</td>
+              <td>
+                <span class="difficulty-badge" [style.background-color]="getDifficultyColor(perf.avgDifficulty)">
+                  {{ perf.avgDifficulty }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="performance.length === 0" class="empty-state">
+          <p>No quiz attempts yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
