@@ -27,6 +27,12 @@
 	align-items: center;
 	gap: 24px;
 	flex: 1;
+	flex-wrap: wrap;
+}
+
+.nav-content h3 {
+	white-space: nowrap;
+	font-size: 1.2rem;
 }
 
 .user-info {
@@ -171,4 +177,146 @@
 	position: relative;
 	top: 0;
 	left: 0;
+}
+
+/* Responsive Design - Mobile First Approach */
+
+/* Tablet and below (768px) */
+@media (max-width: 768px) {
+	.navbar {
+		padding: 8px 12px;
+	}
+
+	.nav-content {
+		gap: 12px;
+	}
+
+	.nav-content h3 {
+		font-size: 1rem;
+	}
+
+	.user-info {
+		padding: 6px 10px;
+		gap: 8px;
+	}
+
+	.user-avatar {
+		width: 32px;
+		height: 32px;
+		font-size: 1rem;
+	}
+
+	.user-name {
+		font-size: 0.85rem;
+	}
+
+	.user-role {
+		font-size: 0.7rem;
+		padding: 2px 6px;
+	}
+
+	.nav-content ul {
+		gap: 12px;
+	}
+
+	.nav-content a {
+		font-size: 0.9rem;
+	}
+
+	.btn-auth {
+		padding: 6px 12px;
+		font-size: 0.85rem;
+	}
+
+	.auth-buttons {
+		gap: 8px;
+	}
+}
+
+/* Mobile (576px and below) */
+@media (max-width: 576px) {
+	.navbar {
+		padding: 8px;
+		min-height: 56px;
+	}
+
+	.nav-content {
+		gap: 8px;
+		justify-content: space-between;
+	}
+
+	.nav-content h3 {
+		font-size: 0.9rem;
+		flex-shrink: 0;
+	}
+
+	/* Hide user details text on mobile, keep avatar */
+	.user-details {
+		display: none;
+	}
+
+	.user-info {
+		padding: 4px;
+		background: transparent;
+	}
+
+	.user-avatar {
+		width: 28px;
+		height: 28px;
+		font-size: 0.9rem;
+	}
+
+	/* Stack navigation on very small screens */
+	.nav-content ul {
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+
+	.nav-content li {
+		flex-shrink: 0;
+	}
+
+	.nav-content a {
+		font-size: 0.8rem;
+		padding: 4px 8px;
+	}
+
+	.btn-auth {
+		padding: 6px 10px;
+		font-size: 0.75rem;
+	}
+
+	.auth-buttons {
+		gap: 6px;
+		flex-shrink: 0;
+	}
+
+	.main-content {
+		margin-top: 56px;
+		padding: 12px;
+	}
+}
+
+/* Extra small mobile (400px and below) */
+@media (max-width: 400px) {
+	.nav-content h3 {
+		font-size: 0.85rem;
+	}
+
+	.nav-content ul {
+		display: none;
+	}
+
+	/* Show hamburger menu on very small screens */
+	.navbar::after {
+		content: '☰';
+		font-size: 1.5rem;
+		cursor: pointer;
+		margin-left: auto;
+	}
+
+	.btn-auth {
+		padding: 5px 8px;
+		font-size: 0.7rem;
+	}
 }

@@ -1,0 +1,4 @@
+1) Make sure the web site is responsive across different devices (desktop, tablet, mobile).
+2) on the download template part , allow the user to download all the exsisting questions in that set template
+3) Stripe payment integration for premium features.
+4) capture the shapes
