@@ -19,4 +19,37 @@ html, body {
 body {
   margin: 0 !important;
   padding: 0 !important;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Responsive Base Font Sizes */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Ensure images are responsive */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent horizontal scroll on small screens */
+body {
+  overflow-x: hidden;
 }
