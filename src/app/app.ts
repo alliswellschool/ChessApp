@@ -14,10 +14,20 @@ export class App {
   protected authService = inject(AuthService);
   private router = inject(Router);
   navbarClosed = false;
+  mobileMenuOpen = false;
+
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+  }
 
   async logout(): Promise<void> {
     try {
       await this.authService.signOut();
+      this.closeMobileMenu();
       this.router.navigate(['/']);
     } catch (error) {
       console.error('Logout error:', error);
