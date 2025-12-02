@@ -72,13 +72,16 @@
   padding: 24px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
   max-width: 1200px;
+  width: 100%;
 }
 
 .left-panel {
   width: 280px;
+  min-width: 250px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  flex-shrink: 0;
 }
 
 /* Mode toggle (segmented control) */
@@ -319,6 +322,7 @@
 .cell {
   width: 52px;
   height: 52px;
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -411,9 +415,204 @@
   pointer-events: none;
   font-family: 'Noto Sans', Arial, sans-serif;
   font-weight: 400;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /* Team colors for piece glyphs in Team mode */
 .piece.team-white { color: #ffffff; }
 .piece.team-black { color: #ffea00; }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .dominance-container {
+    padding: 16px;
+  }
+
+  .game-content {
+    flex-direction: column;
+    gap: 24px;
+    padding: 20px;
+  }
+
+  .left-panel {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .board-container {
+    overflow-x: auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .game-header h1 {
+    font-size: 2em;
+  }
+
+  .game-header p {
+    font-size: 1em;
+  }
+
+  .size-controls {
+    flex-wrap: wrap;
+    padding: 10px 16px;
+  }
+
+  .size-controls button {
+    padding: 6px 12px;
+    font-size: 0.9em;
+  }
+
+  .cell {
+    width: 44px;
+    height: 44px;
+  }
+
+  .piece {
+    font-size: 1.8em;
+  }
+
+  .left-panel {
+    gap: 16px;
+  }
+
+  .piece-selector h3,
+  .stats-panel h3 {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 600px) {
+  .dominance-container {
+    padding: 12px;
+  }
+
+  .game-header h1 {
+    font-size: 1.75em;
+    margin-bottom: 6px;
+  }
+
+  .game-header p {
+    font-size: 0.95em;
+  }
+
+  .game-content {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .cell {
+    width: 38px;
+    height: 38px;
+  }
+
+  .piece {
+    font-size: 1.5em;
+  }
+
+  .mode-toggle .mode-btn {
+    padding: 8px 10px;
+    font-size: 0.9em;
+  }
+
+  .piece-selector .piece-btn {
+    padding: 8px;
+  }
+
+  .piece-symbol {
+    width: 32px;
+    height: 32px;
+  }
+
+  .piece-count {
+    font-size: 0.85em;
+  }
+
+  .stat-item {
+    font-size: 0.9em;
+  }
+
+  .progress-bar {
+    height: 20px;
+  }
+
+  .reset-btn {
+    padding: 10px 14px;
+    font-size: 0.95em;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-header h1 {
+    font-size: 1.5em;
+  }
+
+  .game-header p {
+    font-size: 0.9em;
+  }
+
+  .cell {
+    width: 32px;
+    height: 32px;
+  }
+
+  .piece {
+    font-size: 1.2em;
+  }
+
+  .size-controls {
+    gap: 6px;
+    padding: 8px 12px;
+  }
+
+  .size-controls button {
+    padding: 5px 10px;
+    font-size: 0.85em;
+  }
+
+  .game-content {
+    gap: 16px;
+    padding: 12px;
+  }
+
+  .left-panel {
+    gap: 12px;
+  }
+
+  .piece-selector h3,
+  .stats-panel h3 {
+    font-size: 1em;
+    margin-bottom: 8px;
+  }
+
+  .victory {
+    padding: 12px;
+    font-size: 1em;
+  }
+
+  .victory.optimal {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 380px) {
+  .cell {
+    width: 28px;
+    height: 28px;
+  }
+
+  .piece {
+    font-size: 1em;
+  }
+
+  .game-header h1 {
+    font-size: 1.3em;
+  }
+}
 
