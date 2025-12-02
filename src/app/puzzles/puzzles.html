@@ -1,28 +1,16 @@
-<div class="puzzles-container">
-  <div class="card-grid">
-    <div class="puzzle-card" routerLink="/independents">
-      <div class="card-content">
-        <h2>Games of Independence</h2>
-        <p>Place chess pieces so that no two pieces meet each other.</p>
-      </div>
+
+  <!-- Activities Section -->
+  <section class="activities">
+    <h2 class="section-title">🎯 Activities</h2>
+    <div class="activities-grid">
+      <a 
+        *ngFor="let activity of activities" 
+        [routerLink]="activity.route"
+        class="activity-card">
+        <div class="activity-icon">{{ activity.icon }}</div>
+        <h3 class="activity-title">{{ activity.title }}</h3>
+        <p class="activity-description">{{ activity.description }}</p>
+        <span class="activity-link">Start →</span>
+      </a>
     </div>
-    <div class="puzzle-card" routerLink="/dominance">
-      <div class="card-content">
-        <h2>Games of Dominance</h2>
-        <p>Place chess pieces to dominate all the squares on the board.</p>
-      </div>
-    </div>
-    <div class="puzzle-card" routerLink="/coordinates">
-      <div class="card-content">
-        <h2>Coordinates Game</h2>
-        <p>Identify squares by coordinate (e.g., e4) as fast as you can.</p>
-      </div>
-    </div>
-    <div class="puzzle-card" routerLink="/knights-tour">
-      <div class="card-content">
-        <h2>Knight's Tour</h2>
-        <p>Visit all 64 squares exactly once using only knight moves.</p>
-      </div>
-    </div>
-  </div>
-</div>
+  </section>

@@ -1,99 +1,170 @@
-.puzzles-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  padding: 20px;
+
+/* Activities Section */
+.activities {
+  padding: 40px 60px;
+  width: 100%;
 }
-.card-grid {
-  display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 100%;
-}
-.puzzle-card {
-  background: #222;
-  color: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-  width: 220px;
-  height: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  perspective: 600px;
-}
-.puzzle-card:hover:not(.disabled) {
-  transform: rotateY(12deg) scale(1.05);
-  box-shadow: 0 16px 32px rgba(0,0,0,0.28);
-}
-.puzzle-card.disabled {
-  background: #444;
-  color: #bbb;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-.card-content {
+
+.section-title {
+  font-size: 2rem;
+  margin: 0 0 32px 0;
+  color: #333;
   text-align: center;
 }
-.card-content h2 {
-  margin-bottom: 12px;
-  font-size: 1.5em;
+
+.activities-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  width: 100%;
+  justify-content: flex-start;
 }
-.card-content p {
-  font-size: 1em;
+
+.activity-card {
+  background: white;
+  border-radius: 12px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 2px solid transparent;
+  min-height: 300px;
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: 280px;
+  max-width: 400px;
+}
+
+.activity-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+  border-color: #667eea;
+}
+
+.activity-icon {
+  font-size: 4rem;
+  margin-bottom: 8px;
+}
+
+.activity-title {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.activity-description {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.activity-link {
+  color: #667eea;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 8px;
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+  .activities {
+    padding: 32px 40px;
+  }
+  
+  .activities-grid {
+    gap: 24px;
+  }
+  
+  .activity-card {
+    flex: 1 1 calc(50% - 12px);
+    min-width: 260px;
+  }
+}
+
 @media (max-width: 768px) {
-  .puzzles-container {
-    padding: 16px;
+  .activities {
+    padding: 24px 24px;
   }
 
-  .card-grid {
+  .section-title {
+    font-size: 1.75rem;
+    margin-bottom: 24px;
+  }
+
+  .activities-grid {
     gap: 20px;
   }
 
-  .puzzle-card {
-    width: 180px;
-    height: 260px;
+  .activity-card {
+    padding: 24px 20px;
+    min-height: 260px;
+    flex: 1 1 calc(50% - 10px);
+    min-width: 220px;
   }
 
-  .card-content h2 {
-    font-size: 1.3em;
+  .activity-icon {
+    font-size: 3rem;
   }
 
-  .card-content p {
-    font-size: 0.9em;
+  .activity-title {
+    font-size: 1.3rem;
+  }
+
+  .activity-description {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .activities {
+    padding: 20px 16px;
+  }
+  
+  .activities-grid {
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .activity-card {
+    padding: 20px 16px;
+    min-height: 240px;
+    flex: 1 1 100%;
+    min-width: 200px;
+    max-width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  .puzzles-container {
-    padding: 12px;
-    min-height: auto;
+  .activities {
+    padding: 16px 12px;
   }
 
-  .card-grid {
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .activities-grid {
     gap: 16px;
-    flex-direction: column;
-    align-items: center;
   }
 
-  .puzzle-card {
-    width: 100%;
-    max-width: 280px;
-    height: 200px;
+  .activity-card {
+    min-height: 220px;
+    flex: 1 1 100%;
   }
 
-  .card-content h2 {
-    font-size: 1.4em;
+  .activity-icon {
+    font-size: 2.5rem;
   }
 
-  .card-content p {
-    font-size: 1em;
+  .activity-title {
+    font-size: 1.2rem;
   }
 }
