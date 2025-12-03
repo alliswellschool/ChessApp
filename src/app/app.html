@@ -2,7 +2,16 @@
 	<div class="navbar">
 		<div class="nav-content">
 			<h3>♔ Chess Activities</h3>
-			
+
+			<!-- Desktop Navigation -->
+			<ul class="desktop-nav">
+				<li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+				<li><a routerLink="/puzzles" routerLinkActive="active">Puzzles</a></li>
+				<li *ngIf="authService.isAuthenticated()"><a routerLink="/quiz" routerLinkActive="active">Quiz</a></li>
+				<li *ngIf="authService.isAdmin()"><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
+				<li><a routerLink="/donate" routerLinkActive="active" class="donate-link">☕ Donate</a></li>
+			</ul>
+
 			<!-- User Info -->
 			<div class="user-info" *ngIf="authService.currentUser() && authService.userProfile()">
 				<div class="user-avatar">
@@ -15,14 +24,6 @@
 					</span>
 				</div>
 			</div>
-
-			<!-- Desktop Navigation -->
-			<ul class="desktop-nav">
-				<li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
-				<li><a routerLink="/puzzles" routerLinkActive="active">Puzzles</a></li>
-				<li *ngIf="authService.isAuthenticated()"><a routerLink="/quiz" routerLinkActive="active">Quiz</a></li>
-				<li *ngIf="authService.isAdmin()"><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
-			</ul>
 
 			<!-- Auth Buttons (Desktop) -->
 			<div class="auth-buttons desktop-auth">
@@ -49,6 +50,7 @@
 				<li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Home</a></li>
 				<li><a routerLink="/puzzles" routerLinkActive="active" (click)="closeMobileMenu()">Puzzles</a></li>
 				<li *ngIf="authService.isAuthenticated()"><a routerLink="/quiz" routerLinkActive="active" (click)="closeMobileMenu()">Quiz</a></li>
+				<li><a routerLink="/donate" routerLinkActive="active" class="donate-link" (click)="closeMobileMenu()">☕ Donate</a></li>
 				<li *ngIf="authService.isAdmin()"><a routerLink="/admin" routerLinkActive="active" (click)="closeMobileMenu()">Admin</a></li>
 			</ul>
 			<div class="mobile-auth-buttons">

@@ -2,3 +2,5 @@
 2) on the download template part , allow the user to download all the exsisting questions in that set template
 3) Stripe payment integration for premium features.
 4) capture the shapes
+5) add undo button that goes one step back or previous position for knights tour
+6) fix the bug with game of dominace where currently it show the victory message even if the player used more pieces to controll the squares than the expected pieces023i

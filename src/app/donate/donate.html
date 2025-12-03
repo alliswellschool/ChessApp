@@ -1,0 +1,90 @@
+<div class="donate-container">
+  <div class="donate-card">
+    <h1>☕ Support Chess Activities</h1>
+    <p class="subtitle">Help us keep the platform free and ad-supported!</p>
+
+    <div class="donate-content">
+      <p class="description">
+        Your donations help us maintain servers, add new puzzles, and improve the platform. 
+        Every contribution makes a difference! 🙏
+      </p>
+
+      <!-- Predefined amounts -->
+      <div class="amount-section">
+        <h3>Choose an amount</h3>
+        <div class="amount-buttons">
+          <button 
+            *ngFor="let amount of amounts"
+            class="amount-btn"
+            [class.selected]="selectedAmount === amount && !customAmount"
+            (click)="selectAmount(amount)"
+            [disabled]="loading">
+            ₹{{ amount }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Custom amount -->
+      <div class="custom-amount-section">
+        <h3>Or enter custom amount</h3>
+        <div class="custom-input-group">
+          <span class="currency">₹</span>
+          <input 
+            type="number" 
+            class="custom-input"
+            [(ngModel)]="customAmount"
+            (input)="useCustomAmount()"
+            placeholder="Enter amount"
+            min="10"
+            [disabled]="loading">
+        </div>
+        <p class="min-amount">Minimum: ₹10</p>
+      </div>
+
+      <!-- Donate button -->
+      <button 
+        class="donate-btn"
+        (click)="donate()"
+        [disabled]="!selectedAmount || loading">
+        <span *ngIf="!loading">
+          {{ selectedAmount ? '💝 Donate ₹' + selectedAmount : '💝 Select Amount' }}
+        </span>
+        <span *ngIf="loading">Processing...</span>
+      </button>
+
+      <!-- Messages -->
+      <div *ngIf="message" 
+           class="message"
+           [class.success]="messageType === 'success'"
+           [class.error]="messageType === 'error'">
+        {{ message }}
+      </div>
+
+      <!-- Info -->
+      <div class="info-section">
+        <h3>🔒 Secure Payment</h3>
+        <p>
+          Payments are processed securely through Razorpay. 
+          We support UPI, Cards, NetBanking, and Wallets.
+        </p>
+        <div class="payment-methods">
+          <span class="method">UPI</span>
+          <span class="method">Cards</span>
+          <span class="method">NetBanking</span>
+          <span class="method">Wallets</span>
+        </div>
+      </div>
+
+      <!-- Transparency -->
+      <div class="transparency-section">
+        <h3>💡 Where does the money go?</h3>
+        <ul>
+          <li>🖥️ Server hosting and maintenance</li>
+          <li>📚 Adding new puzzles and content</li>
+          <li>🔧 Platform improvements and features</li>
+          <li>⚡ Keeping the platform fast and reliable</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

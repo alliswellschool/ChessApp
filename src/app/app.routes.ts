@@ -45,5 +45,9 @@ export const routes: Routes = [
         path: 'admin',
         loadComponent: () => import('./admin/admin').then(m => m.Admin),
         canActivate: [adminGuard]
+    },
+    {
+        path: 'donate',
+        loadComponent: () => import('./donate/donate').then(m => m.Donate)
     }
 ];
