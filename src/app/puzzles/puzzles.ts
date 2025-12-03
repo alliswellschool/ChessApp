@@ -53,20 +53,6 @@ export class Puzzles {
       description: 'Test your chess knowledge with adaptive difficulty',
       icon: '🧠',
       route: '/quiz'
-    },
-    {
-      id: 'puzzles',
-      title: 'Puzzles',
-      description: 'Collection of various chess puzzles and challenges',
-      icon: '🧩',
-      route: '/puzzles'
-    },
-    {
-      id: 'admin',
-      title: 'Admin Panel',
-      description: 'Manage quiz questions, import from Excel, and view analytics',
-      icon: '🔧',
-      route: '/admin'
     }
   ];
 

@@ -242,17 +242,53 @@ export class Admin implements OnInit {
   }
 
   downloadTemplate(): void {
-    const template = [
-      ['Question', 'Option 1', 'Option 2', 'Option 3', 'Option 4', 'Correct Answers (0-3, comma-separated)', 'Difficulty (1-9)', 'Explanation'],
+    // Create header row
+    const header = ['Question', 'Option 1', 'Option 2', 'Option 3', 'Option 4', 'Correct Answers (0-3, comma-separated)', 'Difficulty (1-9)', 'Explanation'];
+    
+    // Convert all existing questions to Excel format
+    const questionRows = this.questions.map(q => [
+      q.question,
+      q.options[0],
+      q.options[1],
+      q.options[2],
+      q.options[3],
+      q.correctAnswers.join(','),
+      q.difficulty,
+      q.explanation || ''
+    ]);
+
+    // If no questions exist, add sample questions
+    const data = questionRows.length > 0 ? [header, ...questionRows] : [
+      header,
       ['How many squares are on a standard chessboard?', '64', '32', '48', '72', '0', '1', 'A standard chessboard has 8 rows × 8 columns = 64 squares.'],
       ['Which pieces can move diagonally?', 'Bishop', 'Rook', 'Queen', 'Knight', '0,2', '3', 'Both the Bishop and Queen can move diagonally across the board.'],
       ['What is the maximum number of moves in the 50-move rule?', '50', '75', '100', '25', '0', '7', 'The 50-move rule states that a player can claim a draw if no pawn has moved and no capture has been made in the last 50 moves.']
     ];
 
-    const ws = XLSX.utils.aoa_to_sheet(template);
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    
+    // Auto-size columns for better readability
+    const colWidths = [
+      { wch: 50 }, // Question
+      { wch: 20 }, // Option 1
+      { wch: 20 }, // Option 2
+      { wch: 20 }, // Option 3
+      { wch: 20 }, // Option 4
+      { wch: 15 }, // Correct Answers
+      { wch: 12 }, // Difficulty
+      { wch: 50 }  // Explanation
+    ];
+    ws['!cols'] = colWidths;
+
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Questions');
-    XLSX.writeFile(wb, 'chess_quiz_template.xlsx');
+    
+    // Use descriptive filename with question count and timestamp
+    const filename = questionRows.length > 0 
+      ? `chess_quiz_${questionRows.length}_questions_${new Date().toISOString().split('T')[0]}.xlsx`
+      : 'chess_quiz_template.xlsx';
+    
+    XLSX.writeFile(wb, filename);
   }
 
   // Analytics
