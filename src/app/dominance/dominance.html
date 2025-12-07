@@ -4,16 +4,13 @@
     <p>Arrange pieces so that all 64 squares are controlled. The pieces can meet each other.</p>
     <div class="message-bar">
       <ng-container *ngIf="mode === 'single'">
-        <div *ngIf="hasWon && isOptimal" class="victory optimal">
-          🎉 Perfect! Puzzle solved with all squares controlled!
-        </div>
-        <div *ngIf="hasWon && !isOptimal" class="victory">
-          ✓ All squares controlled! But check your piece count.
+        <div *ngIf="hasWon" class="victory" [class.optimal]="isOptimal">
+          {{ getVictoryMessage() }}
         </div>
       </ng-container>
       <ng-container *ngIf="mode === 'team'">
         <div *ngIf="hasWon" class="victory optimal">
-          🎉 Team Dominance solved! All squares controlled with the 8 powers.
+          {{ getVictoryMessage() }}
         </div>
         <div *ngIf="!hasWon && dominationPercentage === 100" class="victory">
           ✓ All squares controlled, but the counts must be exactly King×1, Queen×1, Rooks×2, Bishops×2, Knights×2.
@@ -37,22 +34,13 @@
         <button class="mode-btn" [class.active]="mode === 'single'" (click)="setMode('single')">Single</button>
         <button class="mode-btn" [class.active]="mode === 'team'" (click)="setMode('team')">Team</button>
       </div>
-      <div class="piece-selector">
-        <h3>Select Piece</h3>
-        <div class="piece-buttons">
-          <button 
-            *ngFor="let piece of availablePieces" 
-            class="piece-btn" 
-            [class.selected]="selectedPiece === piece.type"
-            (click)="selectPiece(piece.type)"
-            [title]="piece.name">
-            <div class="piece-symbol" [style.background-image]="'url(' + piece.image + ')'"></div>
-            <span class="piece-count">
-              {{ getPieceCount(piece.type) }} / {{ getRequiredPieces(piece.type) }}
-            </span>
-          </button>
-        </div>
-      </div>
+      <app-piece-selector
+        [pieces]="availablePieces"
+        [selectedPiece]="selectedPiece"
+        [showCounts]="true"
+        [pieceCounts]="pieceCountsMap"
+        (pieceSelected)="selectPiece($event)">
+      </app-piece-selector>
 
       <div class="controls">
         <button class="toggle-btn" [class.active]="highlightDominated" (click)="highlightDominated = !highlightDominated">
@@ -90,5 +78,31 @@
       [interactive]="true"
       (cellClick)="onCellClick($event)">
     </app-chessboard>
+  </div>
+
+  <!-- Victory Modal -->
+  <div class="modal-overlay" *ngIf="showVictoryModal" (click)="closeVictoryModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>🎉 Puzzle Completed!</h2>
+      </div>
+      <div class="modal-body">
+        <p class="modal-message">{{ getVictoryMessage() }}</p>
+        <div class="modal-stats">
+          <div class="modal-stat">
+            <span class="modal-stat-label">Pieces Used:</span>
+            <span class="modal-stat-value">{{ mode === 'single' ? pieceCounts[selectedPiece] : getTotalPieces() }}</span>
+          </div>
+          <div class="modal-stat">
+            <span class="modal-stat-label">Board Size:</span>
+            <span class="modal-stat-value">{{ size }}×{{ size }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn primary" (click)="closeVictoryModal()">Continue</button>
+        <button class="modal-btn secondary" (click)="selectNextPiece()">Next Piece</button>
+      </div>
+    </div>
   </div>
 </div>

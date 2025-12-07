@@ -14,7 +14,8 @@ export interface DonationOptions {
   providedIn: 'root'
 })
 export class RazorpayService {
-  private razorpayKey = 'rzp_test_YOUR_KEY_HERE'; // Replace with your actual key
+  // TODO: Move to environment file for security
+  private razorpayKey = 'rzp_test_RohENHlZtBFskv';
 
   constructor() {
     this.loadRazorpayScript();

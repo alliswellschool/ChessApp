@@ -81,7 +81,6 @@ export class Quiz implements OnInit {
 
     this.hasAnswered = true;
     this.showExplanation = true;
-    this.quizState.totalAnswered++;
 
     // Check if all correct answers are selected and no wrong answers
     const correctAnswers = new Set(this.currentQuestion?.correctAnswers || []);
@@ -99,9 +98,6 @@ export class Quiz implements OnInit {
     } else {
       this.quizState.streak = 0;
     }
-
-    // Adapt difficulty based on performance
-    this.adaptDifficulty();
   }
 
   getDifficultyPoints(difficulty: number): number {
@@ -132,6 +128,12 @@ export class Quiz implements OnInit {
   }
 
   nextQuestion(): void {
+    // Increment totalAnswered when moving to next question
+    this.quizState.totalAnswered++;
+    
+    // Adapt difficulty based on performance after answering
+    this.adaptDifficulty();
+    
     this.selectedAnswers.clear();
     this.showExplanation = false;
     this.hasAnswered = false;

@@ -73,11 +73,6 @@ export class KnightsTour {
       return false;
     }
 
-    // Square must not be visited
-    if (this.board[row][col].visited) {
-      return false;
-    }
-
     // If no knight placed yet, any square is valid
     if (!this.knightPosition) {
       return true;
@@ -119,11 +114,12 @@ export class KnightsTour {
       return;
     }
 
-    // Place knight and mark as visited
+    // Place knight and increment visit count
     this.knightPosition = { row, col };
     this.moveHistory.push({ row, col });
     this.moveCount = this.moveHistory.length;
     this.board[row][col].visited = true;
+    // Increment order on each visit (allows multiple visits to same square)
     this.board[row][col].order = this.moveCount;
     this.gameStarted = true;
     this.updateCells();
@@ -135,8 +131,17 @@ export class KnightsTour {
 
     // Remove last move
     const last = this.moveHistory.pop()!;
-    this.board[last.row][last.col].visited = false;
-    this.board[last.row][last.col].order = 0;
+    
+    // Find if this square was visited before in the history
+    const previousVisitIndex = this.moveHistory.findIndex(m => m.row === last.row && m.col === last.col);
+    if (previousVisitIndex >= 0) {
+      // Square was visited before, show that visit number
+      this.board[last.row][last.col].order = previousVisitIndex + 1;
+    } else {
+      // Square never visited before, reset
+      this.board[last.row][last.col].visited = false;
+      this.board[last.row][last.col].order = 0;
+    }
 
     // Decrement move count and set knightPosition to previous or null
     this.moveCount = this.moveHistory.length;
@@ -172,7 +177,7 @@ export class KnightsTour {
           ].filter(Boolean),
           data: {
             visited: square.visited,
-            order: square.order
+            order: isKnight ? 0 : square.order  // Hide number when knight is on the square
           }
         };
       }
@@ -184,11 +189,15 @@ export class KnightsTour {
   }
 
   get isComplete(): boolean {
-    return this.moveCount === this.size * this.size;
+    // Count unique squares visited
+    const uniqueSquares = new Set(this.moveHistory.map(m => `${m.row},${m.col}`));
+    return uniqueSquares.size === this.size * this.size;
   }
 
   get squaresVisited(): number {
-    return this.moveCount;
+    // Count unique squares visited
+    const uniqueSquares = new Set(this.moveHistory.map(m => `${m.row},${m.col}`));
+    return uniqueSquares.size;
   }
 
   get totalSquares(): number {

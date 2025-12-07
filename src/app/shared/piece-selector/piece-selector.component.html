@@ -1,0 +1,16 @@
+<div class="piece-selector">
+  <h3>Select Piece</h3>
+  <div class="piece-buttons">
+    <button 
+      *ngFor="let piece of pieces" 
+      class="piece-btn" 
+      [class.selected]="selectedPiece === piece.type"
+      (click)="onPieceClick(piece.type)"
+      [title]="piece.name">
+      <div class="piece-symbol" [style.background-image]="'url(' + piece.image + ')'"></div>
+      <span class="piece-count" *ngIf="showCounts && getPieceCount(piece.type) as count">
+        {{ count.current }} / {{ count.required }}
+      </span>
+    </button>
+  </div>
+</div>
