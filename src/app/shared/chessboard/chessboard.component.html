@@ -1,0 +1,69 @@
+<div class="board-container">
+  <div class="board-wrapper" [style.--cell-size]="cellSize ? cellSize + 'px' : null">
+    
+    <!-- Top coordinates -->
+    <div class="coordinates-top" *ngIf="showCoordinates">
+      <div class="coord-spacer"></div>
+      <div class="coord-labels">
+        <span class="coord-label" *ngFor="let file of files; let c = index">
+          {{ fileLabel(c) }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Board with side coordinates -->
+    <div class="board-row-wrapper">
+      <!-- Left coordinates -->
+      <div class="coordinates-left" *ngIf="showCoordinates">
+        <span class="coord-label" *ngFor="let rank of ranks; let r = index">
+          {{ rankLabel(r) }}
+        </span>
+      </div>
+
+      <!-- Chessboard -->
+      <div class="chessboard">
+        <div class="board-row" *ngFor="let rank of ranks; let r = index">
+          <div 
+            *ngFor="let file of files; let c = index"
+            [ngClass]="getCellClasses(r, c)"
+            [style.cursor]="interactive && !getCell(r, c).blocked ? 'pointer' : 'default'"
+            (click)="onCellClick(r, c)"
+            (mouseenter)="onCellHover(r, c)">
+            
+            <!-- Piece rendering -->
+            <div 
+              *ngIf="getCell(r, c).piece || getCell(r, c).pieceImage"
+              class="piece"
+              [class.invalid-piece]="getCell(r, c).hasInvalidPiece"
+              [style.background-image]="getCell(r, c).pieceImage ? 'url(' + getCell(r, c).pieceImage + ')' : null">
+              {{ getCell(r, c).piece }}
+            </div>
+            
+            <!-- Custom cell content (e.g., visit order numbers) -->
+            <span *ngIf="getCell(r, c).data?.order > 0" class="cell-order">
+              {{ getCell(r, c).data.order }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right coordinates -->
+      <div class="coordinates-right" *ngIf="showCoordinates">
+        <span class="coord-label" *ngFor="let rank of ranks; let r = index">
+          {{ rankLabel(r) }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Bottom coordinates -->
+    <div class="coordinates-bottom" *ngIf="showCoordinates">
+      <div class="coord-spacer"></div>
+      <div class="coord-labels">
+        <span class="coord-label" *ngFor="let file of files; let c = index">
+          {{ fileLabel(c) }}
+        </span>
+      </div>
+    </div>
+
+  </div>
+</div>
