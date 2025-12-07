@@ -1,16 +1,18 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
 
 @Component({
   selector: 'app-coordinates',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ChessboardComponent],
   templateUrl: './coordinates.html',
   styleUrls: ['./coordinates.css']
 })
 export class Coordinates implements OnDestroy {
   size = 8;
   board: number[][] = Array.from({ length: this.size }, () => Array(this.size).fill(0));
+  cells: ChessCell[][] = [];
 
   // Game state
   target = '';
@@ -25,7 +27,19 @@ export class Coordinates implements OnDestroy {
   running = false;
 
   constructor() {
+    this.initializeCells();
     this.nextTarget();
+  }
+
+  initializeCells(): void {
+    this.cells = Array.from({ length: this.size }, (_, row) =>
+      Array.from({ length: this.size }, (_, col) => ({
+        row,
+        col,
+        isLight: (row + col) % 2 === 0,
+        isDark: (row + col) % 2 !== 0
+      }))
+    );
   }
 
   ngOnDestroy(): void {
@@ -105,10 +119,35 @@ export class Coordinates implements OnDestroy {
       }
     }
 
+    this.updateCells();
+
     // Clear the lastClick highlight after a short delay
     setTimeout(() => {
       this.lastClick = null;
+      this.updateCells();
     }, 450);
+  }
+
+  onCellClick(event: { row: number; col: number; cell: ChessCell }): void {
+    this.clickSquare(event.row, event.col);
+  }
+
+  updateCells(): void {
+    for (let row = 0; row < this.size; row++) {
+      for (let col = 0; col < this.size; col++) {
+        const isLastClick = this.lastClick?.r === row && this.lastClick?.c === col;
+        this.cells[row][col] = {
+          row,
+          col,
+          isLight: (row + col) % 2 === 0,
+          isDark: (row + col) % 2 !== 0,
+          customClasses: [
+            isLastClick && this.lastClick?.correct ? 'hit-correct' : '',
+            isLastClick && !this.lastClick?.correct ? 'hit-wrong' : ''
+          ].filter(Boolean)
+        };
+      }
+    }
   }
 
   get accuracy(): number {

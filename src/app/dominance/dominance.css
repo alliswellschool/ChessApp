@@ -313,211 +313,7 @@
   50% { transform: scale(1.02); }
 }
 
-.board-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow-x: auto;
-  padding: 20px 8px;
-}
-
-.board-with-ledger {
-  display: grid;
-  grid-template-columns: 24px auto 24px;
-  grid-template-rows: 24px auto 24px;
-  gap: 0;
-  grid-template-areas:
-    "corner-tl coord-top corner-tr"
-    "coord-left board coord-right"
-    "corner-bl coord-bottom corner-br";
-  background: #d4b896;
-  padding: 8px;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-}
-
-.corner {
-  width: 24px;
-  height: 24px;
-  background: #d4b896;
-}
-
-.corner.top-left { grid-area: corner-tl; }
-.corner.top-right { grid-area: corner-tr; }
-.corner.bottom-left { grid-area: corner-bl; }
-.corner.bottom-right { grid-area: corner-br; }
-
-.coord-row {
-  display: flex;
-  gap: 0;
-}
-
-.coord-row.top {
-  grid-area: coord-top;
-  align-items: flex-end;
-}
-
-.coord-row.bottom {
-  grid-area: coord-bottom;
-  align-items: flex-start;
-}
-
-.coord-col {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.coord-col.left {
-  grid-area: coord-left;
-  align-items: flex-end;
-}
-
-.coord-col.right {
-  grid-area: coord-right;
-  align-items: flex-start;
-}
-
-.coord-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: #3d3d3d;
-  width: 52px;
-  height: 52px;
-  background: #d4b896;
-  box-sizing: border-box;
-}
-
-/* Remove the checkerboard pattern from coordinates */
-.coord-item.white,
-.coord-item.black {
-  background: #d4b896;
-  color: #3d3d3d;
-}
-
-.chessboard {
-  grid-area: board;
-  display: grid;
-  border: 3px solid #2c2c2c;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  gap: 0;
-  line-height: 0;
-}
-
-.row {
-  display: contents;
-}
-
-.cell {
-  width: 52px;
-  height: 52px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.15s;
-  position: relative;
-  box-sizing: border-box;
-  vertical-align: top;
-}
-
-.cell.white {
-  background: #f0d9b5;
-}
-
-.cell.black {
-  background: #b58863;
-}
-
-.cell.dominated {
-  position: relative;
-}
-
-.cell.dominated::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* Changed dominated highlight from yellow to red */
-  background: rgba(239, 68, 68, 0.35);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.cell.blocked {
-  cursor: not-allowed;
-  position: relative;
-}
-
-.cell.blocked::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(239, 68, 68, 0.3);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.cell.blocked::after {
-  content: '✕';
-  position: absolute;
-  font-size: 1.5em;
-  color: #ef4444;
-  font-weight: bold;
-  opacity: 0.9;
-  z-index: 2;
-}
-
-.cell.has-piece {
-  background: #667eea !important;
-}
-
-.cell.has-invalid-piece {
-  background: #ef4444 !important;
-}
-
-.piece.invalid-piece {
-  color: #fff !important;
-  animation: shake 0.3s ease-in-out;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-3px); }
-  75% { transform: translateX(3px); }
-}
-
-.cell:not(.blocked):not(.has-piece):not(.has-invalid-piece):hover {
-  transform: scale(1.08);
-  z-index: 10;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-.piece {
-  font-size: 2.2em;
-  color: #fff;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-  pointer-events: none;
-  font-family: 'Noto Sans', Arial, sans-serif;
-  font-weight: 400;
-  width: 100%;
-  height: 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-/* Team colors for piece glyphs in Team mode */
-.piece.team-white { color: #ffffff; }
-.piece.team-black { color: #ffea00; }
+/* Board styles now handled by ChessboardComponent */
 
 /* Responsive Design */
 @media (max-width: 1024px) {
@@ -653,25 +449,26 @@
     border-width: 2px;
   }
 
-  .board-with-ledger {
-    grid-template-columns: 22px auto 22px;
-    grid-template-rows: 22px auto 22px;
+  .board-wrapper {
+    padding: 12px;
   }
 
-  .corner {
-    width: 22px;
-    height: 22px;
+  .coord-spacer {
+    width: 28px;
   }
 
-  .coord-item {
-    width: 42px;
-    height: 42px;
+  .coordinates-left,
+  .coordinates-right {
+    width: 28px;
+  }
+
+  .coord-label {
     font-size: 0.85rem;
   }
 
   .cell {
-    width: 42px;
-    height: 42px;
+    width: 48px;
+    height: 48px;
   }
 
   .piece {
@@ -787,39 +584,6 @@
 
   .victory.optimal {
     font-size: 1em;
-  }
-
-  .board-container {
-    padding: 12px 4px;
-  }
-
-  .chessboard {
-    border-width: 2px;
-  }
-
-  .board-with-ledger {
-    grid-template-columns: 20px auto 20px;
-    grid-template-rows: 20px auto 20px;
-  }
-
-  .corner {
-    width: 20px;
-    height: 20px;
-  }
-
-  .coord-item {
-    width: 38px;
-    height: 38px;
-    font-size: 0.8rem;
-  }
-
-  .cell {
-    width: 38px;
-    height: 38px;
-  }
-
-  .piece {
-    font-size: 1.5em;
   }
 }
 
@@ -952,39 +716,6 @@
     font-size: 0.92em;
   }
 
-  .board-container {
-    padding: 10px 2px;
-    justify-content: flex-start;
-  }
-
-  .chessboard {
-    border-width: 2px;
-  }
-
-  .board-with-ledger {
-    grid-template-columns: 18px auto 18px;
-    grid-template-rows: 18px auto 18px;
-  }
-
-  .corner {
-    width: 18px;
-    height: 18px;
-  }
-
-  .coord-item {
-    width: 36px;
-    height: 36px;
-    font-size: 0.72rem;
-  }
-
-  .cell {
-    width: 36px;
-    height: 36px;
-  }
-
-  .piece {
-    font-size: 1.4em;
-  }
 }
 
 @media (max-width: 380px) {
@@ -1091,34 +822,5 @@
     font-size: 0.75em;
   }
 
-  .board-container {
-    padding: 8px 2px;
-    justify-content: flex-start;
-  }
-
-  .board-with-ledger {
-    grid-template-columns: 16px auto 16px;
-    grid-template-rows: 16px auto 16px;
-  }
-
-  .corner {
-    width: 16px;
-    height: 16px;
-  }
-
-  .coord-item {
-    width: 33px;
-    height: 33px;
-    font-size: 0.68rem;
-  }
-
-  .cell {
-    width: 33px;
-    height: 33px;
-  }
-
-  .piece {
-    font-size: 1.2em;
-  }
 }
 

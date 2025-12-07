@@ -1,0 +1,74 @@
+<div class="independence-root">
+  <div class="header">
+    <h1>Games of Independence</h1>
+    <p>Choose a mode and board size, then place pieces so that no two pieces meet each other.</p>
+
+    <!-- Size controls placed directly under the header to match Dominance UI -->
+    <div class="size-controls" *ngIf="mode==='single'">
+      <label class="size-label">Board Size:</label>
+      <div class="size-buttons">
+        <button *ngFor="let s of availableSizes" class="size-btn" [class.active]="size===s" (click)="setSize(s)">{{s}}×{{s}}</button>
+      </div>
+    </div>
+    <div class="message-bar">
+      <div *ngIf="mode==='single' && isSolvedSingle" class="victory optimal">🎉 Perfect! All {{ requiredPieces }} {{ selected }} placed correctly.</div>
+      <div *ngIf="mode==='team' && isSolved" class="victory optimal">🎉 All pieces placed — you win!</div>
+    </div>
+  </div>
+
+  <div class="controls-and-board">
+    <div class="left">
+      <div class="mode-toggle">
+        <button [class.active]="mode==='single'" (click)="setMode('single')">Single</button>
+        <button [class.active]="mode==='team'" (click)="setMode('team')">Team</button>
+      </div>
+
+      <!-- size controls removed from left panel (now under header) -->
+
+      <div class="piece-select">
+        <label>{{ mode === 'single' ? 'Select Piece' : 'Selected Piece' }}</label>
+        <div class="pieces">
+          <button *ngFor="let p of pieces" [class.selected]="selected===p" (click)="selected=p">
+            <div class="img" [style.background-image]="'url(' + getPieceImage(p) + ')'" aria-hidden="true"></div>
+            <span class="label">{{ getPieceSymbol(p) }}</span>
+            <span class="count" *ngIf="mode==='team'">{{ placedCounts[p] }} / {{ requiredCounts[p] }}</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="toggle-btn" [class.active]="highlightPath" (click)="highlightPath = !highlightPath">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Show Highlights</span>
+        </button>
+        <button class="reset-btn" (click)="resetBoard()">Reset Board</button>
+      </div>
+      
+
+      <!-- Placement summary for single mode: only show number of valid placements made -->
+      <div class="placement-single" [class.needs-attention]="validCounts[selected] !== requiredPieces" *ngIf="mode==='single'">
+        <h4>Placement Stats</h4>
+        <div class="stat-row">
+          <span class="stat-name">Valid placements:</span>
+          <span class="stat-value">{{ validCounts[selected] }} / {{ requiredPieces }}</span>
+        </div>
+      </div>
+
+
+      <!-- <div class="stats" *ngIf="mode==='team'">
+        <h4>Placement</h4>
+        <div *ngFor="let p of pieces" class="stat-row">
+          <span class="stat-name">{{ getPieceSymbol(p) }}</span>
+          <span class="stat-value">{{ placedCounts[p] }} / {{ requiredCounts[p] }}</span>
+        </div>
+        <div class="victory" *ngIf="isSolved">🎉 All placed correctly — you win!</div>
+      </div> -->
+    </div>
+
+    <div class="board">
+      <app-chessboard [size]="size" [cells]="cells" [showCoordinates]="true" [interactive]="true"
+        (cellClick)="placeOrRemove($event.row, $event.col)">
+      </app-chessboard>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
 
 interface Square {
   visited: boolean;
@@ -9,13 +10,15 @@ interface Square {
 @Component({
   selector: 'app-knights-tour',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ChessboardComponent],
   templateUrl: './knights-tour.html',
   styleUrls: ['./knights-tour.css']
 })
 export class KnightsTour {
   size = 8;
   board: Square[][] = [];
+  cells: ChessCell[][] = [];
+  moveHistory: Array<{ row: number; col: number }> = [];
   knightPosition: { row: number; col: number } | null = null;
   moveCount = 0;
   gameStarted = false;
@@ -37,9 +40,19 @@ export class KnightsTour {
         order: 0
       }))
     );
+    this.cells = Array.from({ length: this.size }, (_, row) =>
+      Array.from({ length: this.size }, (_, col) => ({
+        row,
+        col,
+        isLight: (row + col) % 2 === 0,
+        isDark: (row + col) % 2 !== 0,
+        data: { visited: false, order: 0 }
+      }))
+    );
     this.knightPosition = null;
     this.moveCount = 0;
     this.gameStarted = false;
+    this.updateCells();
   }
 
   fileLabel(index: number): string {
@@ -108,10 +121,62 @@ export class KnightsTour {
 
     // Place knight and mark as visited
     this.knightPosition = { row, col };
-    this.moveCount++;
+    this.moveHistory.push({ row, col });
+    this.moveCount = this.moveHistory.length;
     this.board[row][col].visited = true;
     this.board[row][col].order = this.moveCount;
     this.gameStarted = true;
+    this.updateCells();
+  }
+
+  /** Undo the last knight move (one step back) */
+  undo(): void {
+    if (this.moveHistory.length === 0) return;
+
+    // Remove last move
+    const last = this.moveHistory.pop()!;
+    this.board[last.row][last.col].visited = false;
+    this.board[last.row][last.col].order = 0;
+
+    // Decrement move count and set knightPosition to previous or null
+    this.moveCount = this.moveHistory.length;
+    const prev = this.moveHistory[this.moveHistory.length - 1] || null;
+    this.knightPosition = prev ? { row: prev.row, col: prev.col } : null;
+
+    this.gameStarted = this.moveCount > 0;
+    this.updateCells();
+  }
+
+  onCellClick(event: { row: number; col: number; cell: ChessCell }): void {
+    this.clickSquare(event.row, event.col);
+  }
+
+  updateCells(): void {
+    const validMoves = this.getValidMoves();
+    for (let row = 0; row < this.size; row++) {
+      for (let col = 0; col < this.size; col++) {
+        const square = this.board[row][col];
+        const isKnight = this.knightPosition?.row === row && this.knightPosition?.col === col;
+        const isValidMove = validMoves.some(m => m.row === row && m.col === col);
+        
+        this.cells[row][col] = {
+          row,
+          col,
+          isLight: (row + col) % 2 === 0,
+          isDark: (row + col) % 2 !== 0,
+          pieceImage: isKnight ? '/pieces/alpha/wN.svg' : undefined,
+          hasPiece: isKnight,
+          customClasses: [
+            square.visited ? 'visited' : '',
+            isValidMove ? 'valid-move' : ''
+          ].filter(Boolean),
+          data: {
+            visited: square.visited,
+            order: square.order
+          }
+        };
+      }
+    }
   }
 
   reset(): void {

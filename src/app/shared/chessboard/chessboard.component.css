@@ -1,0 +1,388 @@
+/* Board Container - Responsive Wrapper */
+.board-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.board-wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  background: #c9a875;
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  max-width: 100%;
+}
+
+/* Coordinates - Top */
+.coordinates-top {
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.coord-spacer {
+  width: 32px;
+  flex-shrink: 0;
+}
+
+.coord-labels {
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+}
+
+.coord-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #3d2817;
+  user-select: none;
+  flex: 1;
+  text-align: center;
+}
+
+/* Board Row Wrapper with side coordinates */
+.board-row-wrapper {
+  display: flex;
+  gap: 4px;
+}
+
+/* Coordinates - Left and Right */
+.coordinates-left,
+.coordinates-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 32px;
+  flex-shrink: 0;
+}
+
+.coordinates-left .coord-label,
+.coordinates-right .coord-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+/* Coordinates - Bottom */
+.coordinates-bottom {
+  display: flex;
+  margin-top: 4px;
+}
+
+/* Chessboard */
+.chessboard {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid #3d2817;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 2px 8px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.board-row {
+  display: flex;
+}
+
+/* Cell Styling */
+.cell {
+  width: var(--cell-size, 56px);
+  height: var(--cell-size, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.cell.light {
+  background: #f0d9b5;
+}
+
+.cell.dark {
+  background: #b58863;
+}
+
+/* Cell States */
+.cell.dominated {
+  position: relative;
+}
+
+.cell.dominated::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(239, 68, 68, 0.35);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cell.blocked {
+  cursor: not-allowed !important;
+  position: relative;
+}
+
+.cell.blocked::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(239, 68, 68, 0.3);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cell.blocked::after {
+  content: '✕';
+  position: absolute;
+  font-size: 1.5em;
+  color: #ef4444;
+  font-weight: bold;
+  opacity: 0.9;
+  z-index: 2;
+}
+
+.cell.has-piece {
+  background: #667eea !important;
+}
+
+.cell.has-invalid-piece {
+  background: #ef4444 !important;
+}
+
+.cell:not(.blocked):hover {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+/* Piece Styling */
+.piece {
+  font-size: 2.2em;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  pointer-events: none;
+  font-family: 'Noto Sans', Arial, sans-serif;
+  font-weight: 400;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.piece.invalid-piece {
+  color: #fff !important;
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+/* Cell Order Display (for Knights Tour) */
+.cell-order {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  font-size: 0.65em;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 1px 4px;
+  border-radius: 3px;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Custom Classes Support */
+.cell.visited {
+  background: rgba(59, 130, 246, 0.2) !important;
+}
+
+.cell.valid-move {
+  background: rgba(34, 197, 94, 0.4) !important;
+  box-shadow: inset 0 0 0 3px rgba(34, 197, 94, 0.6);
+}
+
+.cell.valid-move::after {
+  content: '•';
+  position: absolute;
+  font-size: 2em;
+  color: rgba(34, 197, 94, 0.8);
+  pointer-events: none;
+}
+
+/* Coordinates Game Feedback */
+.cell.hit-correct {
+  background: rgba(34, 197, 94, 0.6) !important;
+  animation: pulse-correct 0.45s ease-out;
+}
+
+.cell.hit-wrong {
+  background: rgba(239, 68, 68, 0.6) !important;
+  animation: pulse-wrong 0.45s ease-out;
+}
+
+@keyframes pulse-correct {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(34, 197, 94, 0.8); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulse-wrong {
+  0% { transform: scale(1); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: scale(1); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .board-wrapper {
+    padding: 12px;
+  }
+
+  .coord-spacer {
+    width: 28px;
+  }
+
+  .coordinates-left,
+  .coordinates-right {
+    width: 28px;
+  }
+
+  .coord-label {
+    font-size: 0.85rem;
+  }
+
+  .cell {
+    width: var(--cell-size, 48px);
+    height: var(--cell-size, 48px);
+  }
+
+  .piece {
+    font-size: 1.7em;
+  }
+}
+
+@media (max-width: 600px) {
+  .board-container {
+    padding: 12px 4px;
+  }
+
+  .chessboard {
+    border-width: 2px;
+  }
+
+  .board-wrapper {
+    padding: 10px;
+  }
+
+  .coord-spacer {
+    width: 24px;
+  }
+
+  .coordinates-left,
+  .coordinates-right {
+    width: 24px;
+  }
+
+  .coord-label {
+    font-size: 0.8rem;
+  }
+
+  .cell {
+    width: var(--cell-size, 42px);
+    height: var(--cell-size, 42px);
+  }
+
+  .piece {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-width: 480px) {
+  .board-container {
+    padding: 10px 2px;
+  }
+
+  .board-wrapper {
+    padding: 8px;
+  }
+
+  .coord-spacer {
+    width: 22px;
+  }
+
+  .coordinates-left,
+  .coordinates-right {
+    width: 22px;
+  }
+
+  .coord-label {
+    font-size: 0.72rem;
+  }
+
+  .cell {
+    width: var(--cell-size, 38px);
+    height: var(--cell-size, 38px);
+  }
+
+  .piece {
+    font-size: 1.4em;
+  }
+}
+
+@media (max-width: 380px) {
+  .board-container {
+    padding: 8px 2px;
+  }
+
+  .board-wrapper {
+    padding: 6px;
+  }
+
+  .coord-spacer {
+    width: 20px;
+  }
+
+  .coordinates-left,
+  .coordinates-right {
+    width: 20px;
+  }
+
+  .coord-label {
+    font-size: 0.68rem;
+  }
+
+  .cell {
+    width: var(--cell-size, 34px);
+    height: var(--cell-size, 34px);
+  }
+
+  .piece {
+    font-size: 1.2em;
+  }
+}

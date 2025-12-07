@@ -22,7 +22,7 @@ export const routes: Routes = [
     },
     {
         path: 'independents',
-        loadComponent: () => import('./independents/independents').then(m => m.Independents)
+        loadComponent: () => import('./game-of-independence/game-of-independence').then(m => m.GameOfIndependence)
     },
     {
         path: 'dominance',

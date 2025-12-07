@@ -12,6 +12,7 @@ import {
   rankLabel,
   DOMINANCE_OPTIMAL_COUNTS
 } from '../shared/chess.constants';
+import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
 
 type Team = 'white' | 'black';
 interface TeamPiece { type: PieceType; team: Team }
@@ -19,7 +20,7 @@ interface TeamPiece { type: PieceType; team: Team }
 @Component({
   selector: 'app-dominance',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ChessboardComponent],
   templateUrl: './dominance.html',
   styleUrls: ['./dominance.css']
 })
@@ -32,6 +33,7 @@ export class Dominance {
 
   size = 8;
   board: (PieceType | '')[][] = [];
+  cells: ChessCell[][] = []; // For ChessboardComponent
   selectedPiece: PieceType = 'queen';
   highlightDominated = true;
   availableSizes = [4, 5, 6, 7, 8];
@@ -81,7 +83,16 @@ export class Dominance {
   
   initializeBoard(): void {
     this.board = Array.from({ length: this.size }, () => Array(this.size).fill(''));
+    this.cells = Array.from({ length: this.size }, (_, row) =>
+      Array.from({ length: this.size }, (_, col) => ({
+        row,
+        col,
+        isLight: (row + col) % 2 === 0,
+        isDark: (row + col) % 2 !== 0
+      }))
+    );
     this.resetCounts();
+    this.updateCells();
   }
   
   // Team board removed
@@ -165,6 +176,33 @@ export class Dominance {
       this.board[row][col] = this.selectedPiece;
       this.pieceCounts[this.selectedPiece]++;
     }
+    this.updateCells();
+  }
+
+  onCellClick(event: { row: number; col: number; cell: ChessCell }): void {
+    this.placeOrRemovePiece(event.row, event.col);
+  }
+
+  updateCells(): void {
+    const dominated = this.dominatedSquares;
+    for (let row = 0; row < this.size; row++) {
+      for (let col = 0; col < this.size; col++) {
+        const piece = this.board[row][col];
+        this.cells[row][col] = {
+          row,
+          col,
+          isLight: (row + col) % 2 === 0,
+          isDark: (row + col) % 2 !== 0,
+          pieceImage: piece ? this.getPieceImage(piece) : undefined,
+          // Only mark empty squares as dominated visually. If a piece
+          // occupies the square we avoid the overlay so the piece image
+          // remains clear and not dulled by the pseudo-element overlay.
+          dominated: this.highlightDominated && dominated.has(`${row},${col}`) && !piece,
+          hasPiece: !!piece,
+          blocked: false
+        };
+      }
+    }
   }
   
   resetBoard(selectedType: PieceType = this.selectedPiece): void {
@@ -215,7 +253,9 @@ export class Dominance {
   }
   
   get hasWon(): boolean {
+    // Must dominate all squares first
     if (this.dominationPercentage !== 100) return false;
+
     if (this.mode === 'team') {
       // Victory only when exact 8 powers are placed with correct counts on 8x8
       const exactCounts =
@@ -229,7 +269,13 @@ export class Dominance {
         this.getTotalPieces() === this.teamTotalPieces;
       return exactCounts;
     }
-    return true;
+
+    // Single mode: require that player used no more pieces of the selected type
+    // than the minimal expected count for that piece. This prevents showing a
+    // victory when the board is dominated but the player used more pieces
+    // than the optimal solution requires.
+    const required = this.getRequiredPieces(this.selectedPiece);
+    return this.pieceCounts[this.selectedPiece] <= required;
   }
   
   get isOptimal(): boolean {

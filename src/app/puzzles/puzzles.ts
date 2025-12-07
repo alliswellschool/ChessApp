@@ -31,7 +31,7 @@ export class Puzzles {
       title: 'Independence',
       description: 'Solve classic puzzles where pieces must not attack each other',
       icon: '♛',
-      route: '/independents'
+      route: '/game-of-independence'
     },
     {
       id: 'coordinates',
