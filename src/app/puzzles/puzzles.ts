@@ -20,18 +20,18 @@ export class Puzzles {
 
   activities: Activity[] = [
     {
+      id: 'independence',
+      title: 'Independence',
+      description: 'Solve classic puzzles where pieces must not attack each other',
+      icon: '♛',
+      route: '/independents'
+    },
+    {
       id: 'dominance',
       title: 'Dominance',
       description: 'Master board control by dominating all squares with minimal pieces',
       icon: '♕',
       route: '/dominance'
-    },
-    {
-      id: 'independence',
-      title: 'Independence',
-      description: 'Solve classic puzzles where pieces must not attack each other',
-      icon: '♛',
-      route: '/game-of-independence'
     },
     {
       id: 'coordinates',

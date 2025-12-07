@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
+import { PieceSelectorComponent, PieceCount } from '../shared/piece-selector/piece-selector.component';
 import {
   PieceType,
   ALL_PIECE_TYPES,
@@ -21,7 +22,7 @@ interface BoardCell {
 @Component({
   selector: 'app-game-of-independence',
   standalone: true,
-  imports: [CommonModule, ChessboardComponent],
+  imports: [CommonModule, ChessboardComponent, PieceSelectorComponent],
   templateUrl: './game-of-independence.html',
   styleUrls: ['./game-of-independence.css']
 })
@@ -44,6 +45,26 @@ export class GameOfIndependence {
   // UI helpers
   pieces = ALL_PIECE_TYPES;
   highlightPath = false;
+
+  get availablePieces() {
+    return this.pieces.map(type => ({
+      type,
+      name: type.charAt(0).toUpperCase() + type.slice(1),
+      symbol: getPieceSymbol(type),
+      image: getPieceImage(type)
+    }));
+  }
+
+  get pieceCountsMap(): Map<PieceType, PieceCount> {
+    const map = new Map<PieceType, PieceCount>();
+    this.pieces.forEach(piece => {
+      map.set(piece, {
+        current: this.mode === 'team' ? this.placedCounts[piece] : this.validCounts[piece],
+        required: this.mode === 'team' ? this.requiredCounts[piece] : this.getRequiredForPiece(piece, this.size)
+      });
+    });
+    return map;
+  }
 
   constructor() {
     this.resetBoard();
@@ -68,6 +89,10 @@ export class GameOfIndependence {
   getPieceImage(p: Piece) { return p ? getPieceImage(p as PieceType) : ''; }
   fileLabel(i: number) { return fileLabel(i); }
   rankLabel(r: number) { return rankLabel(this.size, r); }
+
+  onPieceSelected(piece: PieceType): void {
+    this.selected = piece;
+  }
 
   resetBoard() {
     this.board = Array.from({ length: this.size }, () => 

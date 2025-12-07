@@ -13,6 +13,8 @@ import {
   DOMINANCE_OPTIMAL_COUNTS
 } from '../shared/chess.constants';
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
+import { getDominanceVictoryMessage } from '../shared/dominance-messages';
+import { PieceSelectorComponent, PieceCount } from '../shared/piece-selector/piece-selector.component';
 
 type Team = 'white' | 'black';
 interface TeamPiece { type: PieceType; team: Team }
@@ -20,7 +22,7 @@ interface TeamPiece { type: PieceType; team: Team }
 @Component({
   selector: 'app-dominance',
   standalone: true,
-  imports: [CommonModule, FormsModule, ChessboardComponent],
+  imports: [CommonModule, FormsModule, ChessboardComponent, PieceSelectorComponent],
   templateUrl: './dominance.html',
   styleUrls: ['./dominance.css']
 })
@@ -37,6 +39,7 @@ export class Dominance {
   selectedPiece: PieceType = 'queen';
   highlightDominated = true;
   availableSizes = [4, 5, 6, 7, 8];
+  showVictoryModal = false;
 
   // Team Dominance exact set (8 powers, no pawns): K×1, Q×1, R×2, B×2, N×2
   private readonly teamInventory: Record<PieceType, number> = {
@@ -54,6 +57,17 @@ export class Dominance {
       ? (['king','queen','rook','bishop','knight'] as PieceType[]) // no pawns in team mode
       : ALL_PIECE_TYPES;
     return types.map(t => CHESS_PIECES[t]);
+  }
+
+  get pieceCountsMap(): Map<PieceType, PieceCount> {
+    const map = new Map<PieceType, PieceCount>();
+    this.availablePieces.forEach(piece => {
+      map.set(piece.type, {
+        current: this.getPieceCount(piece.type),
+        required: this.getRequiredPieces(piece.type)
+      });
+    });
+    return map;
   }
 
   fileLabel(index: number): string { return fileLabel(index); }
@@ -166,17 +180,28 @@ export class Dominance {
   }
   
   placeOrRemovePiece(row: number, col: number): void {
+    // Prevent interaction after victory
+    if (this.hasWon && this.dominationPercentage === 100) {
+      return;
+    }
+    
     if (this.board[row][col]) {
       // Remove piece
       const pieceType = this.board[row][col];
       this.board[row][col] = '';
       this.pieceCounts[pieceType]--;
+      this.showVictoryModal = false; // Hide modal when removing pieces
     } else if (this.selectedPiece && this.canPlacePiece(row, col)) {
       // Place piece (no limit check)
       this.board[row][col] = this.selectedPiece;
       this.pieceCounts[this.selectedPiece]++;
     }
     this.updateCells();
+    
+    // Show victory modal when puzzle is solved
+    if (this.hasWon && this.dominationPercentage === 100) {
+      this.showVictoryModal = true;
+    }
   }
 
   onCellClick(event: { row: number; col: number; cell: ChessCell }): void {
@@ -208,6 +233,7 @@ export class Dominance {
   resetBoard(selectedType: PieceType = this.selectedPiece): void {
     this.initializeBoard();
     this.selectedPiece = selectedType;
+    this.showVictoryModal = false;
   }
   
   // Team mode actions removed
@@ -397,6 +423,26 @@ export class Dominance {
     return attacks;
   }
   
+  
+  getVictoryMessage(): string {
+    if (this.mode === 'team') {
+      return '🎉 Team Dominance solved! All squares controlled with the 8 powers.';
+    }
+    return getDominanceVictoryMessage(this.selectedPiece, this.size, this.isOptimal);
+  }
+  
+  closeVictoryModal(): void {
+    this.showVictoryModal = false;
+  }
+
+  selectNextPiece(): void {
+    const currentPieces = this.availablePieces;
+    const currentIndex = currentPieces.findIndex(p => p.type === this.selectedPiece);
+    const nextIndex = (currentIndex + 1) % currentPieces.length;
+    const nextPiece = currentPieces[nextIndex].type;
+    this.resetBoard(nextPiece);
+    this.closeVictoryModal();
+  }
   
   getAttackedSquares(row: number, col: number, piece: PieceType): string[] {
     switch (piece) {

@@ -1,0 +1,67 @@
+REQUIREMENTS & BUGS - December 7, 2025
+========================================
+
+GAME OF DOMINANCE
+-----------------
+1. [ ] Add customized victory messages for each piece type and board size
+   - Display appropriate message per piece + board size combination
+
+2. [ ] Prevent piece placement after reaching 100% completion
+   - Show popup/modal on successful completion
+   - Disable board interaction after victory
+   - Display "Successfully Completed" message
+
+GAME OF INDEPENDENCE
+---------------------
+3. [ ] Fix navigation issue - link not working
+   - Test and fix route to Independence game
+   - Verify it loads correctly from puzzles page
+
+4. [ ] Reorder puzzle list - Independence before Dominance
+   - Update puzzles.ts array order
+   - Independence should appear first
+
+COORDINATES GAME
+----------------
+5. [ ] Fix mobile view layout - elements getting cut off
+   - Review responsive CSS for mobile
+   - Adjust positioning of UI elements
+   - Test on various mobile screen sizes
+
+KNIGHT TOUR
+-------------
+6. [ ] Fix mobile view - board getting cut off on left side
+   - Adjust mobile responsive styles
+   - Ensure board fits properly on small screens
+
+7. [ ] Allow revisiting already-visited squares
+   - Increment number on revisit (shows total moves)
+   - OR remove numbers from squares entirely (need clarification)
+
+QUIZ
+----
+8. [ ] Fix question number display timing
+   - Next question number should only appear after clicking "Next Question" button
+   - Currently shows immediately after submitting answer
+
+DONATE / RAZORPAY
+-----------------
+9. [ ] Test Razorpay on mobile
+   - Verify payment modal works on mobile devices
+   - Check if error is mobile-specific or API issue
+
+PRIORITY ORDER
+--------------
+High Priority:
+- Independence navigation fix (#3)
+- Dominance completion popup (#2)
+- Quiz question number timing (#8)
+
+Medium Priority:
+- Mobile layout issues (#5, #6)
+- Knight tour revisit logic (#7)
+
+Low Priority:
+- Customized dominance messages (#1)
+- Puzzle reordering (#4)
+- Razorpay mobile testing (#9)

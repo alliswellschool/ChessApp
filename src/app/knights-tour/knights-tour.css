@@ -118,7 +118,6 @@
 }
 
 .cell.visited {
-  opacity: 0.7;
   cursor: default;
 }
 
@@ -196,4 +195,196 @@
 
 .cell.black .visit-order {
   color: #f0d9b5;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 1024px) {
+  .knights-tour-container {
+    padding: 16px;
+  }
+
+  .game-content {
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  .left-panel {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .board-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .knights-tour-container {
+    padding: 12px;
+  }
+
+  .game-header h1 {
+    font-size: 1.8em;
+    margin-bottom: 6px;
+  }
+
+  .game-header p {
+    font-size: 0.95em;
+    padding: 0 10px;
+  }
+
+  .message-bar {
+    padding: 0 10px;
+  }
+
+  .info,
+  .warning {
+    padding: 10px 16px;
+    font-size: 0.9em;
+  }
+
+  .game-content {
+    gap: 16px;
+    padding: 14px;
+  }
+
+  .left-panel {
+    gap: 14px;
+  }
+
+  .stats-panel,
+  .info-panel {
+    padding: 14px;
+  }
+
+  .stats-panel h3,
+  .info-panel h3 {
+    font-size: 1.05em;
+    margin-bottom: 10px;
+  }
+
+  .stat-item {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
+
+  .info-panel li {
+    font-size: 0.88em;
+    padding: 5px 0;
+  }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+  }
+
+  .reset-btn {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 0.9em;
+  }
+
+  .board-container {
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .knights-tour-container {
+    padding: 8px;
+  }
+
+  .game-header h1 {
+    font-size: 1.4em;
+    margin-bottom: 4px;
+  }
+
+  .game-header p {
+    font-size: 0.8em;
+    padding: 0 6px;
+    line-height: 1.3;
+  }
+
+  .message-bar {
+    padding: 0 6px;
+    margin-top: 8px;
+  }
+
+  .info,
+  .warning {
+    padding: 8px 12px;
+    font-size: 0.82em;
+  }
+
+  .game-content {
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .left-panel {
+    gap: 10px;
+  }
+
+  .stats-panel,
+  .info-panel {
+    padding: 12px;
+  }
+
+  .stats-panel h3,
+  .info-panel h3 {
+    font-size: 0.95em;
+    margin-bottom: 8px;
+  }
+
+  .stat-item {
+    font-size: 0.82em;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 0.9em;
+  }
+
+  .stat-value {
+    font-size: 0.95em;
+  }
+
+  .progress-bar {
+    height: 16px;
+  }
+
+  .info-panel li {
+    font-size: 0.8em;
+    padding: 4px 0;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .reset-btn {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.85em;
+  }
+
+  .board-container {
+    width: 100%;
+    padding: 0;
+  }
+
+  .knight-piece {
+    font-size: 2em;
+  }
+
+  .visit-order {
+    font-size: 0.75em;
+  }
 }

@@ -25,16 +25,13 @@
 
       <!-- size controls removed from left panel (now under header) -->
 
-      <div class="piece-select">
-        <label>{{ mode === 'single' ? 'Select Piece' : 'Selected Piece' }}</label>
-        <div class="pieces">
-          <button *ngFor="let p of pieces" [class.selected]="selected===p" (click)="selected=p">
-            <div class="img" [style.background-image]="'url(' + getPieceImage(p) + ')'" aria-hidden="true"></div>
-            <span class="label">{{ getPieceSymbol(p) }}</span>
-            <span class="count" *ngIf="mode==='team'">{{ placedCounts[p] }} / {{ requiredCounts[p] }}</span>
-          </button>
-        </div>
-      </div>
+      <app-piece-selector
+        [pieces]="availablePieces"
+        [selectedPiece]="selected"
+        [showCounts]="true"
+        [pieceCounts]="pieceCountsMap"
+        (pieceSelected)="onPieceSelected($event)">
+      </app-piece-selector>
 
       <div class="controls">
         <button class="toggle-btn" [class.active]="highlightPath" (click)="highlightPath = !highlightPath">
