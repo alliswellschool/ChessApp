@@ -43,6 +43,11 @@
             <span *ngIf="getCell(r, c).data?.order > 0" class="cell-order">
               {{ getCell(r, c).data.order }}
             </span>
+            
+            <!-- Custom label (e.g., shape symbols) -->
+            <span *ngIf="getCell(r, c).data?.label" class="cell-label">
+              {{ getCell(r, c).data.label }}
+            </span>
           </div>
         </div>
       </div>

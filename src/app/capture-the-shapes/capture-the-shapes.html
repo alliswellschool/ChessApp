@@ -1,0 +1,125 @@
+<div class="capture-root">
+  <div class="header">
+    <h1>Capture the Shapes</h1>
+    <p>Move the {{ currentPuzzle.pieceType | titlecase }} from {{ currentPuzzle.startSquare }} to capture all shapes.</p>
+    
+    <div class="piece-filter">
+      <label for="piece-select">Filter by Piece:</label>
+      <select id="piece-select" [(ngModel)]="selectedPieceFilter" (change)="onPieceFilterChange(selectedPieceFilter)" class="piece-dropdown">
+        <option value="all">All Pieces</option>
+        <option *ngFor="let piece of availablePieces" [value]="piece">
+          {{ getPieceSymbol(piece) }} {{ piece | titlecase }}
+        </option>
+      </select>
+    </div>
+    
+    <div class="puzzle-nav">
+      <button class="nav-btn" (click)="previousPuzzle()" [disabled]="currentPuzzleIndex === 0">
+        ← Previous
+      </button>
+      <span class="puzzle-number">Puzzle {{ currentPuzzleIndex + 1 }} / {{ filteredPuzzles.length }}</span>
+      <button class="nav-btn" (click)="nextPuzzle()" [disabled]="currentPuzzleIndex === filteredPuzzles.length - 1">
+        Next →
+      </button>
+    </div>
+
+    <div class="message-bar">
+      <div *ngIf="gameCompleted" class="victory optimal">
+        🎉 Perfect! All {{ totalShapes }} shapes captured in {{ moveCount }} moves.
+      </div>
+      <div *ngIf="!gameCompleted && !activePiece" class="info-message">
+        Click {{ currentPuzzle.startSquare }} (highlighted in green) to start
+      </div>
+      <div *ngIf="!gameCompleted && activePiece" class="info-message">
+        Move your {{ currentPuzzle.pieceType | titlecase }} to capture all shapes
+      </div>
+    </div>
+  </div>
+
+  <div class="controls-and-board">
+    <div class="left">
+      <div class="puzzle-info-panel">
+        <h4>Puzzle {{ currentPuzzleIndex + 1 }}</h4>
+        <div class="puzzle-details">
+          <div class="detail-row">
+            <span class="piece-icon large">{{ getPieceSymbol(currentPuzzle.pieceType) }}</span>
+            <div class="detail-text">
+              <span class="piece-name">{{ currentPuzzle.pieceType | titlecase }}</span>
+              <span class="start-square">Start: {{ currentPuzzle.startSquare }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="toggle-btn" [class.active]="showValidMoves" 
+                (click)="showValidMoves = !showValidMoves">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Show Valid Moves</span>
+        </button>
+        <button class="reset-btn" (click)="undoMove()" [disabled]="moveHistory.length <= 1">Undo Move</button>
+        <button class="reset-btn" (click)="reset()">Reset Puzzle</button>
+      </div>
+
+      <div class="stats-panel">
+        <h4>Progress</h4>
+        <div class="stat-row">
+          <span class="stat-name">Moves:</span>
+          <span class="stat-value">{{ moveCount }}</span>
+        </div>
+        <div class="stat-row" *ngIf="getBestScore()">
+          <span class="stat-name">Best Score:</span>
+          <span class="stat-value best-score">{{ getBestScore() }}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-name">Shapes Captured:</span>
+          <span class="stat-value">{{ capturedCount }} / {{ totalShapes }}</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progressPercentage"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="board">
+      <app-chessboard
+        [size]="size"
+        [cells]="cells"
+        [showCoordinates]="true"
+        [interactive]="true"
+        (cellClick)="onCellClicked($event.row, $event.col)">
+      </app-chessboard>
+    </div>
+  </div>
+
+  <!-- Victory Modal -->
+  <div class="modal-overlay" *ngIf="gameCompleted" (click)="gameCompleted = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>🎉 Puzzle Completed!</h2>
+      </div>
+      <div class="modal-body">
+        <p class="modal-message">You've successfully captured all shapes!</p>
+        <div class="modal-stats">
+          <div class="modal-stat">
+            <span class="modal-stat-label">Moves:</span>
+            <span class="modal-stat-value">{{ moveCount }}</span>
+          </div>
+          <div class="modal-stat" *ngIf="getBestScore() && moveCount === getBestScore()">
+            <span class="modal-stat-label">🏆 New Record!</span>
+            <span class="modal-stat-value">{{ moveCount }}</span>
+          </div>
+          <div class="modal-stat" *ngIf="getBestScore() && moveCount !== getBestScore()">
+            <span class="modal-stat-label">Best Score:</span>
+            <span class="modal-stat-value">{{ getBestScore() }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn primary" (click)="nextPuzzle()">Next Puzzle</button>
+        <button class="modal-btn secondary" (click)="reset()">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+</div>

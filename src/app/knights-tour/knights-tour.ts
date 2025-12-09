@@ -22,6 +22,7 @@ export class KnightsTour {
   knightPosition: { row: number; col: number } | null = null;
   moveCount = 0;
   gameStarted = false;
+  showValidMoves = true; // Toggle for showing green highlights
 
   // Knight moves: L-shape (2 squares in one direction, 1 in perpendicular)
   private readonly knightMoves = [
@@ -173,7 +174,7 @@ export class KnightsTour {
           hasPiece: isKnight,
           customClasses: [
             square.visited ? 'visited' : '',
-            isValidMove ? 'valid-move' : ''
+            isValidMove && this.showValidMoves ? 'valid-move' : ''
           ].filter(Boolean),
           data: {
             visited: square.visited,

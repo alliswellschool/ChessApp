@@ -148,13 +148,16 @@
 }
 
 .cell.blocked::after {
-  content: '✕';
+  content: '•';
   position: absolute;
-  font-size: 1.5em;
+  font-size: 2em;
   color: #ef4444;
   font-weight: bold;
-  opacity: 0.9;
+  opacity: 0.8;
   z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .cell.has-piece {
@@ -214,6 +217,19 @@
   line-height: 1;
   pointer-events: none;
   z-index: 5;
+}
+
+/* Cell Label Display (for shapes, markers, etc) */
+.cell-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2em;
+  font-weight: bold;
+  pointer-events: none;
+  z-index: 2;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
 }
 
 /* Custom Classes Support */
