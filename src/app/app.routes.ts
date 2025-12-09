@@ -37,6 +37,10 @@ export const routes: Routes = [
         loadComponent: () => import('./knights-tour/knights-tour').then(m => m.KnightsTour)
     },
     {
+        path: 'capture-the-shapes',
+        loadComponent: () => import('./capture-the-shapes/capture-the-shapes').then(m => m.CaptureTheShapes)
+    },
+    {
         path: 'quiz',
         loadComponent: () => import('./quiz/quiz').then(m => m.Quiz),
         canActivate: [authGuard]

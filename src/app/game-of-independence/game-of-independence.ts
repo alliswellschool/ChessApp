@@ -224,6 +224,8 @@ export class GameOfIndependence {
 
   recalculateValidPieces(): void {
     for (const k of Object.keys(this.validCounts) as Piece[]) this.validCounts[k] = 0;
+    
+    // First pass: check if each piece is valid
     for (let r = 0; r < this.size; r++) {
       for (let c = 0; c < this.size; c++) {
         const cell = this.board[r][c];
@@ -231,6 +233,27 @@ export class GameOfIndependence {
           const isValid = this.isPieceValid(r, c);
           cell.valid = isValid;
           if (isValid) this.validCounts[cell.piece]++;
+        }
+      }
+    }
+    
+    // Second pass: mark both pieces involved in conflicts as invalid
+    for (let r = 0; r < this.size; r++) {
+      for (let c = 0; c < this.size; c++) {
+        const cell = this.board[r][c];
+        if (cell.piece && !cell.valid) {
+          // This piece is invalid, mark all pieces it attacks as invalid too
+          const attacks = this.attacksFrom(cell.piece, r, c);
+          for (const [ar, ac] of attacks) {
+            if (ar >= 0 && ar < this.size && ac >= 0 && ac < this.size) {
+              const targetCell = this.board[ar][ac];
+              if (targetCell.piece && targetCell.valid) {
+                // Mark the attacking piece as invalid
+                targetCell.valid = false;
+                this.validCounts[targetCell.piece]--;
+              }
+            }
+          }
         }
       }
     }

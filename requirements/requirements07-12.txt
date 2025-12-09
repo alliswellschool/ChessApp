@@ -50,18 +50,86 @@ DONATE / RAZORPAY
    - Verify payment modal works on mobile devices
    - Check if error is mobile-specific or API issue
 
+NEW FEEDBACK (December 7, 2025 - Evening)
+==========================================
+
+GAME OF INDEPENDENCE
+---------------------
+10. [ ] Fix invalid piece highlighting in single mode
+    - When a piece is invalid (red), BOTH attacking pieces should turn red
+    - When one invalid piece is removed, the other piece should return to normal color
+    - Visual feedback must show the conflict between two pieces clearly
+
+11. [ ] Change threatened square indicator from X to dot
+    - Replace the X mark on controlled/threatened squares with a simple dot
+    - Reference: BrainBashers 8 Queens implementation style
+    - Make it cleaner and less cluttered
+
+KNIGHTS TOUR
+-------------
+12. [ ] Add toggle for valid move highlights
+    - Add show/hide option for green square highlights (valid knight moves)
+    - Similar to existing "Show Highlights" toggle pattern
+    - Default: ON (show green squares)
+
+CAPTURE THE SHAPES (New Puzzle)
+--------------------------------
+13. [ ] Create new "Capture the Shapes" puzzle game
+    - Board setup: 8x8 chessboard with labeled squares (a-h, 1-8)
+    - Target shapes: Place various shape markers on specific squares that need to be "captured"
+    - Available pieces: Rook, Knight, Bishop, Queen, King (each with their standard chess movement patterns)
+    - Starting position constraints: Each piece type has specific allowed starting squares
+    
+14. [ ] Implement piece placement with starting position validation
+    - Display table/UI showing allowed starting positions for each piece type
+    - Only allow piece placement on valid starting squares
+    - Visual feedback for valid vs invalid starting positions
+    
+15. [ ] Implement shape capture mechanics
+    - Shapes must be in the attack range of placed pieces to be "captured"
+    - Visual indicator when a shape is successfully captured (color change, checkmark, etc.)
+    - Track which shapes are captured vs uncaptured
+    
+16. [ ] Add victory condition and feedback
+    - Win condition: All shapes on the board must be captured
+    - Display progress indicator (e.g., "5/8 shapes captured")
+    - Victory modal/message when all shapes are captured
+    
+17. [ ] Create puzzle generation/storage system
+    - Define puzzle format: shape positions + allowed starting positions per piece
+    - Store multiple puzzle configurations (similar to coordinates game)
+    - Add difficulty levels or puzzle numbering
+    
+18. [ ] Add UI controls
+    - Piece selector (choose which piece to place)
+    - Reset button (clear board and start over)
+    - Show/hide starting positions toggle
+    - Next puzzle button (after completion)
+    
+19. [ ] Implement educational features
+    - "How to Play" instructions panel
+    - Highlight which shapes are captured by which pieces
+    - Show attack patterns when hovering over placed pieces
+    - Hint system (optional)
+
+COMPLETED TASKS
+---------------
+✓ Task 1: Customized Dominance victory messages
+✓ Task 2: Dominance completion modal with Next Piece button
+✓ Task 3: Independence navigation route fix
+✓ Task 4: Puzzle reordering (Independence before Dominance)
+✓ Task 5: Coordinates mobile responsive styles
+✓ Task 6: Knight's Tour mobile responsive styles
+✓ Task 7: Knight's Tour allow revisiting squares
+✓ Task 8: Quiz question number timing fix
+✓ Task 10: Invalid piece highlighting for both conflicting pieces
+✓ Task 11: Threatened square indicator changed to dot
+✓ Task 12: Knight's Tour valid move toggle
+
 PRIORITY ORDER
 --------------
 High Priority:
-- Independence navigation fix (#3)
-- Dominance completion popup (#2)
-- Quiz question number timing (#8)
-
-Medium Priority:
-- Mobile layout issues (#5, #6)
-- Knight tour revisit logic (#7)
-
-Low Priority:
-- Customized dominance messages (#1)
-- Puzzle reordering (#4)
 - Razorpay mobile testing (#9)
+
+New Feature (Backlog):
+- Capture the Shapes puzzle (#13-19)

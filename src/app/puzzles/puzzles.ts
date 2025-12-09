@@ -48,6 +48,13 @@ export class Puzzles {
       route: '/knights-tour'
     },
     {
+      id: 'capture-the-shapes',
+      title: 'Capture the Shapes',
+      description: 'Place pieces strategically to capture all target shapes',
+      icon: '★',
+      route: '/capture-the-shapes'
+    },
+    {
       id: 'quiz',
       title: 'Adaptive Quiz',
       description: 'Test your chess knowledge with adaptive difficulty',
