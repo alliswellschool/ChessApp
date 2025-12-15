@@ -52,8 +52,8 @@
           <li>Click any square to start</li>
           <li>Move in L-shape only</li>
           <li>Visit each square once</li>
-          <li>Green = valid moves</li>
-          <li>Numbers show order</li>
+          <li>Green dots = valid moves</li>
+          <li>Green squares = visited</li>
         </ul>
       </div>
     </div>
@@ -67,4 +67,26 @@
       (cellClick)="onCellClick($event)">
     </app-chessboard>
   </div>
+  
+  <!-- Victory Modal (Perfect Tour - 64 moves) -->
+  <app-victory-modal
+    [show]="showVictoryModal"
+    title="Perfect Tour!"
+    message="Congratulations! You completed a perfect Knight's Tour in 64 moves!"
+    [stats]="victoryStats"
+    [buttons]="victoryButtons"
+    (closeModal)="showVictoryModal = false"
+    (buttonClick)="handleVictoryAction($event)">
+  </app-victory-modal>
+
+  <!-- Completion Modal (All squares visited but not perfect) -->
+  <app-victory-modal
+    [show]="showCompletionModal"
+    title="Tour Complete!"
+    [message]="completionMessage"
+    [stats]="victoryStats"
+    [buttons]="completionButtons"
+    (closeModal)="showCompletionModal = false"
+    (buttonClick)="handleCompletionAction($event)">
+  </app-victory-modal>
 </div>

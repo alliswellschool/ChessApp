@@ -81,28 +81,24 @@
   </div>
 
   <!-- Victory Modal -->
-  <div class="modal-overlay" *ngIf="showVictoryModal" (click)="closeVictoryModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h2>🎉 Puzzle Completed!</h2>
-      </div>
-      <div class="modal-body">
-        <p class="modal-message">{{ getVictoryMessage() }}</p>
-        <div class="modal-stats">
-          <div class="modal-stat">
-            <span class="modal-stat-label">Pieces Used:</span>
-            <span class="modal-stat-value">{{ mode === 'single' ? pieceCounts[selectedPiece] : getTotalPieces() }}</span>
-          </div>
-          <div class="modal-stat">
-            <span class="modal-stat-label">Board Size:</span>
-            <span class="modal-stat-value">{{ size }}×{{ size }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="modal-btn primary" (click)="closeVictoryModal()">Continue</button>
-        <button class="modal-btn secondary" (click)="selectNextPiece()">Next Piece</button>
-      </div>
-    </div>
-  </div>
+  <app-victory-modal
+    [show]="showVictoryModal"
+    title="Puzzle Completed!"
+    [message]="getVictoryMessage()"
+    [stats]="victoryStats"
+    [buttons]="victoryButtons"
+    (closeModal)="showVictoryModal = false"
+    (buttonClick)="handleVictoryAction($event)">
+  </app-victory-modal>
+
+  <!-- Full Coverage Modal (100% but wrong piece count) -->
+  <app-victory-modal
+    [show]="showFullCoverageModal"
+    title="Full Coverage!"
+    [message]="fullCoverageMessage"
+    [stats]="victoryStats"
+    [buttons]="fullCoverageButtons"
+    (closeModal)="showFullCoverageModal = false"
+    (buttonClick)="handleFullCoverageAction($event)">
+  </app-victory-modal>
 </div>

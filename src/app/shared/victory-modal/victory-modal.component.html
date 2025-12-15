@@ -1,0 +1,29 @@
+<div class="modal-overlay" *ngIf="show" (click)="onOverlayClick()">
+  <div class="modal-content victory-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header victory-header">
+      <h2>🎉 {{ title }}</h2>
+    </div>
+    
+    <div class="modal-body">
+      <p class="victory-message" *ngIf="message">{{ message }}</p>
+      
+      <div class="stats-container" *ngIf="stats.length > 0">
+        <div class="stat-card" *ngFor="let stat of stats">
+          <div class="stat-label">{{ stat.icon }} {{ stat.label }}</div>
+          <div class="stat-value">{{ stat.value }}</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button 
+        *ngFor="let button of buttons"
+        class="modal-btn"
+        [class.primary-btn]="button.style === 'primary' || !button.style"
+        [class.secondary-btn]="button.style === 'secondary'"
+        (click)="onButtonClick(button.action)">
+        <span *ngIf="button.icon">{{ button.icon }}</span> {{ button.label }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -112,60 +112,63 @@
 }
 
 /* Knight's Tour specific cell styles */
-.cell {
+::ng-deep .cell {
   cursor: pointer;
   position: relative;
 }
 
-.cell.visited {
+::ng-deep .cell.visited {
   cursor: default;
 }
 
-.cell.knight {
+::ng-deep .cell.knight {
   background: #667eea !important;
 }
 
-/* Color-adaptive highlighting for valid moves */
-.cell.valid-move.white {
-  position: relative;
+/* Color-adaptive highlighting for valid moves - show as green dot ONLY */
+::ng-deep .cell.valid-move {
+  background: none !important; /* Override chessboard default green background */
+  box-shadow: none !important; /* Remove any box shadow */
 }
 
-.cell.valid-move.white::before {
+::ng-deep .cell.valid-move::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(34, 197, 94, 0.4); /* Green overlay, darker for light squares */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border-radius: 50%;
+  border: 2px solid #fbbf24;
   pointer-events: none;
-  z-index: 1;
-  animation: pulse-valid 1.5s ease-in-out infinite;
+  z-index: 2;
+  animation: pulse-dot 1.5s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
 }
 
-.cell.valid-move.black {
-  position: relative;
+@keyframes pulse-dot {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 0.8;
+  }
 }
 
-.cell.valid-move.black::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(134, 239, 172, 0.5); /* Green overlay, lighter for dark squares */
-  pointer-events: none;
-  z-index: 1;
-  animation: pulse-valid 1.5s ease-in-out infinite;
+/* Visited squares - green background with different shades for light/dark */
+::ng-deep .cell.visited.light {
+  background: #86efac !important; /* Light green for light squares */
 }
 
-@keyframes pulse-valid {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+::ng-deep .cell.visited.dark {
+  background: #22c55e !important; /* Darker green for dark squares */
 }
 
-.cell.visited:not(.knight):hover {
+::ng-deep .cell.visited:not(.knight):hover {
   transform: none;
   box-shadow: none;
 }
@@ -177,24 +180,6 @@
   pointer-events: none;
   z-index: 2;
   position: relative;
-}
-
-.visit-order {
-  position: absolute;
-  font-size: 0.85em;
-  font-weight: 700;
-  color: rgba(0, 0, 0, 0.6);
-  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.cell.white .visit-order {
-  color: #8b6b3f;
-}
-
-.cell.black .visit-order {
-  color: #f0d9b5;
 }
 
 /* Mobile Responsive Styles */

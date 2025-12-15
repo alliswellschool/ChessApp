@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
 import { PieceSelectorComponent, PieceCount } from '../shared/piece-selector/piece-selector.component';
+import { VictoryModalComponent, VictoryButton } from '../shared/victory-modal/victory-modal.component';
 import {
   PieceType,
   ALL_PIECE_TYPES,
@@ -22,7 +23,7 @@ interface BoardCell {
 @Component({
   selector: 'app-game-of-independence',
   standalone: true,
-  imports: [CommonModule, ChessboardComponent, PieceSelectorComponent],
+  imports: [CommonModule, ChessboardComponent, PieceSelectorComponent, VictoryModalComponent],
   templateUrl: './game-of-independence.html',
   styleUrls: ['./game-of-independence.css']
 })
@@ -45,6 +46,35 @@ export class GameOfIndependence {
   // UI helpers
   pieces = ALL_PIECE_TYPES;
   highlightPath = false;
+  
+  // Modal state for piece change confirmation
+  showPieceChangeModal = false;
+  pendingPieceChange: PieceType | null = null;
+  currentPieceCount = 0;
+  
+  // Victory modal state
+  showVictoryModal = false;
+  victoryMessage = '';
+  
+  get victoryButtons(): VictoryButton[] {
+    const buttons: VictoryButton[] = [];
+    
+    if (this.mode === 'single') {
+      buttons.push({ label: 'Try Again', icon: '🔄', action: 'try-again', style: 'secondary' });
+      
+      if (this.hasNextPuzzle) {
+        buttons.push({ label: 'Next Puzzle', icon: '➡️', action: 'next-puzzle', style: 'primary' });
+      }
+      
+      if (this.isAllSinglePuzzlesComplete) {
+        buttons.push({ label: 'Team Mode', icon: '👥', action: 'team-mode', style: 'primary' });
+      }
+    } else {
+      buttons.push({ label: 'Continue', action: 'close', style: 'primary' });
+    }
+    
+    return buttons;
+  }
 
   get availablePieces() {
     return this.pieces.map(type => ({
@@ -91,7 +121,32 @@ export class GameOfIndependence {
   rankLabel(r: number) { return rankLabel(this.size, r); }
 
   onPieceSelected(piece: PieceType): void {
+    // In single mode, check if there are pieces of a different type already placed
+    if (this.mode === 'single' && this.selected !== piece) {
+      // Check if any pieces of the current selected type are placed
+      const currentPieceCount = this.placedCounts[this.selected] || 0;
+      if (currentPieceCount > 0) {
+        this.pendingPieceChange = piece;
+        this.currentPieceCount = currentPieceCount;
+        this.showPieceChangeModal = true;
+        return;
+      }
+    }
     this.selected = piece;
+  }
+
+  confirmPieceChange(): void {
+    if (this.pendingPieceChange) {
+      this.resetBoard();
+      this.selected = this.pendingPieceChange;
+    }
+    this.closePieceChangeModal();
+  }
+
+  closePieceChangeModal(): void {
+    this.showPieceChangeModal = false;
+    this.pendingPieceChange = null;
+    this.currentPieceCount = 0;
   }
 
   resetBoard() {
@@ -220,40 +275,120 @@ export class GameOfIndependence {
     this.board[row][col] = { piece: toPlace, valid };
     this.placedCounts[toPlace]++;
     this.recalculateValidPieces();
+    
+    // Check for victory after placing a piece
+    this.checkVictory();
+  }
+  
+  checkVictory(): void {
+    if (this.mode === 'single' && this.isSolvedSingle) {
+      this.victoryMessage = `Perfect! All ${this.requiredPieces} ${this.selected} placed correctly.`;
+      this.showVictoryModal = true;
+    } else if (this.mode === 'team' && this.isSolved) {
+      this.victoryMessage = 'All pieces placed — you win!';
+      this.showVictoryModal = true;
+    }
+  }
+  
+  closeVictoryModal(): void {
+    this.showVictoryModal = false;
+  }
+  
+  tryAgain(): void {
+    this.resetBoard();
+    this.closeVictoryModal();
+  }
+  
+  get hasNextPuzzle(): boolean {
+    if (this.mode !== 'single') return false;
+    // Check if we can increase size or move to next piece
+    if (this.size < 8) return true;
+    // At max size, check if there's a next piece type
+    const currentPieceIndex = this.pieces.indexOf(this.selected);
+    return currentPieceIndex < this.pieces.length - 1;
+  }
+  
+  get isAllSinglePuzzlesComplete(): boolean {
+    return this.mode === 'single' && this.size === 8 && this.selected === 'king';
+  }
+  
+  nextPuzzle(): void {
+    if (this.mode !== 'single') return;
+    
+    // Try to increase board size first
+    if (this.size < 8) {
+      this.setSize(this.size + 1);
+    } else {
+      // At max size, move to next piece type
+      const currentPieceIndex = this.pieces.indexOf(this.selected);
+      if (currentPieceIndex < this.pieces.length - 1) {
+        this.selected = this.pieces[currentPieceIndex + 1];
+        this.size = 4; // Reset to smallest size for new piece
+        this.resetBoard();
+      }
+    }
+    this.closeVictoryModal();
+  }
+  
+  switchToTeamMode(): void {
+    this.setMode('team');
+    this.closeVictoryModal();
+  }
+  
+  handleVictoryAction(action: string): void {
+    switch (action) {
+      case 'try-again':
+        this.tryAgain();
+        break;
+      case 'next-puzzle':
+        this.nextPuzzle();
+        break;
+      case 'team-mode':
+        this.switchToTeamMode();
+        break;
+      case 'close':
+        this.closeVictoryModal();
+        break;
+    }
   }
 
   recalculateValidPieces(): void {
     for (const k of Object.keys(this.validCounts) as Piece[]) this.validCounts[k] = 0;
     
-    // First pass: check if each piece is valid
+    // Mark all pieces as valid initially
     for (let r = 0; r < this.size; r++) {
       for (let c = 0; c < this.size; c++) {
-        const cell = this.board[r][c];
-        if (cell.piece) {
-          const isValid = this.isPieceValid(r, c);
-          cell.valid = isValid;
-          if (isValid) this.validCounts[cell.piece]++;
+        if (this.board[r][c].piece) {
+          this.board[r][c] = { ...this.board[r][c], valid: true };
         }
       }
     }
     
-    // Second pass: mark both pieces involved in conflicts as invalid
+    // Check each piece for conflicts and mark both pieces invalid if they conflict
     for (let r = 0; r < this.size; r++) {
       for (let c = 0; c < this.size; c++) {
         const cell = this.board[r][c];
-        if (cell.piece && !cell.valid) {
-          // This piece is invalid, mark all pieces it attacks as invalid too
+        if (cell.piece) {
           const attacks = this.attacksFrom(cell.piece, r, c);
           for (const [ar, ac] of attacks) {
             if (ar >= 0 && ar < this.size && ac >= 0 && ac < this.size) {
-              const targetCell = this.board[ar][ac];
-              if (targetCell.piece && targetCell.valid) {
-                // Mark the attacking piece as invalid
-                targetCell.valid = false;
-                this.validCounts[targetCell.piece]--;
+              if (this.board[ar][ac].piece) {
+                // Conflict found - mark both pieces as invalid
+                this.board[r][c] = { ...this.board[r][c], valid: false };
+                this.board[ar][ac] = { ...this.board[ar][ac], valid: false };
               }
             }
           }
+        }
+      }
+    }
+    
+    // Count valid pieces
+    for (let r = 0; r < this.size; r++) {
+      for (let c = 0; c < this.size; c++) {
+        const cell = this.board[r][c];
+        if (cell.piece && cell.valid) {
+          this.validCounts[cell.piece]++;
         }
       }
     }
@@ -265,7 +400,7 @@ export class GameOfIndependence {
     if (!current) return true;
     this.board[row][col] = { piece: '', valid: true };
     const valid = this.canPlace(row, col, current);
-    this.board[row][col] = { piece: current, valid: cell.valid };
+    this.board[row][col] = { piece: current, valid: true }; // Will be updated in recalculateValidPieces
     return valid;
   }
 
