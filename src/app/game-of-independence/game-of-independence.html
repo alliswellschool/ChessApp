@@ -10,10 +10,6 @@
         <button *ngFor="let s of availableSizes" class="size-btn" [class.active]="size===s" (click)="setSize(s)">{{s}}×{{s}}</button>
       </div>
     </div>
-    <div class="message-bar">
-      <div *ngIf="mode==='single' && isSolvedSingle" class="victory optimal">🎉 Perfect! All {{ requiredPieces }} {{ selected }} placed correctly.</div>
-      <div *ngIf="mode==='team' && isSolved" class="victory optimal">🎉 All pieces placed — you win!</div>
-    </div>
   </div>
 
   <div class="controls-and-board">
@@ -68,4 +64,32 @@
       </app-chessboard>
     </div>
   </div>
+
+  <!-- Piece Change Confirmation Modal -->
+  <div class="modal-overlay" *ngIf="showPieceChangeModal" (click)="closePieceChangeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Switch Piece Type?</h2>
+      </div>
+      <div class="modal-body">
+        <p>You have <strong>{{ currentPieceCount }} {{ selected }}(s)</strong> on the board.</p>
+        <p>Switching to <strong>{{ pendingPieceChange }}</strong> will reset the board.</p>
+        <p>Do you want to continue?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn cancel-btn" (click)="closePieceChangeModal()">Cancel</button>
+        <button class="modal-btn confirm-btn" (click)="confirmPieceChange()">Reset & Switch</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Victory Modal -->
+  <app-victory-modal
+    [show]="showVictoryModal"
+    [title]="mode === 'single' ? 'Victory!' : 'Team Victory!'"
+    [message]="victoryMessage"
+    [buttons]="victoryButtons"
+    (closeModal)="closeVictoryModal()"
+    (buttonClick)="handleVictoryAction($event)">
+  </app-victory-modal>
 </div>

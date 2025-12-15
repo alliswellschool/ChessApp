@@ -15,6 +15,7 @@ import {
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
 import { getDominanceVictoryMessage } from '../shared/dominance-messages';
 import { PieceSelectorComponent, PieceCount } from '../shared/piece-selector/piece-selector.component';
+import { VictoryModalComponent, VictoryButton, VictoryStat } from '../shared/victory-modal/victory-modal.component';
 
 type Team = 'white' | 'black';
 interface TeamPiece { type: PieceType; team: Team }
@@ -22,7 +23,7 @@ interface TeamPiece { type: PieceType; team: Team }
 @Component({
   selector: 'app-dominance',
   standalone: true,
-  imports: [CommonModule, FormsModule, ChessboardComponent, PieceSelectorComponent],
+  imports: [CommonModule, FormsModule, ChessboardComponent, PieceSelectorComponent, VictoryModalComponent],
   templateUrl: './dominance.html',
   styleUrls: ['./dominance.css']
 })
@@ -40,6 +41,7 @@ export class Dominance {
   highlightDominated = true;
   availableSizes = [4, 5, 6, 7, 8];
   showVictoryModal = false;
+  showFullCoverageModal = false;
 
   // Team Dominance exact set (8 powers, no pawns): K×1, Q×1, R×2, B×2, N×2
   private readonly teamInventory: Record<PieceType, number> = {
@@ -180,8 +182,8 @@ export class Dominance {
   }
   
   placeOrRemovePiece(row: number, col: number): void {
-    // Prevent interaction after victory
-    if (this.hasWon && this.dominationPercentage === 100) {
+    // Prevent placing new pieces after 100% coverage is achieved
+    if (this.dominationPercentage === 100 && !this.board[row][col]) {
       return;
     }
     
@@ -190,17 +192,22 @@ export class Dominance {
       const pieceType = this.board[row][col];
       this.board[row][col] = '';
       this.pieceCounts[pieceType]--;
-      this.showVictoryModal = false; // Hide modal when removing pieces
+      this.showVictoryModal = false;
+      this.showFullCoverageModal = false;
     } else if (this.selectedPiece && this.canPlacePiece(row, col)) {
-      // Place piece (no limit check)
+      // Place piece
       this.board[row][col] = this.selectedPiece;
       this.pieceCounts[this.selectedPiece]++;
     }
     this.updateCells();
     
-    // Show victory modal when puzzle is solved
-    if (this.hasWon && this.dominationPercentage === 100) {
-      this.showVictoryModal = true;
+    // Check for victory or full coverage after placing
+    if (this.dominationPercentage === 100) {
+      if (this.hasWon) {
+        this.showVictoryModal = true;
+      } else {
+        this.showFullCoverageModal = true;
+      }
     }
   }
 
@@ -234,6 +241,52 @@ export class Dominance {
     this.initializeBoard();
     this.selectedPiece = selectedType;
     this.showVictoryModal = false;
+    this.showFullCoverageModal = false;
+  }
+  
+  get victoryStats(): VictoryStat[] {
+    return [
+      { label: 'Total Pieces', value: this.getTotalPieces() },
+      { label: 'Squares Dominated', value: `${this.dominationCount} / ${this.size * this.size}` },
+      { label: 'Coverage', value: `${this.dominationPercentage}%` }
+    ];
+  }
+  
+  get victoryButtons(): VictoryButton[] {
+    return [
+      { label: 'Try Again', action: 'try-again', style: 'secondary' },
+      { label: 'Continue', action: 'close', style: 'primary' }
+    ];
+  }
+  
+  get fullCoverageButtons(): VictoryButton[] {
+    return [
+      { label: 'Try Again', action: 'try-again', style: 'primary' }
+    ];
+  }
+  
+  get fullCoverageMessage(): string {
+    const required = this.getRequiredPieces(this.selectedPiece);
+    const current = this.pieceCounts[this.selectedPiece];
+    if (current > required) {
+      return `You've dominated all squares, but used ${current} ${this.selectedPiece}(s). Try using only ${required} to win!`;
+    } else {
+      return `You've dominated all squares with ${current} ${this.selectedPiece}(s), but ${required} are required for this board size.`;
+    }
+  }
+  
+  handleVictoryAction(action: string): void {
+    if (action === 'try-again') {
+      this.resetBoard();
+    } else if (action === 'close') {
+      this.showVictoryModal = false;
+    }
+  }
+  
+  handleFullCoverageAction(action: string): void {
+    if (action === 'try-again') {
+      this.resetBoard();
+    }
   }
   
   // Team mode actions removed

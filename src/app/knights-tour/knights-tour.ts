@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
+import { VictoryModalComponent, VictoryButton, VictoryStat } from '../shared/victory-modal/victory-modal.component';
 
 interface Square {
   visited: boolean;
@@ -10,7 +11,7 @@ interface Square {
 @Component({
   selector: 'app-knights-tour',
   standalone: true,
-  imports: [CommonModule, ChessboardComponent],
+  imports: [CommonModule, ChessboardComponent, VictoryModalComponent],
   templateUrl: './knights-tour.html',
   styleUrls: ['./knights-tour.css']
 })
@@ -23,6 +24,10 @@ export class KnightsTour {
   moveCount = 0;
   gameStarted = false;
   showValidMoves = true; // Toggle for showing green highlights
+  
+  // Modal states
+  showVictoryModal = false;
+  showCompletionModal = false;
 
   // Knight moves: L-shape (2 squares in one direction, 1 in perpendicular)
   private readonly knightMoves = [
@@ -51,6 +56,7 @@ export class KnightsTour {
       }))
     );
     this.knightPosition = null;
+    this.moveHistory = [];
     this.moveCount = 0;
     this.gameStarted = false;
     this.updateCells();
@@ -124,6 +130,15 @@ export class KnightsTour {
     this.board[row][col].order = this.moveCount;
     this.gameStarted = true;
     this.updateCells();
+    
+    // Check for completion or victory
+    if (this.isComplete) {
+      if (this.isPerfectTour) {
+        this.showVictoryModal = true;
+      } else {
+        this.showCompletionModal = true;
+      }
+    }
   }
 
   /** Undo the last knight move (one step back) */
@@ -177,16 +192,12 @@ export class KnightsTour {
             isValidMove && this.showValidMoves ? 'valid-move' : ''
           ].filter(Boolean),
           data: {
-            visited: square.visited,
-            order: isKnight ? 0 : square.order  // Hide number when knight is on the square
+            visited: square.visited
+            // Removed order display
           }
         };
       }
     }
-  }
-
-  reset(): void {
-    this.initializeBoard();
   }
 
   get isComplete(): boolean {
@@ -213,4 +224,52 @@ export class KnightsTour {
   get isStuck(): boolean {
     return this.gameStarted && !this.isComplete && !this.hasValidMoves;
   }
-}
+  
+  get isPerfectTour(): boolean {
+    return this.isComplete && this.moveCount === this.totalSquares;
+  }
+  
+  get victoryStats(): VictoryStat[] {
+    return [
+      { label: 'Squares Visited', value: `${this.squaresVisited} / ${this.totalSquares}` },
+      { label: 'Total Moves', value: this.moveCount },
+      { label: 'Status', value: this.isPerfectTour ? 'Perfect!' : 'Complete' }
+    ];
+  }
+  
+  get completionMessage(): string {
+    return `You visited all ${this.totalSquares} squares in ${this.moveCount} moves! Try to complete it in exactly ${this.totalSquares} moves for a perfect tour.`;
+  }
+  
+  get victoryButtons(): VictoryButton[] {
+    return [
+      { label: 'Try Again', action: 'reset', style: 'secondary' },
+      { label: 'Continue', action: 'close', style: 'primary' }
+    ];
+  }
+  
+  get completionButtons(): VictoryButton[] {
+    return [
+      { label: 'Try Again', action: 'reset', style: 'primary' }
+    ];
+  }
+  
+  handleVictoryAction(action: string): void {
+    if (action === 'reset') {
+      this.reset();
+    } else if (action === 'close') {
+      this.showVictoryModal = false;
+    }
+  }
+  
+  handleCompletionAction(action: string): void {
+    if (action === 'reset') {
+      this.reset();
+    }
+  }
+  
+  reset(): void {
+    this.initializeBoard();
+    this.showVictoryModal = false;
+    this.showCompletionModal = false;
+  }}
