@@ -15,6 +15,7 @@ export class App {
   private router = inject(Router);
   navbarClosed = false;
   mobileMenuOpen = false;
+  currentYear = new Date().getFullYear();
 
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;

@@ -67,4 +67,42 @@
 	<div class="main-content">
 		<router-outlet></router-outlet>
 	</div>
+	
+	<!-- Footer -->
+	<footer class="footer">
+		<div class="footer-content">
+			<div class="footer-section">
+				<h4>♔ Chess Activities</h4>
+				<p>Master chess through interactive puzzles, quizzes, and training activities.</p>
+			</div>
+			
+			<div class="footer-section">
+				<h4>Quick Links</h4>
+				<ul>
+					<li><a routerLink="/">Home</a></li>
+					<li><a routerLink="/puzzles">Puzzles</a></li>
+					<li><a routerLink="/donate">Donate</a></li>
+					<li><a routerLink="/contact">About & Contact</a></li>
+				</ul>
+			</div>
+			
+			<div class="footer-section">
+				<h4>Legal</h4>
+				<ul>
+					<li><a routerLink="/terms">Terms of Service</a></li>
+					<li><a routerLink="/privacy">Privacy Policy</a></li>
+				</ul>
+			</div>
+			
+			<div class="footer-section">
+				<h4>Support</h4>
+				<p>Questions? Email us:</p>
+				<a href="mailto:support@chessactivities.com">support&#64;chessactivities.com</a>
+			</div>
+		</div>
+		
+		<div class="footer-bottom">
+			<p>&copy; {{ currentYear }} Chess Activities. All rights reserved.</p>
+		</div>
+	</footer>
 </div>
