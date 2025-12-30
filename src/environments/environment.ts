@@ -12,6 +12,12 @@ export const environment = {
     messagingSenderId: "705283779084",
     appId: "1:705283779084:web:ec701c3c968d1d313c5c29",
     measurementId: "G-DRQ5HSBGEB"
+  },
+  business: {
+    name: 'Chess Activities',
+    email: 'support@chessactivities.com',
+    domain: 'chessactivities.com', // Update this once you get your domain
+    description: 'Master chess through interactive puzzles, quizzes, and training activities'
   }
 };
 
