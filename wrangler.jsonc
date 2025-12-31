@@ -2,6 +2,8 @@
   "name": "chess-app",
   "compatibility_date": "2025-12-31",
   "assets": {
-    "directory": "dist/ChessApp/browser"
+    "directory": "dist/ChessApp/browser",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "single-page-application"
   }
 }
