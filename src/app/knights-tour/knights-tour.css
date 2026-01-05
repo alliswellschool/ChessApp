@@ -57,12 +57,60 @@
 
 .game-content {
   display: flex;
-  gap: 32px;
+  flex-direction: column;
+  gap: 20px;
   background: #fff;
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
   max-width: 1200px;
+}
+
+/* Content row with left panel, board, and right panel */
+.game-content > div:not(.info-panel-top) {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+
+/* How to Play Panel - Right Side */
+.info-panel-right {
+  background: #f0f4ff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #c7d2fe;
+  min-width: 240px;
+  max-width: 280px;
+}
+
+.info-panel-right h3 {
+  font-size: 1em;
+  margin-bottom: 12px;
+  color: #1f2937;
+  font-weight: 700;
+  text-align: center;
+}
+
+.info-panel-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-panel-right li {
+  font-size: 0.85em;
+  color: #374151;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.info-panel-right li::before {
+  content: "→ ";
+  color: #667eea;
+  font-weight: bold;
 }
 
 .left-panel {

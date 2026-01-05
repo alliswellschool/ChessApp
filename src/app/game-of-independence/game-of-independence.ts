@@ -282,7 +282,8 @@ export class GameOfIndependence {
   
   checkVictory(): void {
     if (this.mode === 'single' && this.isSolvedSingle) {
-      this.victoryMessage = `Perfect! All ${this.requiredPieces} ${this.selected} placed correctly.`;
+      const pieceName = this.selected.charAt(0).toUpperCase() + this.selected.slice(1);
+      this.victoryMessage = `Perfect! All ${this.requiredPieces} ${pieceName}s placed correctly.`;
       this.showVictoryModal = true;
     } else if (this.mode === 'team' && this.isSolved) {
       this.victoryMessage = 'All pieces placed — you win!';

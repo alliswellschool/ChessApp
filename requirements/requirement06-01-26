@@ -1,0 +1,20 @@
+1. Alphabets (a to h) to be in center of the squares. Now they seem to be on the border of 2 squares.
+2. Timer option to be removed from co-ordinates game.
+3. Also the message "Session over — Score: 2 / 2 (100%)", to be removed from co-ordinates game.
+4. Alphabet should be in small case (for example "Target: a1". Instead of target, we shall name it as "Identify: a1".
+5. Also, we can have at the top of the board instead of left side.
+6. Accuracy can also be removed / not shown to the user.
+
+7. Allowing to place 9th Queen even after 8 correct placements.
+
+8. Can we have the "How to play" part in Knight's tour at the top of the board, instead of left.
+
+9. Also, can we add "How to play" section for all the games/puzzles. What is your suggestion on this?
+
+10. For capture the shapes, can we directly place the piece at the starting position? (Instead of mentioning start at a1, b1, etc).
+11. I guess more positions to be added in capture the shapes. Is that right? I see only 6 puzzles for a piece.
+
+Message: Congratulations! All 8 Queens were placed in the correct squares.
+Capital Q, with 's' at the end.
+
+Message: Congratulations! All pieces were placed in the correct squares.

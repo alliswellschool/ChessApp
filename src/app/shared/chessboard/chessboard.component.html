@@ -1,9 +1,10 @@
 <div class="board-container">
-  <div class="board-wrapper" [style.--cell-size]="cellSize ? cellSize + 'px' : null">
+  <div class="board-wrapper" 
+       [style.--cell-size]="cellSize ? cellSize + 'px' : null"
+       [style.--board-size]="size">
     
     <!-- Top coordinates -->
     <div class="coordinates-top" *ngIf="showCoordinates">
-      <div class="coord-spacer"></div>
       <div class="coord-labels">
         <span class="coord-label" *ngFor="let file of files; let c = index">
           {{ fileLabel(c) }}
@@ -62,7 +63,6 @@
 
     <!-- Bottom coordinates -->
     <div class="coordinates-bottom" *ngIf="showCoordinates">
-      <div class="coord-spacer"></div>
       <div class="coord-labels">
         <span class="coord-label" *ngFor="let file of files; let c = index">
           {{ fileLabel(c) }}
