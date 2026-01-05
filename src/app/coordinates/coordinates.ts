@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
 
@@ -9,7 +9,7 @@ import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.
   templateUrl: './coordinates.html',
   styleUrls: ['./coordinates.css']
 })
-export class Coordinates implements OnDestroy {
+export class Coordinates {
   size = 8;
   board: number[][] = Array.from({ length: this.size }, () => Array(this.size).fill(0));
   cells: ChessCell[][] = [];
@@ -19,12 +19,6 @@ export class Coordinates implements OnDestroy {
   lastClick: { r: number; c: number; correct: boolean } | null = null;
   score = 0;
   attempts = 0;
-
-  // Timer
-  duration = 60; // seconds
-  timeRemaining = this.duration;
-  timerId: any = null;
-  running = false;
 
   constructor() {
     this.initializeCells();
@@ -40,10 +34,6 @@ export class Coordinates implements OnDestroy {
         isDark: (row + col) % 2 !== 0
       }))
     );
-  }
-
-  ngOnDestroy(): void {
-    if (this.timerId) clearInterval(this.timerId);
   }
 
   fileLabel(index: number): string { return String.fromCharCode(97 + index); }
@@ -65,33 +55,7 @@ export class Coordinates implements OnDestroy {
     this.target = this.randomTarget();
   }
 
-  start(): void {
-    if (this.running) return;
-    this.running = true;
-    this.timeRemaining = this.duration;
-    this.score = 0;
-    this.attempts = 0;
-    this.lastClick = null;
-    this.nextTarget();
-    this.timerId = setInterval(() => {
-      this.timeRemaining--;
-      if (this.timeRemaining <= 0) {
-        this.stop();
-      }
-    }, 1000);
-  }
-
-  stop(): void {
-    this.running = false;
-    if (this.timerId) {
-      clearInterval(this.timerId);
-      this.timerId = null;
-    }
-  }
-
   reset(): void {
-    this.stop();
-    this.timeRemaining = this.duration;
     this.score = 0;
     this.attempts = 0;
     this.lastClick = null;
@@ -102,21 +66,11 @@ export class Coordinates implements OnDestroy {
     const coord = this.toCoord(r, c);
     const correct = coord.toLowerCase() === this.target.toLowerCase();
     this.lastClick = { r, c, correct };
-    if (this.running) {
-      this.attempts++;
-      if (correct) {
-        this.score++;
-        this.nextTarget();
-      }
-    } else {
-      // Practice mode (no timer): still advance on correct
-      if (correct) {
-        this.score++;
-        this.attempts++;
-        this.nextTarget();
-      } else {
-        this.attempts++;
-      }
+    
+    this.attempts++;
+    if (correct) {
+      this.score++;
+      this.nextTarget();
     }
 
     this.updateCells();
@@ -148,10 +102,5 @@ export class Coordinates implements OnDestroy {
         };
       }
     }
-  }
-
-  get accuracy(): number {
-    if (this.attempts === 0) return 0;
-    return Math.round((this.score / this.attempts) * 100);
   }
 }

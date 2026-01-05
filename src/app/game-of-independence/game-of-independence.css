@@ -29,9 +29,50 @@
   font-size: 1.1rem;
 }
 
+/* How to Play Panel - Right Side */
+.info-panel-right {
+  background: #f0f4ff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 2px solid #c7d2fe;
+  min-width: 240px;
+  max-width: 280px;
+  align-self: flex-start;
+}
+
+.info-panel-right h3 {
+  font-size: 1em;
+  margin-bottom: 12px;
+  color: #1f2937;
+  font-weight: 700;
+  text-align: center;
+}
+
+.info-panel-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-panel-right li {
+  font-size: 0.85em;
+  color: #374151;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.info-panel-right li::before {
+  content: "→ ";
+  color: #667eea;
+  font-weight: bold;
+}
+
 .controls-and-board {
   display: flex;
-  gap: 24px;
+  gap: 40px;
   align-items: flex-start;
   background: #fff;
   border-radius: 12px;
@@ -271,7 +312,13 @@
 .placement-single .stat-value { font-size:1.15rem; font-weight:800; color:#0f172a; }
 .placement-single.needs-attention .stat-value { color:#ef4444; }
 
-.board { flex:1; display:flex; justify-content:center; align-items:center; min-width:420px; }
+.board { 
+  flex:1; 
+  display:flex; 
+  justify-content:center; 
+  align-items:center; 
+  min-width:420px;
+}
 
 @media (max-width: 1024px) {
   .controls-and-board { flex-direction: column; gap: 14px; padding: 16px; }

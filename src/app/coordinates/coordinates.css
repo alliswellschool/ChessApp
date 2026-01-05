@@ -1,17 +1,48 @@
 /* Coordinates Trainer CSS - reuses global dominance UI styling */
+
+/* Top Controls Section */
+.top-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
 .target-display {
-  margin-bottom: 12px;
   font-size: 18px;
   font-family: ui-serif, Georgia, 'Times New Roman', serif;
   letter-spacing: 0.5px;
   text-align: center;
 }
+
 .target-display .target {
-  font-variant: small-caps;
+  font-variant: normal;
   font-weight: 700;
   font-size: 22px;
+  text-transform: lowercase;
 }
-.target-display.idle .target { opacity: 0.85; }
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+.stats-inline {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+}
+
+.stats-inline .stat-item {
+  color: #374151;
+}
+
+.stats-inline .stat-item strong {
+  color: #1f2937;
+  font-weight: 600;
+}
 
 .cell.hit-correct::after,
 .cell.hit-wrong::after {

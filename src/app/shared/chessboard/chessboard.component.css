@@ -1,4 +1,4 @@
-/* Board Container - Responsive Wrapper */
+the /* Board Container - Responsive Wrapper */
 .board-container {
   display: flex;
   align-items: center;
@@ -18,21 +18,25 @@
   max-width: 100%;
 }
 
-/* Coordinates - Top */
-.coordinates-top {
+/* Coordinates Container */
+.coordinates-top,
+.coordinates-bottom {
   display: flex;
+  padding: 0 calc(32px + 3px); /* 32px side coord width + 3px board border */
+}
+
+.coordinates-top {
   margin-bottom: 4px;
 }
 
-.coord-spacer {
-  width: 32px;
-  flex-shrink: 0;
+.coordinates-bottom {
+  margin-top: 4px;
 }
 
 .coord-labels {
-  display: flex;
-  flex: 1;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(var(--board-size, 8), var(--cell-size, 56px));
+  width: 100%;
 }
 
 .coord-label {
@@ -43,11 +47,9 @@
   font-size: 0.95rem;
   color: #3d2817;
   user-select: none;
-  flex: 1;
-  text-align: center;
 }
 
-/* Board Row Wrapper with side coordinates */
+/* Board Row Wrapper */
 .board-row-wrapper {
   display: flex;
   gap: 4px;
@@ -56,9 +58,8 @@
 /* Coordinates - Left and Right */
 .coordinates-left,
 .coordinates-right {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  display: grid;
+  grid-template-rows: repeat(var(--board-size, 8), var(--cell-size, 56px));
   width: 32px;
   flex-shrink: 0;
 }
@@ -68,13 +69,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1;
-}
-
-/* Coordinates - Bottom */
-.coordinates-bottom {
-  display: flex;
-  margin-top: 4px;
 }
 
 /* Chessboard */
@@ -269,8 +263,9 @@
     padding: 12px;
   }
 
-  .coord-spacer {
-    width: 28px;
+  .coordinates-top,
+  .coordinates-bottom {
+    padding: 0 calc(28px + 3px); /* 28px side coord width + 3px board border */
   }
 
   .coordinates-left,
@@ -305,8 +300,9 @@
     padding: 10px;
   }
 
-  .coord-spacer {
-    width: 24px;
+  .coordinates-top,
+  .coordinates-bottom {
+    padding: 0 calc(24px + 2px); /* 24px side coord width + 2px board border */
   }
 
   .coordinates-left,
@@ -337,8 +333,9 @@
     padding: 8px;
   }
 
-  .coord-spacer {
-    width: 22px;
+  .coordinates-top,
+  .coordinates-bottom {
+    padding: 0 calc(22px + 2px); /* 22px side coord width + 2px board border */
   }
 
   .coordinates-left,
@@ -369,8 +366,9 @@
     padding: 6px;
   }
 
-  .coord-spacer {
-    width: 20px;
+  .coordinates-top,
+  .coordinates-bottom {
+    padding: 0 calc(20px + 2px); /* 20px side coord width + 2px board border */
   }
 
   .coordinates-left,

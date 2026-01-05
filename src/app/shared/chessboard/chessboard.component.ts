@@ -36,6 +36,13 @@ export class ChessboardComponent {
 
   constructor() {}
 
+  get boardSizeVar(): { [key: string]: string } {
+    return {
+      '--board-size': this.size.toString(),
+      '--cell-size': this.cellSize ? `${this.cellSize}px` : '56px'
+    };
+  }
+
   get files(): string[] {
     const files = 'abcdefghijklmnopqrstuvwxyz'.split('').slice(0, this.size);
     return this.flipBoard ? files.reverse() : files;

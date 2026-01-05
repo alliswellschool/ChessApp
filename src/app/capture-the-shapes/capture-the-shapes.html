@@ -3,34 +3,33 @@
     <h1>Capture the Shapes</h1>
     <p>Move the {{ currentPuzzle.pieceType | titlecase }} from {{ currentPuzzle.startSquare }} to capture all shapes.</p>
     
-    <div class="piece-filter">
-      <label for="piece-select">Filter by Piece:</label>
-      <select id="piece-select" [(ngModel)]="selectedPieceFilter" (change)="onPieceFilterChange(selectedPieceFilter)" class="piece-dropdown">
-        <option value="all">All Pieces</option>
-        <option *ngFor="let piece of availablePieces" [value]="piece">
-          {{ getPieceSymbol(piece) }} {{ piece | titlecase }}
-        </option>
-      </select>
-    </div>
-    
-    <div class="puzzle-nav">
-      <button class="nav-btn" (click)="previousPuzzle()" [disabled]="currentPuzzleIndex === 0">
-        ← Previous
-      </button>
-      <span class="puzzle-number">Puzzle {{ currentPuzzleIndex + 1 }} / {{ filteredPuzzles.length }}</span>
-      <button class="nav-btn" (click)="nextPuzzle()" [disabled]="currentPuzzleIndex === filteredPuzzles.length - 1">
-        Next →
-      </button>
+    <div class="filter-nav-container">
+      <div class="piece-filter">
+        <label for="piece-select">Filter by Piece:</label>
+        <select id="piece-select" [(ngModel)]="selectedPieceFilter" (change)="onPieceFilterChange(selectedPieceFilter)" class="piece-dropdown">
+          <option value="all">All Pieces</option>
+          <option *ngFor="let piece of availablePieces" [value]="piece">
+            {{ getPieceSymbol(piece) }} {{ piece | titlecase }}
+          </option>
+        </select>
+      </div>
+      
+      <div class="puzzle-nav">
+        <button class="nav-btn" (click)="previousPuzzle()" [disabled]="currentPuzzleIndex === 0">
+          ← Previous
+        </button>
+        <span class="puzzle-number">Puzzle {{ currentPuzzleIndex + 1 }} / {{ filteredPuzzles.length }}</span>
+        <button class="nav-btn" (click)="nextPuzzle()" [disabled]="currentPuzzleIndex === filteredPuzzles.length - 1">
+          Next →
+        </button>
+      </div>
     </div>
 
     <div class="message-bar">
       <div *ngIf="gameCompleted" class="victory optimal">
         🎉 Perfect! All {{ totalShapes }} shapes captured in {{ moveCount }} moves.
       </div>
-      <div *ngIf="!gameCompleted && !activePiece" class="info-message">
-        Click {{ currentPuzzle.startSquare }} (highlighted in green) to start
-      </div>
-      <div *ngIf="!gameCompleted && activePiece" class="info-message">
+      <div *ngIf="!gameCompleted" class="info-message">
         Move your {{ currentPuzzle.pieceType | titlecase }} to capture all shapes
       </div>
     </div>
@@ -89,6 +88,19 @@
         [interactive]="true"
         (cellClick)="onCellClicked($event.row, $event.col)">
       </app-chessboard>
+    </div>
+
+    <!-- How to Play Section - Right Side -->
+    <div class="info-panel-right">
+      <h3>How to Play</h3>
+      <ul>
+        <li>Click start square to pick up piece</li>
+        <li>Capture all shapes (◆, ▲, ●, ■)</li>
+        <li>Each piece moves differently</li>
+        <li>Use fewest moves possible</li>
+        <li>Navigate between puzzles</li>
+        <li>Filter by piece type</li>
+      </ul>
     </div>
   </div>
 

@@ -57,11 +57,25 @@
         <div class="victory" *ngIf="isSolved">🎉 All placed correctly — you win!</div>
       </div> -->
     </div>
-
+    <hr>
     <div class="board">
       <app-chessboard [size]="size" [cells]="cells" [showCoordinates]="true" [interactive]="true"
         (cellClick)="placeOrRemove($event.row, $event.col)">
       </app-chessboard>
+    </div>
+    <hr>
+
+    <!-- How to Play Section - Right Side -->
+    <div class="info-panel-right">
+      <h3>How to Play</h3>
+      <ul>
+        <li>Select Single or Team mode</li>
+        <li>Choose a piece type</li>
+        <li>Place pieces on board</li>
+        <li>Pieces must NOT attack each other</li>
+        <li>Goal: Place maximum pieces independently</li>
+        <li>Red highlights show conflicts</li>
+      </ul>
     </div>
   </div>
 

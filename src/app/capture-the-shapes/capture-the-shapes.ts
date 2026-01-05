@@ -424,12 +424,22 @@ export class CaptureTheShapes {
   loadPuzzle(index: number) {
     const puzzle = this.filteredPuzzles[index];
     this.shapes = puzzle.shapes.map(s => ({ ...s, captured: false }));
-    this.activePiece = null;
-    this.moveCount = 0;
-    this.moveHistory = [];
     this.gameCompleted = false;
     this.currentPuzzleIndex = index;
     this.loadBestScores();
+    
+    // Auto-place piece at starting position
+    const startPos = this.parseSquareName(puzzle.startSquare);
+    this.activePiece = { row: startPos.row, col: startPos.col, type: puzzle.pieceType };
+    this.moveCount = 0;
+    this.moveHistory = [{ row: startPos.row, col: startPos.col }];
+    this.captureShapeAtPosition(startPos.row, startPos.col);
+  }
+
+  parseSquareName(square: string): { row: number; col: number } {
+    const file = square.charCodeAt(0) - 'a'.charCodeAt(0);
+    const rank = parseInt(square[1]) - 1;
+    return { row: this.size - 1 - rank, col: file };
   }
 
   onPieceFilterChange(pieceType: PieceType | 'all') {
@@ -443,24 +453,11 @@ export class CaptureTheShapes {
   onCellClicked(row: number, col: number) {
     if (this.gameCompleted) return;
 
-    if (!this.activePiece) {
-      // No piece on board - check if this is the starting position
-      const squareName = `${fileLabel(col)}${rankLabel(this.size, row)}`;
-      
-      if (squareName === this.currentPuzzle.startSquare) {
-        // Place the piece at starting position
-        this.activePiece = { row, col, type: this.currentPuzzle.pieceType };
-        this.moveHistory.push({ row, col });
-        this.captureShapeAtPosition(row, col);
-      }
-    } else {
-      // Piece already on board - try to move it
-      if (this.isValidMove(row, col)) {
-        this.movePiece(row, col);
-      }
+    // Piece is already on board - try to move it
+    if (this.activePiece && this.isValidMove(row, col)) {
+      this.movePiece(row, col);
+      this.checkVictory();
     }
-
-    this.checkVictory();
   }
 
   captureShapeAtPosition(row: number, col: number) {

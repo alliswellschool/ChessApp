@@ -17,36 +17,48 @@
   </div>
 
   <div class="game-content">
-    <div class="left-panel">
-      <div class="stats-panel">
-        <h3>Tour Progress</h3>
-        <div class="stat-item">
-          <span class="stat-label">Squares Visited:</span>
-          <span class="stat-value">{{ squaresVisited }} / {{ totalSquares }}</span>
+    <div>
+      <div class="left-panel">
+        <div class="stats-panel">
+          <h3>Tour Progress</h3>
+          <div class="stat-item">
+            <span class="stat-label">Squares Visited:</span>
+            <span class="stat-value">{{ squaresVisited }} / {{ totalSquares }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Moves:</span>
+            <span class="stat-value">{{ moveCount }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Valid Moves:</span>
+            <span class="stat-value">{{ hasValidMoves ? getValidMoves().length : 0 }}</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="(squaresVisited / totalSquares) * 100"></div>
+          </div>
         </div>
-        <div class="stat-item">
-          <span class="stat-label">Moves:</span>
-          <span class="stat-value">{{ moveCount }}</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">Valid Moves:</span>
-          <span class="stat-value">{{ hasValidMoves ? getValidMoves().length : 0 }}</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill" [style.width.%]="(squaresVisited / totalSquares) * 100"></div>
+
+        <div class="controls">
+          <button class="toggle-btn" [class.active]="showValidMoves" (click)="showValidMoves = !showValidMoves; updateCells()">
+            <span class="toggle-slider"></span>
+            <span class="toggle-label">Show Valid Moves</span>
+          </button>
+          <button class="reset-btn" (click)="undo()" [disabled]="moveHistory.length === 0">Undo</button>
+          <button class="reset-btn" (click)="reset()">Reset Tour</button>
         </div>
       </div>
 
-      <div class="controls">
-        <button class="toggle-btn" [class.active]="showValidMoves" (click)="showValidMoves = !showValidMoves; updateCells()">
-          <span class="toggle-slider"></span>
-          <span class="toggle-label">Show Valid Moves</span>
-        </button>
-        <button class="reset-btn" (click)="undo()" [disabled]="moveHistory.length === 0">Undo</button>
-        <button class="reset-btn" (click)="reset()">Reset Tour</button>
-      </div>
+      <!-- Reusable Chessboard Component -->
+      <app-chessboard
+        [size]="size"
+        [cells]="cells"
+        [showCoordinates]="true"
+        [interactive]="true"
+        (cellClick)="onCellClick($event)">
+      </app-chessboard>
 
-      <div class="info-panel">
+      <!-- How to Play Section - Right Side -->
+      <div class="info-panel-right">
         <h3>How to Play</h3>
         <ul>
           <li>Click any square to start</li>
@@ -57,15 +69,6 @@
         </ul>
       </div>
     </div>
-
-    <!-- Reusable Chessboard Component -->
-    <app-chessboard
-      [size]="size"
-      [cells]="cells"
-      [showCoordinates]="true"
-      [interactive]="true"
-      (cellClick)="onCellClick($event)">
-    </app-chessboard>
   </div>
   
   <!-- Victory Modal (Perfect Tour - 64 moves) -->
