@@ -1,7 +1,8 @@
-import { Component, signal, inject } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { Component, signal, inject, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
+import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +10,40 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
-export class App {
+export class App implements OnInit, OnDestroy {
   protected readonly title = signal('ChessApp');
   protected authService = inject(AuthService);
   private router = inject(Router);
   navbarClosed = false;
   mobileMenuOpen = false;
+  dropdownOpen = false;
   currentYear = new Date().getFullYear();
+  private routerSubscription?: Subscription;
+
+  ngOnInit(): void {
+    // Close dropdown on route change
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.closeDropdown();
+        this.closeMobileMenu();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.routerSubscription?.unsubscribe();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    const dropdown = target.closest('.dropdown');
+    
+    // Close dropdown if click is outside
+    if (!dropdown && this.dropdownOpen) {
+      this.closeDropdown();
+    }
+  }
 
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
@@ -23,6 +51,14 @@ export class App {
 
   closeMobileMenu(): void {
     this.mobileMenuOpen = false;
+  }
+
+  toggleDropdown(): void {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  closeDropdown(): void {
+    this.dropdownOpen = false;
   }
 
   async logout(): Promise<void> {

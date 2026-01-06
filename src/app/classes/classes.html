@@ -1,0 +1,239 @@
+<div class="classes-container">
+  <!-- Header Section -->
+  <section class="header-section">
+    <h1 class="page-title">♔ Chess Classes & Programs</h1>
+    <p class="page-subtitle">Choose from our comprehensive range of chess courses designed for all skill levels</p>
+  </section>
+
+  <!-- Filter Section -->
+  <section class="filter-section">
+    <div class="filter-group">
+      <label class="filter-label">Level:</label>
+      <div class="filter-buttons">
+        <button 
+          *ngFor="let level of levelFilters"
+          [class.active]="selectedLevel === level.id"
+          (click)="filterByLevel(level.id)"
+          class="filter-btn">
+          <span class="filter-icon">{{ level.icon }}</span>
+          <span>{{ level.name }}</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label">Mode:</label>
+      <div class="filter-buttons">
+        <button 
+          *ngFor="let mode of modeFilters"
+          [class.active]="selectedMode === mode.id"
+          (click)="filterByMode(mode.id)"
+          class="filter-btn">
+          {{ mode.name }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Classes Grid -->
+  <section class="classes-section">
+    <div class="classes-grid" *ngIf="filteredClasses.length > 0">
+      <div *ngFor="let class of filteredClasses" class="class-card">
+        <div class="class-header">
+          <div class="class-icon">{{ class.icon }}</div>
+          <div class="class-badges">
+            <span class="level-badge" [class]="'level-' + class.level">{{ class.level }}</span>
+            <span class="mode-badge" [style.background-color]="getModeColor(class.mode)">
+              {{ getModeIcon(class.mode) }} {{ class.mode }}
+            </span>
+          </div>
+        </div>
+
+        <div class="class-content">
+          <h3 class="class-name">{{ class.name }}</h3>
+          <p class="class-coach">👨‍🏫 {{ class.coach }}</p>
+          
+          <div class="class-info-grid">
+            <div class="info-item">
+              <span class="info-icon">👥</span>
+              <span class="info-text">{{ class.ageGroup }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">⏱️</span>
+              <span class="info-text">{{ class.duration }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">📅</span>
+              <span class="info-text">Starts {{ class.startDate | date: 'MMM d' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">🎯</span>
+              <span class="info-text">{{ getAvailability(class) }}</span>
+            </div>
+          </div>
+
+          <div class="schedule-container">
+            <p class="schedule-label">Schedule:</p>
+            <div class="schedule-list">
+              <span *ngFor="let time of class.schedule" class="schedule-item">{{ time }}</span>
+            </div>
+          </div>
+
+          <p class="class-description">{{ class.description }}</p>
+
+          <div class="class-footer">
+            <div class="price-container">
+              <div class="price">${{ class.price }}</div>
+              <div class="price-type">per {{ class.priceType }}</div>
+            </div>
+            <div class="action-buttons">
+              <button class="btn-details" (click)="viewClassDetails(class)">View Details</button>
+              <button class="btn-enroll" (click)="enrollInClass(class)">Enroll Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="filteredClasses.length === 0">
+      <div class="empty-icon">🎓</div>
+      <p>No classes found matching your criteria</p>
+    </div>
+  </section>
+
+  <!-- Class Details Modal -->
+  <div class="modal-overlay" *ngIf="selectedClass" (click)="closeDetails()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="close-button" (click)="closeDetails()">✕</button>
+      
+      <div class="modal-header">
+        <div class="modal-icon">{{ selectedClass.icon }}</div>
+        <div class="modal-header-info">
+          <h2>{{ selectedClass.name }}</h2>
+          <div class="modal-badges">
+            <span class="level-badge" [class]="'level-' + selectedClass.level">{{ selectedClass.level }}</span>
+            <span class="mode-badge" [style.background-color]="getModeColor(selectedClass.mode)">
+              {{ getModeIcon(selectedClass.mode) }} {{ selectedClass.mode }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="detail-section">
+          <h3>About This Class</h3>
+          <p>{{ selectedClass.description }}</p>
+        </div>
+
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-icon">👨‍🏫</span>
+            <div>
+              <strong>Instructor</strong>
+              <p>{{ selectedClass.coach }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">👥</span>
+            <div>
+              <strong>Age Group</strong>
+              <p>{{ selectedClass.ageGroup }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">⏱️</span>
+            <div>
+              <strong>Duration</strong>
+              <p>{{ selectedClass.duration }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">📅</span>
+            <div>
+              <strong>Start Date</strong>
+              <p>{{ selectedClass.startDate | date: 'MMMM d, yyyy' }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">🎯</span>
+            <div>
+              <strong>Availability</strong>
+              <p>{{ getAvailability(selectedClass) }}</p>
+            </div>
+          </div>
+          <div class="detail-item">
+            <span class="detail-icon">💰</span>
+            <div>
+              <strong>Price</strong>
+              <p>${{ selectedClass.price }} per {{ selectedClass.priceType }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>Class Schedule</h3>
+          <div class="schedule-detail-list">
+            <div *ngFor="let time of selectedClass.schedule" class="schedule-detail-item">
+              📅 {{ time }}
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3>Topics Covered</h3>
+          <ul class="topics-list">
+            <li *ngFor="let topic of selectedClass.topics">✓ {{ topic }}</li>
+          </ul>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-enroll-modal" (click)="enrollInClass(selectedClass)">Enroll in This Class</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Why Choose Our Classes -->
+  <section class="benefits-section">
+    <h2 class="section-title">Why Choose Our Classes?</h2>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">👨‍🏫</div>
+        <h3>Expert Instructors</h3>
+        <p>Learn from FIDE-rated coaches with proven teaching experience</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">📊</div>
+        <h3>Structured Curriculum</h3>
+        <p>Well-designed courses with clear progression paths</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">👥</div>
+        <h3>Small Class Sizes</h3>
+        <p>Limited enrollment ensures personalized attention</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">🎮</div>
+        <h3>Interactive Learning</h3>
+        <p>Engaging lessons with practical exercises and games</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">📱</div>
+        <h3>Online Resources</h3>
+        <p>Access to digital platform with puzzles and materials</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">🏆</div>
+        <h3>Tournament Support</h3>
+        <p>Guidance for competitive players seeking tournament experience</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="cta-section">
+    <h2>Have Questions About Our Classes?</h2>
+    <p>Our team is here to help you find the perfect class for your goals</p>
+    <a routerLink="/contact" class="btn-contact">Contact Us</a>
+  </section>
+</div>

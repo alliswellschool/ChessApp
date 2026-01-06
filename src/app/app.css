@@ -124,6 +124,84 @@
 	box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
 }
 
+/* Dropdown Menu Styles */
+.dropdown {
+	position: relative;
+}
+
+.dropdown-toggle {
+	cursor: pointer;
+	padding: 8px 12px;
+	display: inline-block;
+}
+
+.dropdown-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: #333;
+	border-radius: 8px;
+	box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+	min-width: 200px;
+	padding: 8px 0;
+	margin-top: 8px;
+	z-index: 1000;
+	list-style: none;
+}
+
+.dropdown.open .dropdown-menu {
+	display: block;
+}
+
+.dropdown-menu li {
+	margin: 0;
+	padding: 0;
+}
+
+.dropdown-menu a {
+	display: block;
+	padding: 12px 20px;
+	color: #fff !important;
+	text-decoration: none;
+	transition: all 0.2s;
+}
+
+.dropdown-menu a:hover {
+	background: rgba(255, 255, 255, 0.1);
+	color: #ffd700 !important;
+}
+
+.dropdown-menu a.active {
+	background: rgba(255, 215, 0, 0.2);
+	color: #ffd700 !important;
+	font-weight: 600;
+}
+
+/* Mobile Menu Styles */
+.mobile-section-header {
+	color: #ffd700;
+	font-weight: 700;
+	font-size: 0.85rem;
+	text-transform: uppercase;
+	padding: 12px 20px 8px;
+	margin-top: 8px;
+	letter-spacing: 0.5px;
+}
+
+.mobile-submenu-item a {
+	padding-left: 32px !important;
+	font-size: 0.9rem;
+	opacity: 0.9;
+}
+
+.mobile-section-divider {
+	height: 1px;
+	background: rgba(255, 255, 255, 0.1);
+	margin: 12px 0;
+}
+
+
 .auth-buttons {
 	display: flex;
 	gap: 12px;

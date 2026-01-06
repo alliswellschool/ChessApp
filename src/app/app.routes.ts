@@ -65,5 +65,29 @@ export const routes: Routes = [
     {
         path: 'contact',
         loadComponent: () => import('./contact/contact').then(m => m.ContactComponent)
+    },
+    {
+        path: 'about-school',
+        loadComponent: () => import('./about-school/about-school').then(m => m.AboutSchool)
+    },
+    {
+        path: 'coaches',
+        loadComponent: () => import('./coaches/coaches').then(m => m.Coaches)
+    },
+    {
+        path: 'testimonials',
+        loadComponent: () => import('./testimonials/testimonials').then(m => m.Testimonials)
+    },
+    {
+        path: 'gallery',
+        loadComponent: () => import('./gallery/gallery').then(m => m.Gallery)
+    },
+    {
+        path: 'books',
+        loadComponent: () => import('./books/books').then(m => m.Books)
+    },
+    {
+        path: 'classes',
+        loadComponent: () => import('./classes/classes').then(m => m.Classes)
     }
 ];
