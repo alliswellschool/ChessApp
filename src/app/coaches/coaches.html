@@ -1,0 +1,106 @@
+<div class="coaches-container">
+  <!-- Header Section -->
+  <section class="header-section">
+    <h1 class="page-title">♔ Meet Our Expert Coaches</h1>
+    <p class="page-subtitle">Learn from FIDE-rated masters and experienced instructors dedicated to your chess excellence</p>
+  </section>
+
+  <!-- Coaches Grid -->
+  <section class="coaches-section">
+    <div class="coaches-grid">
+      <div *ngFor="let coach of coaches" class="coach-card" (click)="viewCoachDetails(coach)">
+        <div class="coach-image">{{ coach.image }}</div>
+        <div class="coach-info">
+          <h2 class="coach-name">{{ coach.name }}</h2>
+          <p class="coach-title">{{ coach.title }}</p>
+          <div class="coach-rating">
+            <span class="rating-badge">⭐ {{ coach.rating }}</span>
+          </div>
+          <div class="coach-experience">
+            <span class="experience-badge">📅 {{ coach.experience }} Experience</span>
+          </div>
+          <div class="specializations">
+            <span *ngFor="let spec of coach.specialization" class="spec-tag">{{ spec }}</span>
+          </div>
+          <button class="btn-view-profile">View Full Profile →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coach Details Modal -->
+  <div class="modal-overlay" *ngIf="selectedCoach" (click)="closeDetails()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="close-button" (click)="closeDetails()">✕</button>
+      
+      <div class="modal-header">
+        <div class="modal-coach-image">{{ selectedCoach.image }}</div>
+        <div class="modal-coach-info">
+          <h2>{{ selectedCoach.name }}</h2>
+          <p class="modal-title">{{ selectedCoach.title }}</p>
+          <div class="modal-badges">
+            <span class="badge">⭐ {{ selectedCoach.rating }}</span>
+            <span class="badge">📅 {{ selectedCoach.experience }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="bio-section">
+          <h3>About</h3>
+          <p>{{ selectedCoach.bio }}</p>
+        </div>
+
+        <div class="specializations-section">
+          <h3>Specializations</h3>
+          <div class="spec-list">
+            <span *ngFor="let spec of selectedCoach.specialization" class="spec-badge">
+              ♟️ {{ spec }}
+            </span>
+          </div>
+        </div>
+
+        <div class="achievements-section">
+          <h3>Key Achievements</h3>
+          <ul class="achievements-list">
+            <li *ngFor="let achievement of selectedCoach.achievements">
+              ✓ {{ achievement }}
+            </li>
+          </ul>
+        </div>
+
+        <div class="cta-section">
+          <button class="btn-primary">Book a Session</button>
+          <button class="btn-secondary" (click)="closeDetails()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Why Choose Our Coaches -->
+  <section class="why-choose-section">
+    <h2 class="section-title">Why Choose Our Coaches?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Personalized Approach</h3>
+        <p>Each coach tailors their teaching method to match your learning style and goals</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Proven Track Record</h3>
+        <p>Our coaches have successfully trained national and international level players</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌟</div>
+        <h3>Continuous Support</h3>
+        <p>Get ongoing guidance, game analysis, and feedback throughout your journey</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Competition Ready</h3>
+        <p>Prepare for tournaments with experienced coaches who understand competitive chess</p>
+      </div>
+    </div>
+  </section>
+</div>

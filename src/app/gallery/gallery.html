@@ -1,0 +1,108 @@
+<div class="gallery-container">
+  <!-- Header Section -->
+  <section class="header-section">
+    <h1 class="page-title">♔ Our Gallery</h1>
+    <p class="page-subtitle">Moments of excellence, growth, and chess passion captured</p>
+  </section>
+
+  <!-- Category Filter -->
+  <section class="filter-section">
+    <div class="filter-buttons">
+      <button 
+        *ngFor="let category of categories"
+        [class.active]="selectedCategory === category.id"
+        (click)="filterGallery(category.id)"
+        class="filter-btn">
+        <span class="filter-icon">{{ category.icon }}</span>
+        <span class="filter-name">{{ category.name }}</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Gallery Grid -->
+  <section class="gallery-section">
+    <div class="gallery-grid" *ngIf="filteredItems.length > 0">
+      <div 
+        *ngFor="let item of filteredItems" 
+        class="gallery-item"
+        (click)="openImage(item)"
+        [attr.data-category]="item.category">
+        <div class="gallery-image">
+          <div class="image-placeholder">{{ item.image }}</div>
+          <div class="gallery-overlay">
+            <div class="overlay-content">
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.description }}</p>
+              <span class="view-text">Click to view</span>
+            </div>
+          </div>
+        </div>
+        <div class="gallery-info">
+          <h4>{{ item.title }}</h4>
+          <div class="gallery-meta">
+            <span class="category-badge">{{ item.category }}</span>
+            <span class="date">{{ item.date | date: 'MMM yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="filteredItems.length === 0">
+      <div class="empty-icon">📸</div>
+      <p>No items found in this category</p>
+    </div>
+  </section>
+
+  <!-- Image Lightbox -->
+  <div class="lightbox" *ngIf="selectedImage" (click)="closeImage()">
+    <button class="close-button" (click)="closeImage()">✕</button>
+    
+    <button class="nav-button prev" (click)="navigateImage('prev'); $event.stopPropagation()">
+      ‹
+    </button>
+    
+    <div class="lightbox-content" (click)="$event.stopPropagation()">
+      <div class="lightbox-image">
+        <div class="image-large">{{ selectedImage.image }}</div>
+      </div>
+      <div class="lightbox-info">
+        <h2>{{ selectedImage.title }}</h2>
+        <p class="lightbox-description">{{ selectedImage.description }}</p>
+        <div class="lightbox-meta">
+          <span class="category-badge">{{ selectedImage.category }}</span>
+          <span class="date">{{ selectedImage.date | date: 'MMMM d, yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <button class="nav-button next" (click)="navigateImage('next'); $event.stopPropagation()">
+      ›
+    </button>
+  </div>
+
+  <!-- Stats Section -->
+  <section class="stats-banner">
+    <div class="stat-item">
+      <div class="stat-number">500+</div>
+      <div class="stat-label">Photos Captured</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">50+</div>
+      <div class="stat-label">Events Documented</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">100+</div>
+      <div class="stat-label">Achievements Celebrated</div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <h2>Want to Be Part of Our Story?</h2>
+    <p>Join our chess community and create your own success story</p>
+    <div class="cta-buttons">
+      <a routerLink="/classes" class="btn btn-primary">Explore Classes</a>
+      <a routerLink="/contact" class="btn btn-secondary">Get in Touch</a>
+    </div>
+  </section>
+</div>

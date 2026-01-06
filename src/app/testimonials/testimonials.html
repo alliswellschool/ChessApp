@@ -1,0 +1,122 @@
+<div class="testimonials-container">
+  <!-- Header Section -->
+  <section class="header-section">
+    <h1 class="page-title">♔ Student Success Stories</h1>
+    <p class="page-subtitle">Hear from our students and parents about their chess journey with us</p>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-number">{{ stats.totalStudents }}+</div>
+        <div class="stat-label">Happy Students</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-number">{{ stats.averageRating }}</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-number">{{ stats.successStories }}+</div>
+        <div class="stat-label">Success Stories</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💯</div>
+        <div class="stat-number">{{ stats.satisfactionRate }}%</div>
+        <div class="stat-label">Satisfaction Rate</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Grid -->
+  <section class="testimonials-section">
+    <h2 class="section-title">What Our Community Says</h2>
+    <div class="testimonials-grid">
+      <div *ngFor="let testimonial of testimonials" class="testimonial-card">
+        <div class="testimonial-header">
+          <div class="testimonial-avatar">{{ testimonial.image }}</div>
+          <div class="testimonial-info">
+            <h3 class="testimonial-name">{{ testimonial.name }}</h3>
+            <p class="testimonial-role">{{ testimonial.role }}</p>
+            <div class="testimonial-rating">
+              <span *ngFor="let filled of getStarArray(testimonial.rating)" class="star">
+                {{ filled ? '⭐' : '☆' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-body">
+          <p class="testimonial-comment">"{{ testimonial.comment }}"</p>
+          
+          <div *ngIf="testimonial.achievement" class="achievement-badge">
+            <span class="badge-icon">🏆</span>
+            <span class="badge-text">{{ testimonial.achievement }}</span>
+          </div>
+        </div>
+        
+        <div class="testimonial-footer">
+          <span class="testimonial-date">{{ testimonial.date | date: 'MMMM yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Testimonials Section -->
+  <section class="video-testimonials-section">
+    <h2 class="section-title">Video Testimonials</h2>
+    <p class="section-subtitle">Coming Soon - Watch our students share their experiences!</p>
+    <div class="video-placeholder">
+      <div class="placeholder-content">
+        <div class="placeholder-icon">🎥</div>
+        <p>Video testimonials will be available soon</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Ready to Start Your Chess Journey?</h2>
+      <p>Join hundreds of satisfied students and experience the difference</p>
+      <div class="cta-buttons">
+        <a routerLink="/classes" class="btn btn-primary">View Classes</a>
+        <a routerLink="/contact" class="btn btn-secondary">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Indicators -->
+  <section class="trust-section">
+    <h3>Why Students Choose Us</h3>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <span class="trust-icon">✓</span>
+        <span>FIDE-Rated Coaches</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">✓</span>
+        <span>Proven Track Record</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">✓</span>
+        <span>Personalized Learning</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">✓</span>
+        <span>Flexible Schedules</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">✓</span>
+        <span>Online & Offline Classes</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">✓</span>
+        <span>Tournament Support</span>
+      </div>
+    </div>
+  </section>
+</div>

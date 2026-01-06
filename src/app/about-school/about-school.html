@@ -1,0 +1,71 @@
+<div class="about-school-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="page-title">♔ About Our Chess School</h1>
+      <p class="hero-subtitle">Excellence in Chess Education Since {{ schoolInfo.founded }}</p>
+    </div>
+  </section>
+
+  <!-- Mission & Vision -->
+  <section class="mission-vision-section">
+    <div class="content-wrapper">
+      <div class="mission-box">
+        <div class="icon">🎯</div>
+        <h2>Our Mission</h2>
+        <p>{{ schoolInfo.mission }}</p>
+      </div>
+      <div class="vision-box">
+        <div class="icon">🔭</div>
+        <h2>Our Vision</h2>
+        <p>{{ schoolInfo.vision }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Achievements Grid -->
+  <section class="achievements-section">
+    <h2 class="section-title">Our Achievements</h2>
+    <div class="achievements-grid">
+      <div *ngFor="let achievement of schoolInfo.achievements" class="achievement-card">
+        <div class="achievement-icon">{{ achievement.icon }}</div>
+        <div class="achievement-count">{{ achievement.count }}</div>
+        <h3>{{ achievement.title }}</h3>
+        <p>{{ achievement.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Facilities -->
+  <section class="facilities-section">
+    <h2 class="section-title">World-Class Facilities</h2>
+    <div class="facilities-grid">
+      <div *ngFor="let facility of schoolInfo.facilities" class="facility-card">
+        <div class="facility-icon">♟️</div>
+        <h3>{{ facility.name }}</h3>
+        <p>{{ facility.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Values -->
+  <section class="values-section">
+    <h2 class="section-title">Our Core Values</h2>
+    <div class="values-grid">
+      <div *ngFor="let value of schoolInfo.values" class="value-card">
+        <h3>{{ value.title }}</h3>
+        <p>{{ value.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <h2>Ready to Begin Your Chess Journey?</h2>
+    <p>Join hundreds of students improving their chess skills with us</p>
+    <div class="cta-buttons">
+      <a routerLink="/classes" class="btn btn-primary">View Classes</a>
+      <a routerLink="/contact" class="btn btn-secondary">Contact Us</a>
+    </div>
+  </section>
+</div>
