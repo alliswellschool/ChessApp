@@ -18,6 +18,11 @@ export const environment = {
     email: 'support@chessactivities.com',
     domain: 'chessactivities.com', // Update this once you get your domain
     description: 'Master chess through interactive puzzles, quizzes, and training activities'
+  },
+  razorpay: {
+    keyId: 'rzp_live_S4u4V8JqDVMOMz',
+    // Secret key should be kept server-side only (Firebase Functions/Cloud Functions)
+    // Never expose secret key in frontend code
   }
 };
 

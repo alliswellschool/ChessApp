@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 declare var Razorpay: any;
 
@@ -14,8 +15,7 @@ export interface DonationOptions {
   providedIn: 'root'
 })
 export class RazorpayService {
-  // TODO: Move to environment file for security
-  private razorpayKey = 'rzp_test_RohENHlZtBFskv';
+  private razorpayKey = environment.razorpay.keyId;
 
   constructor() {
     this.loadRazorpayScript();
