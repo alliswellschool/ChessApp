@@ -30,7 +30,7 @@ export class Donate {
 
   selectAmount(amount: number) {
     this.selectedAmount = amount;
-    this.customAmount = null;
+    this.customAmount = amount;
   }
 
   useCustomAmount() {
@@ -52,6 +52,11 @@ export class Donate {
       return;
     }
 
+    if (amount > 100000) {
+      this.showMessage('Maximum donation amount is ₹1,00,000. Please contact us for larger donations.', 'error');
+      return;
+    }
+
     this.loading = true;
     this.message = '';
 
@@ -70,13 +75,26 @@ export class Donate {
         }
       });
 
-      // Payment successful - save to Firestore
+      // Payment successful - verify and save to Firestore
+      // Note: In production, verify payment signature server-side before saving
+      const isVerified = await this.razorpayService.verifyPayment(
+        result.paymentId,
+        result.orderId || '',
+        result.signature || ''
+      );
+
+      if (!isVerified) {
+        throw new Error('Payment verification failed');
+      }
+
       await this.saveDonation({
         userId: (currentUser as any)?.uid || 'anonymous',
         userName: (currentUser as any)?.displayName || 'Anonymous',
         userEmail: (currentUser as any)?.email || '',
         amount: amount,
         paymentId: result.paymentId,
+        orderId: result.orderId || '',
+        verified: isVerified,
         timestamp: Timestamp.now()
       });
 
@@ -85,7 +103,10 @@ export class Donate {
       this.customAmount = null;
     } catch (error: any) {
       console.error('Donation error:', error);
-      if (error.message !== 'Payment cancelled by user') {
+      if (error.message === 'Payment cancelled by user') {
+        // User cancelled - just reset without showing error
+        console.log('Payment cancelled by user');
+      } else {
         this.showMessage('Payment failed. Please try again.', 'error');
       }
     } finally {

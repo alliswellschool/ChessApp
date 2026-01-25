@@ -66,12 +66,21 @@ export class RazorpayService {
         },
         modal: {
           ondismiss: () => {
+            // User closed the payment modal
             reject(new Error('Payment cancelled by user'));
-          }
+          },
+          escape: true,
+          backdropclose: true
         }
       };
 
       const razorpay = new Razorpay(razorpayOptions);
+      
+      // Handle payment failure
+      razorpay.on('payment.failed', function (response: any) {
+        reject(new Error('Payment failed: ' + response.error.description));
+      });
+      
       razorpay.open();
     });
   }
