@@ -16,7 +16,7 @@
 						<li><a routerLink="/classes" routerLinkActive="active" (click)="closeDropdown()">Classes</a></li>
 					</ul>
 				</li>
-				<li><a routerLink="/puzzles" routerLinkActive="active">Puzzles</a></li>
+				<li><a routerLink="/chess-lab" routerLinkActive="active">Chess Lab</a></li>
 				<li><a routerLink="/books" routerLinkActive="active">Books</a></li>
 				<li *ngIf="authService.isAuthenticated()"><a routerLink="/quiz" routerLinkActive="active">Quiz</a></li>
 				<li *ngIf="authService.isAdmin()"><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
@@ -66,7 +66,7 @@
 				<li class="mobile-submenu-item"><a routerLink="/gallery" routerLinkActive="active" (click)="closeMobileMenu()">Gallery</a></li>
 				<li class="mobile-submenu-item"><a routerLink="/classes" routerLinkActive="active" (click)="closeMobileMenu()">Classes</a></li>
 				<li class="mobile-section-divider"></li>
-				<li><a routerLink="/puzzles" routerLinkActive="active" (click)="closeMobileMenu()">Puzzles</a></li>
+				<li><a routerLink="/chess-lab" routerLinkActive="active" (click)="closeMobileMenu()">Puzzles</a></li>
 				<li><a routerLink="/books" routerLinkActive="active" (click)="closeMobileMenu()">Books</a></li>
 				<li *ngIf="authService.isAuthenticated()"><a routerLink="/quiz" routerLinkActive="active" (click)="closeMobileMenu()">Quiz</a></li>
 				<li><a routerLink="/donate" routerLinkActive="active" class="donate-link" (click)="closeMobileMenu()">☕ Donate</a></li>
@@ -100,7 +100,7 @@
 				<ul>
 					<li><a routerLink="/">Home</a></li>
 					<li><a routerLink="/classes">Classes</a></li>
-					<li><a routerLink="/puzzles">Puzzles</a></li>
+				<li><a routerLink="/chess-lab">Puzzles</a></li>
 					<li><a routerLink="/books">Books</a></li>
 					<li><a routerLink="/donate">Donate</a></li>
 				</ul>

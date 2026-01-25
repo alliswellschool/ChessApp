@@ -49,27 +49,27 @@ export class AboutSchool {
   ];
 
   schoolInfo = {
-    name: 'Chess Excellence Academy',
-    founded: '2020',
-    mission: 'To nurture chess talent and develop strategic thinking skills in students of all ages through comprehensive training programs.',
-    vision: 'To become a leading chess education institution that produces world-class players and fosters a love for the game.',
+    name: 'All is Well School of Chess',
+    founded: '2013',
+    mission: 'To nurture chess talent and develop strategic thinking skills in students of all ages through comprehensive training programs, helping students build strong fundamentals, strategic thinking, and confidence at the board.',
+    vision: 'To help every student discover the joy of chess and the life skills it inspires through structured, learner-centric approach that develops not just chess players, but strategic thinkers and confident individuals.',
     achievements: [
-      { icon: '🏆', title: 'National Champions', count: '15+', description: 'Students who won national tournaments' },
-      { icon: '👥', title: 'Active Students', count: '500+', description: 'Enrolled in our programs' },
-      { icon: '⭐', title: 'Expert Coaches', count: '10+', description: 'FIDE-rated instructors' },
-      { icon: '📚', title: 'Programs', count: '20+', description: 'Specialized training courses' }
+      { icon: '👥', title: 'Students Trained', count: '400+', description: 'Beginners and intermediate players worldwide' },
+      { icon: '🎓', title: 'Years of Excellence', count: '11+', description: 'Since 2013' },
+      { icon: '🌍', title: 'Global Reach', count: 'Worldwide', description: 'Online and in-person classes' },
+      { icon: '⭐', title: 'Amazing Testimonials', count: 'Many', description: 'From parents and students' }
     ],
     facilities: [
-      { name: 'Digital Learning Platform', description: 'Access interactive lessons and puzzles anytime, anywhere' },
-      { name: 'Tournament Hall', description: 'Host regular internal and external tournaments' },
-      { name: 'Library & Resources', description: 'Extensive collection of chess books and materials' },
-      { name: 'Analysis Room', description: 'Equipped with computers for game analysis' }
+      { name: 'Online & In-Person Classes', description: 'Flexible learning options to suit your schedule and preference' },
+      { name: 'Tournament Organization', description: 'Regular online and offline tournaments for practical experience' },
+      { name: 'Soft Skills Integration', description: 'Activity-based workshops blending chess with leadership and communication skills' },
+      { name: 'Train the Trainer Program', description: 'Support for aspiring coaches to develop teaching skills and launch coaching careers' }
     ],
     values: [
-      { title: 'Excellence', description: 'Striving for the highest standards in chess education' },
-      { title: 'Integrity', description: 'Promoting fair play and sportsmanship' },
-      { title: 'Innovation', description: 'Using modern teaching methods and technology' },
-      { title: 'Community', description: 'Building a supportive chess learning environment' }
+      { title: 'Strong Foundation', description: 'Building solid fundamentals through structured, analytical teaching methods' },
+      { title: 'Learner-Centric', description: 'Every student receives personalized attention and guidance' },
+      { title: 'Holistic Development', description: 'Integrating chess education with soft skills and leadership training' },
+      { title: 'Joy of Learning', description: 'Making chess education engaging, meaningful, and inspiring' }
     ]
   };
 

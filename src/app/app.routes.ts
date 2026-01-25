@@ -17,11 +17,11 @@ export const routes: Routes = [
         canActivate: [guestGuard]
     },
     {
-        path: 'puzzles',
+        path: 'chess-lab',
         loadComponent: () => import('./puzzles/puzzles').then(m => m.Puzzles)
     },
     {
-        path: 'independents',
+        path: 'independence',
         loadComponent: () => import('./game-of-independence/game-of-independence').then(m => m.GameOfIndependence)
     },
     {

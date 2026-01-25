@@ -1,29 +1,27 @@
 <div class="coordinates-container">
   <div class="game-header">
-    <h1>Coordinate Training</h1>
+    <h1>Coordinate Game</h1>
   </div>
 
   <div class="game-content">
-    <!-- Target Display -->
-    <div class="target-display">
-      <span class="target-square">Find Square {{ target }}</span>
-    </div>
+    <!-- Top Row: Target, Score, and Reset -->    <div class="top-row">
+      <!-- Target Display -->
+      <div class="target-display">
+        <span class="target-square">Find Square {{ target }}</span>
+      </div>
 
-    <!-- Stats Bar -->
-    <!-- <div class="stats-bar">
+      <!-- Score Card -->
       <div class="stat-card">
         <div class="stat-value">{{ score }}</div>
-        <div class="stat-label">Correct</div>
+        <div class="stat-label">Score</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-value">{{ attempts - score }}</div>
-        <div class="stat-label">Wrong</div>
-      </div>
-      <div class="stat-card accuracy">
-        <div class="stat-value">{{ attempts > 0 ? ((score / attempts) * 100).toFixed(0) : 0 }}%</div>
-        <div class="stat-label">Accuracy</div>
-      </div>
-    </div> -->
+
+      <!-- Reset Button -->
+      <button class="reset-btn" (click)="reset()">
+        <span class="reset-icon">🔄</span>
+        Reset Game
+      </button>
+    </div>
 
     <!-- Chessboard -->
     <div class="board-wrapper">
@@ -35,11 +33,5 @@
         (cellClick)="onCellClick($event)">
       </app-chessboard>
     </div>
-
-    <!-- Reset Button -->
-    <button class="reset-btn" (click)="reset()">
-      <span class="reset-icon">🔄</span>
-      Reset Game
-    </button>
   </div>
 </div>
