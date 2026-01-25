@@ -1,23 +1,32 @@
-<div class="dominance-container">
+<div class="coordinates-container">
   <div class="game-header">
-    <h1>Coordinates Game</h1>
-    <p>Identify the shown coordinate by clicking the correct square on the board. Referencing LiChess style.</p>
+    <h1>Coordinate Training</h1>
   </div>
 
   <div class="game-content">
-    <div class="top-controls">
-      <div class="target-display">Identify: <span class="target">{{ target }}</span></div>
-      <div class="controls">
-        <button class="reset-btn" (click)="reset()">Reset</button>
-      </div>
-      <div class="stats-inline">
-        <span class="stat-item">Score: <strong>{{ score }}</strong></span>
-        <span class="stat-item">Attempts: <strong>{{ attempts }}</strong></span>
-      </div>
+    <!-- Target Display -->
+    <div class="target-display">
+      <span class="target-square">Find Square {{ target }}</span>
     </div>
 
-    <div class="board-container">
-      <!-- Reusable Chessboard Component -->
+    <!-- Stats Bar -->
+    <!-- <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-value">{{ score }}</div>
+        <div class="stat-label">Correct</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ attempts - score }}</div>
+        <div class="stat-label">Wrong</div>
+      </div>
+      <div class="stat-card accuracy">
+        <div class="stat-value">{{ attempts > 0 ? ((score / attempts) * 100).toFixed(0) : 0 }}%</div>
+        <div class="stat-label">Accuracy</div>
+      </div>
+    </div> -->
+
+    <!-- Chessboard -->
+    <div class="board-wrapper">
       <app-chessboard
         [size]="size"
         [cells]="cells"
@@ -26,5 +35,11 @@
         (cellClick)="onCellClick($event)">
       </app-chessboard>
     </div>
+
+    <!-- Reset Button -->
+    <button class="reset-btn" (click)="reset()">
+      <span class="reset-icon">🔄</span>
+      Reset Game
+    </button>
   </div>
 </div>

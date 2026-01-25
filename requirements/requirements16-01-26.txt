@@ -1,0 +1,8 @@
+- allow to take quiz, without sigin in 
+- move the details in coordinate game details to the top and add a how to play
+- remove the game description in Li chess.
+- for the capture the piece keep the same as is in book 
+- add the amount details into the input text field for payment
+- make sure all the pages are full screen
+- move classes to about
+

@@ -42,8 +42,7 @@ export const routes: Routes = [
     },
     {
         path: 'quiz',
-        loadComponent: () => import('./quiz/quiz').then(m => m.Quiz),
-        canActivate: [authGuard]
+        loadComponent: () => import('./quiz/quiz').then(m => m.Quiz)
     },
     {
         path: 'admin',
@@ -88,6 +87,7 @@ export const routes: Routes = [
     },
     {
         path: 'classes',
-        loadComponent: () => import('./classes/classes').then(m => m.Classes)
+        redirectTo: 'about-school',
+        pathMatch: 'full'
     }
 ];

@@ -34,11 +34,12 @@
             class="custom-input"
             [(ngModel)]="customAmount"
             (input)="useCustomAmount()"
-            placeholder="Enter amount"
+            placeholder="Enter amount (min ₹10, max ₹1,00,000)"
             min="10"
+            max="100000"
             [disabled]="loading">
         </div>
-        <p class="min-amount">Minimum: ₹10</p>
+        <p class="min-amount">Minimum: ₹10 | Maximum: ₹1,00,000</p>
       </div>
 
       <!-- Donate button -->
