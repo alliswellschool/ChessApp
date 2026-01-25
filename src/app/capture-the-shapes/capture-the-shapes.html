@@ -1,7 +1,7 @@
 <div class="capture-root">
   <div class="header">
     <h1>Capture the Shapes</h1>
-    <p>Move the {{ currentPuzzle.pieceType | titlecase }} from {{ currentPuzzle.startSquare }} to capture all shapes.</p>
+   
     
     <div class="filter-nav-container">
       <div class="piece-filter">
@@ -29,9 +29,9 @@
       <div *ngIf="gameCompleted" class="victory optimal">
         🎉 Perfect! All {{ totalShapes }} shapes captured in {{ moveCount }} moves.
       </div>
-      <div *ngIf="!gameCompleted" class="info-message">
+      <!-- <div *ngIf="!gameCompleted" class="info-message">
         Move your {{ currentPuzzle.pieceType | titlecase }} to capture all shapes
-      </div>
+      </div> -->
     </div>
   </div>
 

@@ -1,67 +1,75 @@
 .home-container {
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px;
+  margin: 0;
+  padding: 0;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
 }
 
 /* Hero Section */
 .hero {
   text-align: center;
-  padding: 60px 20px;
+  padding: 0 40px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16px;
   color: white;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .hero-title {
-  font-size: 3.5rem;
-  margin: 0 0 16px 0;
-  font-weight: 700;
+  font-size: 4.5rem;
+  margin: 0 0 20px 0;
+  font-weight: 800;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: -1px;
 }
 
 .hero-subtitle {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   margin: 0;
-  opacity: 0.95;
+  opacity: 0.9;
+  max-width: 700px;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 /* Section Titles */
 .section-title {
-  font-size: 2rem;
-  margin: 0 0 24px 0;
-  color: #333;
+  font-size: 2.2rem;
+  margin: 0 0 48px 0;
+  color: #1f2937;
   text-align: center;
+  font-weight: 700;
 }
 
 /* Quick Links Section */
 .quick-links {
-  padding: 20px 0;
+  padding: 100px 40px;
+  background: #ffffff;
 }
 
 .quick-links-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .quick-link-card {
   background: white;
-  border-radius: 12px;
-  padding: 32px 24px;
+  border-radius: 16px;
+  padding: 40px 28px;
   text-align: center;
   text-decoration: none;
   color: inherit;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  border: 2px solid #f3f4f6;
 }
 
 .quick-link-card::before {
@@ -70,15 +78,16 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: 5px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
 
 .quick-link-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.15);
+  border-color: #667eea;
 }
 
 .quick-link-card:hover::before {
@@ -102,13 +111,14 @@
 }
 
 .quick-link-icon {
-  font-size: 3.5rem;
+  font-size: 4rem;
   margin-bottom: 16px;
+  display: block;
 }
 
 .quick-link-card h3 {
-  font-size: 1.5rem;
-  margin: 0 0 12px 0;
+  font-size: 1.4rem;
+  margin: 0 0 10px 0;
   color: #1f2937;
   font-weight: 700;
 }
@@ -116,34 +126,38 @@
 .quick-link-card p {
   margin: 0;
   color: #6b7280;
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.5;
 }
 
-
 /* Announcements Section */
 .announcements {
-  padding: 20px 0;
+  padding: 100px 40px;
+  background: #f9fafb;
 }
 
 .announcements-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .announcement-card {
   background: white;
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-left: 5px solid #667eea;
-  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 28px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #667eea;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid #e5e7eb;
+  border-left-width: 4px;
 }
 
 .announcement-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
 .announcement-card.info {
@@ -168,83 +182,172 @@
 
 .announcement-header h3 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   color: #1f2937;
   flex: 1;
+  font-weight: 700;
 }
 
 .announcement-date {
-  font-size: 0.875rem;
-  color: #6b7280;
+  font-size: 0.8rem;
+  color: #9ca3af;
   white-space: nowrap;
+  font-weight: 500;
 }
 
 .announcement-content {
   margin: 0;
   color: #4b5563;
   line-height: 1.6;
+  font-size: 0.95rem;
 }
 
 /* Footer */
 .footer {
   text-align: center;
-  padding: 32px 20px;
+  padding: 40px 20px;
   color: #6b7280;
+  background: white;
   border-top: 1px solid #e5e7eb;
-  margin-top: auto;
 }
 
 .footer p {
   margin: 0;
+  font-size: 0.95rem;
 }
 
 /* Responsive Design */
+
+/* Large tablets and small desktops */
+@media (max-width: 1200px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.4rem;
+  }
+
+  .quick-links,
+  .announcements {
+    padding: 80px 32px;
+  }
+
+  .quick-links-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+/* Tablets */
 @media (max-width: 768px) {
+  .hero {
+    min-height: 70vh;
+    padding: 0 24px;
+  }
+
   .hero-title {
     font-size: 2.5rem;
   }
 
   .hero-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .section-title {
-    font-size: 1.75rem;
+    font-size: 1.8rem;
+    margin-bottom: 32px;
+  }
+
+  .quick-links,
+  .announcements {
+    padding: 60px 24px;
+  }
+
+  .quick-links-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .quick-link-card {
+    padding: 32px 24px;
   }
 
   .announcements-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
-  .activities-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .activity-icon {
-    font-size: 3rem;
+  .announcement-card {
+    padding: 24px;
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
-  .home-container {
-    padding: 12px;
-    gap: 24px;
-  }
-
   .hero {
-    padding: 40px 16px;
+    min-height: 60vh;
+    padding: 0 20px;
   }
 
   .hero-title {
     font-size: 2rem;
+    margin-bottom: 16px;
   }
 
   .hero-subtitle {
     font-size: 1rem;
   }
 
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+  }
+
+  .quick-links,
+  .announcements {
+    padding: 40px 20px;
+  }
+
+  .quick-link-card {
+    padding: 28px 20px;
+  }
+
+  .quick-link-icon {
+    font-size: 3rem;
+  }
+
+  .quick-link-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .quick-link-card p {
+    font-size: 0.9rem;
+  }
+
+  .announcement-card {
+    padding: 20px;
+  }
+
   .announcement-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
+  }
+
+  .announcement-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .announcement-content {
+    font-size: 0.9rem;
+  }
+
+  .footer {
+    padding: 32px 20px;
+  }
+
+  .footer p {
+    font-size: 0.85rem;
   }
 }

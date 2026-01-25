@@ -1,8 +1,7 @@
 <div class="knights-tour-container">
   <div class="game-header">
     <h1>Knight's Tour</h1>
-    <p>Visit all 64 squares exactly once using only knight moves (L-shape: 2 squares in one direction, 1 in perpendicular).</p>
-    
+  
     <div class="message-bar">
       <div *ngIf="isComplete" class="victory optimal">
         🎉 Congratulations! You completed the Knight's Tour!
@@ -10,9 +9,9 @@
       <div *ngIf="isStuck" class="warning">
         ⚠️ No valid moves left. You're stuck! Try resetting.
       </div>
-      <div *ngIf="!gameStarted" class="info">
-        Click any square to place the knight and start the tour.
-      </div>
+      <!-- <div *ngIf="!gameStarted" class="info">
+        Click any square to place the Knight and start the tour.
+      </div> -->
     </div>
   </div>
 
@@ -61,10 +60,10 @@
       <div class="info-panel-right">
         <h3>How to Play</h3>
         <ul>
+          <li>Visit all 64 squares</li>
           <li>Click any square to start</li>
           <li>Move in L-shape only</li>
-          <li>Visit each square once</li>
-          <li>Green dots = valid moves</li>
+          <li>Dots = valid moves</li>
           <li>Green squares = visited</li>
         </ul>
       </div>

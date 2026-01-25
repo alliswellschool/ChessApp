@@ -20,39 +20,39 @@ export class Puzzles {
 
   activities: Activity[] = [
     {
-      id: 'independence',
-      title: 'Independence',
-      description: 'Solve classic puzzles where pieces must not attack each other',
-      icon: '♛',
-      route: '/independents'
-    },
-    {
-      id: 'dominance',
-      title: 'Dominance',
-      description: 'Master board control by dominating all squares with minimal pieces',
-      icon: '♕',
-      route: '/dominance'
-    },
-    {
       id: 'coordinates',
       title: 'Coordinates',
       description: 'Train your speed in recognizing chess board coordinates',
-      icon: '⚐',
+      icon: '🎯',
       route: '/coordinates'
     },
     {
       id: 'knights-tour',
       title: "Knight's Tour",
       description: 'Guide the knight to visit every square exactly once',
-      icon: '♞',
+      icon: '♘',
       route: '/knights-tour'
     },
     {
       id: 'capture-the-shapes',
       title: 'Capture the Shapes',
       description: 'Place pieces strategically to capture all target shapes',
-      icon: '★',
+      icon: '🔷',
       route: '/capture-the-shapes'
+    },
+    {
+      id: 'independence',
+      title: 'Independence',
+      description: 'Solve classic puzzles where pieces must not attack each other',
+      icon: '👑',
+      route: '/independence'
+    },
+    {
+      id: 'dominance',
+      title: 'Dominance',
+      description: 'Master board control by dominating all squares with minimal pieces',
+      icon: '⚔️',
+      route: '/dominance'
     },
     {
       id: 'quiz',
