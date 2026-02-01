@@ -1,0 +1,68 @@
+REQUIREMENTS IMPLEMENTED - January 26, 2026
+=========================================
+
+1. BOOKS PAGE - NEW BOOKS ADDED
+   -----------------------------
+   Added three new books to the books page (src/app/books/books.ts):
+   
+   a) "101 Magical Treasures" by Praveen Sadasivam
+      - Price: ₹349 (placeholder - needs Amazon pricing)
+      - Category: Beginner
+      - Description: Principles to improve well-being, strengthen relationships and excel in life
+      
+   b) "Classical Thought Provoking Puzzles" by Praveen Sadasivam
+      - Price: ₹299 (placeholder - needs Amazon pricing)
+      - Category: Tactics
+      - Description: A collection of timeless puzzles for family & friends
+      
+   c) "சதுரங்கம் கற்றுக்கொள்வோம்" (Chess in Tamil) by Praveen Sadasivam
+      - Price: ₹249 (placeholder - needs Amazon pricing)
+      - Category: Beginner
+      - Description: Learn chess in Tamil with comprehensive lessons
+
+   ACTION REQUIRED:
+   ----------------
+   Please save the three book cover images to public/books/ with these exact filenames:
+   - 101-magical-treasures.jpg (first book image)
+   - classical-thought-provoking-puzzles.jpg (second book image)
+   - sathrangam-tamil.jpg (Tamil book image)
+   
+   Also update the prices from Amazon when available.
+
+
+2. LOGIN PAGE - SOCIAL LOGIN INTEGRATION
+   -------------------------------------
+   Implemented "Login with Google/Facebook/Email" options:
+   
+   Backend Changes (src/app/services/auth.service.ts):
+   - Added GoogleAuthProvider and FacebookAuthProvider imports
+   - Added signInWithGoogle() method
+   - Added signInWithFacebook() method
+   - Added ensureUserProfile() helper for social login users
+   
+   Frontend Changes (src/app/login/):
+   - login.ts: Added signInWithGoogle() and signInWithFacebook() methods
+   - login.html: Added social login buttons with Google and Facebook branding
+   - login.css: Added modern styling for social login buttons
+   
+   Features:
+   - Google login with official Google colors and logo
+   - Facebook login with official Facebook branding
+   - Email/password login (existing)
+   - Clear visual separation with "Or continue with email" divider
+   - Hover effects and disabled states
+   - Consistent loading states across all login methods
+
+   NEXT STEPS FOR FIREBASE CONFIGURATION:
+   --------------------------------------
+   To enable Google and Facebook login, you need to:
+   
+   1. Go to Firebase Console > Authentication > Sign-in method
+   2. Enable "Google" provider
+   3. Enable "Facebook" provider and add:
+      - Facebook App ID
+      - Facebook App Secret
+      (Get these from Facebook Developers: developers.facebook.com)
+   
+   The code is ready and will work once the Firebase providers are enabled.
+

@@ -5,6 +5,7 @@
       *ngFor="let piece of pieces" 
       class="piece-btn" 
       [class.selected]="selectedPiece === piece.type"
+      [class.completed]="isPieceCompleted(piece.type)"
       (click)="onPieceClick(piece.type)"
       [title]="piece.name">
       <div class="piece-symbol" [style.background-image]="'url(' + piece.image + ')'"></div>

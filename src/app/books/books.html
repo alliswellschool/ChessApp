@@ -56,13 +56,14 @@
         </div>
 
         <div class="book-image">
-          <div class="image-placeholder">{{ book.image }}</div>
+          <img [src]="book.image" [alt]="book.title" class="book-img">
         </div>
 
         <div class="book-info">
           <h3 class="book-title">{{ book.title }}</h3>
           <p class="book-author">by {{ book.author }}</p>
 
+          <!-- Rating and reviews - commented out for future use
           <div class="book-rating">
             <div class="stars">
               <span *ngFor="let filled of getStarArray(book.rating)" class="star">
@@ -72,6 +73,7 @@
             </div>
             <span class="reviews-count">({{ book.reviews }} reviews)</span>
           </div>
+          -->
 
           <p class="book-description">{{ book.description }}</p>
 

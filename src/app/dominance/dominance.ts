@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
@@ -16,6 +16,7 @@ import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.
 import { getDominanceVictoryMessage } from '../shared/dominance-messages';
 import { PieceSelectorComponent, PieceCount } from '../shared/piece-selector/piece-selector.component';
 import { VictoryModalComponent, VictoryButton, VictoryStat } from '../shared/victory-modal/victory-modal.component';
+import { ProgressService } from '../services/progress.service';
 
 type Team = 'white' | 'black';
 interface TeamPiece { type: PieceType; team: Team }
@@ -28,6 +29,8 @@ interface TeamPiece { type: PieceType; team: Team }
   styleUrls: ['./dominance.css']
 })
 export class Dominance {
+  private progressService = inject(ProgressService);
+  
   // Game of Dominance - Minimum pieces to dominate entire board
   // Goal: Use the minimum number of pieces to dominate all squares
   
@@ -204,6 +207,12 @@ export class Dominance {
     // Check for victory or full coverage after placing
     if (this.dominationPercentage === 100) {
       if (this.hasWon) {
+        // Track progress - create unique puzzle ID based on piece and size
+        const puzzleId = parseInt(`${ALL_PIECE_TYPES.indexOf(this.selectedPiece)}${this.size}`);
+        this.progressService.trackCompletion('dominance', {
+          score: this.size * 10,
+          puzzleId
+        });
         this.showVictoryModal = true;
       } else {
         this.showFullCoverageModal = true;

@@ -11,7 +11,7 @@ import { filter, Subscription } from 'rxjs';
   styleUrls: ['./app.css']
 })
 export class App implements OnInit, OnDestroy {
-  protected readonly title = signal('ChessApp');
+  protected readonly title = signal('All is Well School of Chess');
   protected authService = inject(AuthService);
   private router = inject(Router);
   navbarClosed = false;

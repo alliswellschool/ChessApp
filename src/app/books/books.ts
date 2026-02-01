@@ -48,154 +48,55 @@ export class Books {
   books: Book[] = [
     {
       id: 1,
-      title: 'Chess Fundamentals',
-      author: 'José Raúl Capablanca',
-      description: 'A timeless classic covering the essential principles of chess. Perfect for beginners who want to build a strong foundation.',
-      price: 15.99,
-      originalPrice: 19.99,
+      title: 'Fun with Chess',
+      author: 'Praveen Sadasivam',
+      description: 'A comprehensive Learning & Training Guide that makes chess fun and accessible for students of all levels. This book covers essential chess concepts through engaging exercises and clear explanations, perfect for building a strong foundation in chess.',
+      price: 299,
       category: 'beginner',
-      rating: 4.8,
-      reviews: 156,
+      rating: 4.9,
+      reviews: 45,
       inStock: true,
       bestseller: true,
-      image: '📖'
+      image: '/books/Fun with Chess_3D cover.jpg (1).jpeg'
     },
     {
       id: 2,
-      title: 'My System',
-      author: 'Aron Nimzowitsch',
-      description: 'Revolutionary work on positional chess and strategic thinking. A must-read for advancing players.',
-      price: 22.99,
-      category: 'intermediate',
-      rating: 4.7,
-      reviews: 203,
+      title: '101 Magical Treasures',
+      author: 'Praveen Sadasivam',
+      description: 'Principles to improve well-being, strengthen relationships and excel in life. A collection of 101 timeless wisdom nuggets that will transform your perspective and help you navigate life\'s challenges with clarity and purpose.',
+      price: 349,
+      category: 'beginner',
+      rating: 4.8,
+      reviews: 32,
       inStock: true,
-      image: '📕'
+      bestseller: false,
+      image: '/books/101 MT 3D Cover.png'
     },
     {
       id: 3,
-      title: '1001 Chess Exercises for Beginners',
-      author: 'Franco Masetti',
-      description: 'Comprehensive collection of tactical puzzles designed specifically for beginners.',
-      price: 18.99,
-      originalPrice: 24.99,
-      category: 'beginner',
-      rating: 4.9,
-      reviews: 342,
+      title: 'Classical Thought Provoking Puzzles',
+      author: 'Praveen Sadasivam',
+      description: 'A collection of timeless puzzles to spend fun filled quality time with family & friends. Challenge your mind with engaging brain teasers, logic puzzles, and creative problem-solving exercises suitable for all ages.',
+      price: 299,
+      category: 'tactics',
+      rating: 4.7,
+      reviews: 28,
       inStock: true,
-      bestseller: true,
-      image: '🧩'
+      bestseller: false,
+      image: '/books/Classical Thought Provoking Puzzles_3D Cover.png'
     },
     {
       id: 4,
-      title: 'Dvoretsky\'s Endgame Manual',
-      author: 'Mark Dvoretsky',
-      description: 'The definitive guide to chess endgames. Essential for serious players looking to master endgame technique.',
-      price: 35.99,
-      category: 'endgame',
-      rating: 5.0,
-      reviews: 178,
-      inStock: true,
-      bestseller: true,
-      image: '♚'
-    },
-    {
-      id: 5,
-      title: 'Modern Chess Openings (MCO-15)',
-      author: 'Nick de Firmian',
-      description: 'Comprehensive encyclopedia of chess openings. The standard reference for opening theory.',
-      price: 32.99,
-      category: 'openings',
-      rating: 4.6,
-      reviews: 124,
-      inStock: true,
-      image: '📚'
-    },
-    {
-      id: 6,
-      title: 'The Art of Attack in Chess',
-      author: 'Vladimir Vukovic',
-      description: 'Learn the principles and patterns of successful attacking play. Classic work on offensive chess.',
-      price: 19.99,
-      category: 'intermediate',
-      rating: 4.8,
-      reviews: 189,
-      inStock: true,
-      image: '⚔️'
-    },
-    {
-      id: 7,
-      title: 'Bobby Fischer Teaches Chess',
-      author: 'Bobby Fischer',
-      description: 'Learn chess from a World Champion. Interactive format perfect for beginners.',
-      price: 12.99,
-      originalPrice: 16.99,
+      title: 'சதுரங்கம் கற்றுக்கொள்வோம்',
+      author: 'Praveen Sadasivam',
+      description: 'கற்றல் மற்றும் பயிற்சி வழிகாட்டி - Learn chess in Tamil with comprehensive lessons and training exercises. Perfect for Tamil-speaking students who want to master the game of chess with clear, culturally relevant explanations.',
+      price: 249,
       category: 'beginner',
-      rating: 4.7,
-      reviews: 521,
+      rating: 4.9,
+      reviews: 56,
       inStock: true,
       bestseller: true,
-      image: '👑'
-    },
-    {
-      id: 8,
-      title: 'Silman\'s Complete Endgame Course',
-      author: 'Jeremy Silman',
-      description: 'Structured approach to learning endgames based on rating level. Accessible and practical.',
-      price: 24.99,
-      category: 'endgame',
-      rating: 4.8,
-      reviews: 267,
-      inStock: true,
-      image: '🎓'
-    },
-    {
-      id: 9,
-      title: 'Winning Chess Tactics',
-      author: 'Yasser Seirawan',
-      description: 'Master tactical patterns and combinations. Clear explanations with numerous examples.',
-      price: 17.99,
-      category: 'tactics',
-      rating: 4.7,
-      reviews: 198,
-      inStock: true,
-      image: '⚡'
-    },
-    {
-      id: 10,
-      title: 'Think Like a Grandmaster',
-      author: 'Alexander Kotov',
-      description: 'Classic work on chess thinking and decision-making process. Essential for advanced players.',
-      price: 21.99,
-      category: 'advanced',
-      rating: 4.6,
-      reviews: 145,
-      inStock: true,
-      image: '🧠'
-    },
-    {
-      id: 11,
-      title: 'The Sicilian Defense',
-      author: 'Garry Kasparov',
-      description: 'Deep dive into the most popular chess opening. Part of Kasparov\'s masterpiece series.',
-      price: 28.99,
-      category: 'openings',
-      rating: 4.9,
-      reviews: 167,
-      inStock: false,
-      image: '🎯'
-    },
-    {
-      id: 12,
-      title: 'Chess Strategy for Club Players',
-      author: 'Herman Grooten',
-      description: 'Modern approach to chess strategy. Practical advice for improving club players.',
-      price: 23.99,
-      category: 'intermediate',
-      rating: 4.7,
-      reviews: 134,
-      inStock: true,
-      image: '🏆'
+      image: '/books/Tamil Chess book_3D_New.png'
     }
   ];
 
@@ -272,9 +173,10 @@ export class Books {
     this.showCart = !this.showCart;
   }
 
-  getStarArray(rating: number): boolean[] {
-    return Array(5).fill(false).map((_, i) => i < Math.floor(rating));
-  }
+  // Rating and reviews - commented out for future use
+  // getStarArray(rating: number): boolean[] {
+  //   return Array(5).fill(false).map((_, i) => i < Math.floor(rating));
+  // }
 
   private saveCartToStorage(): void {
     localStorage.setItem('chess-books-cart', JSON.stringify(this.cart));

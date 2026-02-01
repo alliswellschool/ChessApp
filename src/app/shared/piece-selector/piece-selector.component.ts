@@ -19,6 +19,7 @@ export class PieceSelectorComponent {
   @Input() selectedPiece: PieceType = 'queen';
   @Input() showCounts: boolean = false;
   @Input() pieceCounts?: Map<PieceType, PieceCount>;
+  @Input() completedPieces?: Set<PieceType>;
   @Output() pieceSelected = new EventEmitter<PieceType>();
 
   onPieceClick(type: PieceType): void {
@@ -28,5 +29,9 @@ export class PieceSelectorComponent {
   getPieceCount(type: PieceType): PieceCount | null {
     if (!this.showCounts || !this.pieceCounts) return null;
     return this.pieceCounts.get(type) || null;
+  }
+
+  isPieceCompleted(type: PieceType): boolean {
+    return this.completedPieces?.has(type) || false;
   }
 }

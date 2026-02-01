@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
 import { VictoryModalComponent, VictoryButton, VictoryStat } from '../shared/victory-modal/victory-modal.component';
+import { ProgressService } from '../services/progress.service';
 
 interface Square {
   visited: boolean;
@@ -16,6 +17,8 @@ interface Square {
   styleUrls: ['./knights-tour.css']
 })
 export class KnightsTour {
+  private progressService = inject(ProgressService);
+  
   size = 8;
   board: Square[][] = [];
   cells: ChessCell[][] = [];
@@ -133,6 +136,12 @@ export class KnightsTour {
     
     // Check for completion or victory
     if (this.isComplete) {
+      // Track progress
+      this.progressService.trackCompletion('knightsTour', {
+        score: this.isPerfectTour ? 100 : 50,
+        level: this.isPerfectTour ? 2 : 1
+      });
+      
       if (this.isPerfectTour) {
         this.showVictoryModal = true;
       } else {

@@ -40,10 +40,62 @@ const firebaseConfig = {
 1. In the Firebase Console, go to **Build** → **Authentication**
 2. Click "Get started"
 3. Click on the **Sign-in method** tab
+
+### Enable Email/Password Authentication
+
 4. Enable **Email/Password**:
    - Click on "Email/Password"
    - Toggle "Enable" to ON
    - Click "Save"
+
+### Enable Google Authentication
+
+5. Enable **Google**:
+   - Click on "Google" in the providers list
+   - Toggle "Enable" to ON
+   - Enter "Project public-facing name": `Chess Activities`
+   - Enter "Project support email": Your email address
+   - Click "Save"
+   
+   **That's it!** Google sign-in is now enabled. No additional configuration needed.
+
+### Enable Facebook Authentication
+
+6. Enable **Facebook** (requires Facebook App):
+   
+   **First, create a Facebook App:**
+   
+   a. Go to [Facebook Developers](https://developers.facebook.com/)
+   b. Click "My Apps" → "Create App"
+   c. Select "Consumer" as app type → Click "Next"
+   d. Enter app name: `Chess Activities` → Click "Create App"
+   e. In the left sidebar, click "Add Product"
+   f. Find "Facebook Login" and click "Set Up"
+   g. Select "Web" platform
+   h. Enter your website URL:
+      - Development: `http://localhost:4200`
+      - Production: `https://your-domain.com`
+   i. In left sidebar under "Facebook Login" → "Settings":
+      - Add to "Valid OAuth Redirect URIs":
+        ```
+        https://YOUR_PROJECT_ID.firebaseapp.com/__/auth/handler
+        ```
+        (Replace YOUR_PROJECT_ID with your Firebase project ID)
+      - Click "Save Changes"
+   j. Go to "Settings" → "Basic" in left sidebar
+   k. Copy your "App ID" and "App Secret"
+   
+   **Then, configure Firebase:**
+   
+   l. Back in Firebase Console → Authentication → Sign-in method
+   m. Click on "Facebook"
+   n. Toggle "Enable" to ON
+   o. Paste your Facebook "App ID"
+   p. Paste your Facebook "App Secret"
+   q. Copy the OAuth redirect URI shown (e.g., `https://your-project.firebaseapp.com/__/auth/handler`)
+   r. Click "Save"
+   
+   **Note:** Facebook login requires your app to be reviewed by Facebook for production use. During development, you can add test users in your Facebook App Dashboard.
 
 ## Step 4: Configure Your Application
 

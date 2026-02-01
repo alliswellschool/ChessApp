@@ -6,7 +6,9 @@ import {
   signOut,
   User,
   user,
-  updateProfile
+  updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup
 } from '@angular/fire/auth';
 import {
   Firestore,
@@ -85,6 +87,45 @@ export class AuthService {
       await signInWithEmailAndPassword(this.auth, email, password);
     } catch (error: any) {
       throw new Error(this.getErrorMessage(error.code));
+    }
+  }
+
+  // Sign in with Google
+  async signInWithGoogle(): Promise<void> {
+    try {
+      const provider = new GoogleAuthProvider();
+      const credential = await signInWithPopup(this.auth, provider);
+      
+      // Check if user profile exists, if not create one
+      if (credential.user) {
+        await this.ensureUserProfile(credential.user);
+      }
+    } catch (error: any) {
+      throw new Error(this.getErrorMessage(error.code));
+    }
+  }
+
+
+
+  // Ensure user profile exists (for social logins)
+  private async ensureUserProfile(user: User): Promise<void> {
+    const userDoc = doc(this.firestore, `users/${user.uid}`);
+    const docSnap = await getDoc(userDoc);
+    
+    if (!docSnap.exists()) {
+      // Create new profile for social login user
+      const userProfile: UserProfile = {
+        uid: user.uid,
+        email: user.email || '',
+        displayName: user.displayName || 'Chess Player',
+        role: 'user',
+        createdAt: new Date(),
+        totalQuizzes: 0,
+        averageScore: 0,
+        currentDifficulty: 1
+      };
+      
+      await this.createUserProfile(userProfile);
     }
   }
 

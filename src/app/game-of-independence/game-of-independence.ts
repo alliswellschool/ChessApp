@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
 import { PieceSelectorComponent, PieceCount } from '../shared/piece-selector/piece-selector.component';
@@ -12,6 +12,7 @@ import {
   rankLabel,
   INDEPENDENCE_PIECE_COUNTS
 } from '../shared/chess.constants';
+import { ProgressService } from '../services/progress.service';
 
 type Piece = PieceType | '';
 
@@ -28,6 +29,8 @@ interface BoardCell {
   styleUrls: ['./game-of-independence.css']
 })
 export class GameOfIndependence {
+  private progressService = inject(ProgressService);
+  
   // Modes: single (choose a piece type and board size) or team (place all required pieces)
   mode: 'single' | 'team' = 'single';
   selected: PieceType = 'queen';
@@ -37,6 +40,9 @@ export class GameOfIndependence {
 
   // board state
   board: BoardCell[][] = [];
+  
+  // Cache user progress data for synchronous access
+  private userProgressData: any = null;
 
   // counts for team mode
   requiredCounts: Record<Piece, number> = { ...INDEPENDENCE_PIECE_COUNTS, '': 0 };
@@ -96,8 +102,47 @@ export class GameOfIndependence {
     return map;
   }
 
+  get completedPieces(): Set<PieceType> {
+    const completed = new Set<PieceType>();
+    
+    if (!this.userProgressData?.completedPuzzles) {
+      return completed;
+    }
+    
+    const completedPuzzleIds = this.userProgressData.completedPuzzles as number[];
+    
+    // Check if all board sizes (4-8) are completed for each piece
+    this.pieces.forEach(piece => {
+      const pieceIndex = this.pieces.indexOf(piece);
+      let allSizesComplete = true;
+      
+      for (let size = 4; size <= 8; size++) {
+        const puzzleId = parseInt(`${pieceIndex}${size}`);
+        if (!completedPuzzleIds.includes(puzzleId)) {
+          allSizesComplete = false;
+          break;
+        }
+      }
+      
+      if (allSizesComplete) {
+        completed.add(piece);
+      }
+    });
+    
+    return completed;
+  }
+
   constructor() {
     this.resetBoard();
+    this.loadProgressData();
+  }
+  
+  async loadProgressData(): Promise<void> {
+    try {
+      this.userProgressData = await this.progressService.getPuzzleProgress('independence');
+    } catch (error) {
+      console.error('Error loading progress data:', error);
+    }
   }
 
   setMode(m: 'single' | 'team') {
@@ -284,9 +329,22 @@ export class GameOfIndependence {
     if (this.mode === 'single' && this.isSolvedSingle) {
       const pieceName = this.selected.charAt(0).toUpperCase() + this.selected.slice(1);
       this.victoryMessage = `Perfect! All ${this.requiredPieces} ${pieceName}s placed correctly.`;
+      // Track progress - create unique puzzle ID based on piece and size
+      const puzzleId = parseInt(`${this.pieces.indexOf(this.selected)}${this.size}`);
+      this.progressService.trackCompletion('independence', {
+        score: this.size * 10,
+        puzzleId
+      });
+      // Reload progress data to update completion status
+      this.loadProgressData();
       this.showVictoryModal = true;
     } else if (this.mode === 'team' && this.isSolved) {
       this.victoryMessage = 'All pieces placed — you win!';
+      // Track team mode completion
+      this.progressService.trackCompletion('independence', {
+        score: 100,
+        level: 999 // Special ID for team mode
+      });
       this.showVictoryModal = true;
     }
   }
@@ -429,7 +487,8 @@ export class GameOfIndependence {
       hasInvalidPiece: cell.piece ? !cell.valid : false,
       customClasses: cell.valid ? [] : ['has-invalid-piece'],
       dominated: this.highlightPath && threatened[r][c] && !cell.piece,
-      blocked: this.highlightPath && threatened[r][c] && !cell.piece,
+      // Don't block cells - allow clicking even when highlights are shown
+      blocked: false,
       data: {}
     })));
   }

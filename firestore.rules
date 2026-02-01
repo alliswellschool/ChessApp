@@ -20,6 +20,25 @@ service cloud.firestore {
       allow delete: if false; // Don't allow profile deletion via client
     }
     
+    // User progress/scores - Main progress tracking
+    match /userProgress/{userId} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(userId);
+      
+      // Subcollection for individual puzzle progress
+      match /puzzles/{puzzleType} {
+        allow read: if isSignedIn();
+        allow write: if isOwner(userId);
+      }
+    }
+    
+    // Quiz results
+    match /quizResults/{resultId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+    
     // Donations collection - IMPORTANT: Prevent fraud!
     match /donations/{donationId} {
       // Anyone can read donations (for transparency)
@@ -38,16 +57,8 @@ service cloud.firestore {
       // Nobody can update or delete donations
       allow update, delete: if false;
     }
-    
-    // User progress/scores
-    match /userProgress/{userId} {
-      allow read: if isSignedIn();
-      allow write: if isOwner(userId);
-    }
-    
-    // Quiz results
-    match /quizResults/{resultId} {
-      allow read: if isSignedIn();
+  }
+}
       allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
       allow update, delete: if false;
     }

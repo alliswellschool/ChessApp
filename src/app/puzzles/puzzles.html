@@ -4,13 +4,56 @@
     <!-- <h2 class="section-title">Chess Lab</h2> -->
     <div class="activities-grid">
       <a 
-        *ngFor="let activity of activities" 
-        [routerLink]="activity.route"
-        class="activity-card">
-        <div class="activity-icon">{{ activity.icon }}</div>
-        <h3 class="activity-title">{{ activity.title }}</h3>
-        <p class="activity-description">{{ activity.description }}</p>
-        <span class="activity-link">Start →</span>
+        *ngFor="let activity of activities"
+        [routerLink]="activity.route" 
+        class="activity-card-wrapper">
+        
+        <div class="activity-card-inner">
+          <!-- Front of card -->
+          <div class="activity-card activity-card-front">
+            <div class="activity-icon" [class.completed]="isActivityComplete(activity.id)">{{ activity.icon }}</div>
+            <h3 class="activity-title">{{ activity.title }}</h3>
+            <p class="activity-description">{{ activity.description }}</p>
+            <span class="activity-link">Start →</span>
+            <div *ngIf="isLoggedIn && !isLoading" class="flip-hint">Hover to see stats</div>
+          </div>
+          
+          <!-- Back of card (stats) -->
+          <div *ngIf="isLoggedIn && !isLoading" class="activity-card activity-card-back">
+            <div class="stats-container">
+              <div class="stats-icon" [class.completed]="isActivityComplete(activity.id)">{{ activity.icon }}</div>
+              <h3 class="stats-title">{{ activity.title }}</h3>
+              
+              <div class="stats-content">
+                <div class="stat-item">
+                  <div class="stat-number">{{ getCompletedPuzzles(activity.id) }}</div>
+                  <div class="stat-label">Completed</div>
+                </div>
+                
+                <div class="stat-divider">/</div>
+                
+                <div class="stat-item">
+                  <div class="stat-number">{{ getTotalPuzzles(activity.id) }}</div>
+                  <div class="stat-label">Total</div>
+                </div>
+              </div>
+              
+              <div class="progress-container">
+                <div class="progress-bar-outer">
+                  <div 
+                    class="progress-bar-inner" 
+                    [style.width.%]="getProgressPercentage(activity.id)">
+                  </div>
+                </div>
+                <div class="progress-text">
+                  {{ getProgressPercentage(activity.id) }}% Complete
+                </div>
+              </div>
+              
+              <div class="click-hint">Click to start →</div>
+            </div>
+          </div>
+        </div>
       </a>
     </div>
   </section>

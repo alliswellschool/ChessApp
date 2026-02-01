@@ -1,0 +1,3 @@
+- complete the capture the shapes as per the book
+- in independence when the show highlights is present, make sure piece are still placeable.
+- fix the menu, the mobile ui for the nav bar is stuck

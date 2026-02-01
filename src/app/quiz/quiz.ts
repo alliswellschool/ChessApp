@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { QuizService, Question } from '../services/quiz.service';
+import { ProgressService } from '../services/progress.service';
 
 interface QuizState {
   currentQuestion: number;
@@ -21,6 +22,9 @@ interface QuizState {
   styleUrls: ['./quiz.css']
 })
 export class Quiz implements OnInit {
+  private quizService = inject(QuizService);
+  private progressService = inject(ProgressService);
+  
   quizState: QuizState = {
     currentQuestion: 0,
     score: 0,
@@ -36,8 +40,6 @@ export class Quiz implements OnInit {
   hasAnswered = false;
 
   currentQuestions: Question[] = [];
-
-  constructor(private quizService: QuizService) {}
 
   ngOnInit(): void {
     this.generateQuestions();
@@ -148,6 +150,11 @@ export class Quiz implements OnInit {
         correctAnswers: this.quizState.correctAnswers,
         accuracy: this.getAccuracy(),
         avgDifficulty: `Level ${this.quizState.currentDifficulty}`
+      });
+      // Track progress
+      this.progressService.trackCompletion('quiz', {
+        score: this.quizState.score,
+        level: this.quizState.currentDifficulty
       });
       return;
     }

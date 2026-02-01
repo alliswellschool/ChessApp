@@ -67,6 +67,39 @@
   color: #fff;
 }
 
+/* Completed piece styling - green glow effect */
+.piece-btn.completed {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+  animation: pulse-complete 2s infinite;
+}
+
+.piece-btn.completed .piece-symbol {
+  filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(16, 185, 129, 0.6));
+}
+
+.piece-btn.completed .piece-count {
+  color: #fff;
+  font-weight: 700;
+}
+
+@keyframes pulse-complete {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
+  }
+  50% {
+    box-shadow: 0 6px 24px rgba(16, 185, 129, 0.6);
+  }
+}
+
+/* When both selected and completed */
+.piece-btn.selected.completed {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .piece-buttons {

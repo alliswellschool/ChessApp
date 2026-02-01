@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
@@ -9,6 +9,7 @@ import {
   fileLabel,
   rankLabel
 } from '../shared/chess.constants';
+import { ProgressService } from '../services/progress.service';
 
 type ShapeType = 'star' | 'circle' | 'diamond' | 'triangle' | 'heart' | 'square';
 
@@ -40,6 +41,8 @@ interface PuzzleData {
   styleUrls: ['./capture-the-shapes.css']
 })
 export class CaptureTheShapes {
+  private progressService = inject(ProgressService);
+  
   size = 8;
   
   currentPuzzleIndex = 0;
@@ -586,6 +589,12 @@ export class CaptureTheShapes {
     if (this.capturedCount === this.totalShapes) {
       this.gameCompleted = true;
       this.saveBestScore();
+      // Track progress - lower moveCount is better, so invert for score
+      const score = Math.max(100 - this.moveCount, 10); // Higher score for fewer moves
+      this.progressService.trackCompletion('captureTheShapes', {
+        score: score,
+        puzzleId: this.currentPuzzle.id
+      });
     }
   }
 

@@ -5,13 +5,12 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyDwC-v-wBLc3C_aip1UHF4ZcTQlgQ19Ha8",
-    authDomain: "chess-activities.firebaseapp.com",
-    projectId: "chess-activities",
-    storageBucket: "chess-activities.firebasestorage.app",
-    messagingSenderId: "705283779084",
-    appId: "1:705283779084:web:ec701c3c968d1d313c5c29",
-    measurementId: "G-DRQ5HSBGEB"
+    apiKey: "AIzaSyDpW8OGi_4ohV2AZFF7b2EEELSe_txoS08",
+    authDomain: "chess-app-41191.firebaseapp.com",
+    projectId: "chess-app-41191",
+    storageBucket: "chess-app-41191.firebasestorage.app",
+    messagingSenderId: "873425350058",
+    appId: "1:873425350058:web:e5c5c60fa967ff5e210fd3"
   },
   business: {
     name: 'Chess Activities',

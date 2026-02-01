@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
+import { ProgressService } from '../services/progress.service';
 
 @Component({
   selector: 'app-coordinates',
@@ -10,6 +11,8 @@ import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.
   styleUrls: ['./coordinates.css']
 })
 export class Coordinates {
+  private progressService = inject(ProgressService);
+  
   size = 8;
   board: number[][] = Array.from({ length: this.size }, () => Array(this.size).fill(0));
   cells: ChessCell[][] = [];
@@ -70,6 +73,8 @@ export class Coordinates {
     this.attempts++;
     if (correct) {
       this.score++;
+      // Track progress
+      this.progressService.trackCompletion('coordinates', { score: this.score });
       this.nextTarget();
     }
 

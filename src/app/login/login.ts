@@ -40,6 +40,21 @@ export class Login {
     }
   }
 
+  async signInWithGoogle(): Promise<void> {
+    this.isLoading.set(true);
+    this.errorMessage.set('');
+
+    try {
+      await this.authService.signInWithGoogle();
+      this.router.navigate(['/']);
+    } catch (error: any) {
+      this.errorMessage.set(error.message);
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+
+
   togglePasswordVisibility(): void {
     this.showPassword.set(!this.showPassword());
   }

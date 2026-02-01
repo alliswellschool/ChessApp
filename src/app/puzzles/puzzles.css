@@ -20,35 +20,97 @@
   justify-content: flex-start;
 }
 
+/* Card Flip Container - 2D Flip */
+.activity-card-wrapper {
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: 300px;
+  max-width: 450px;
+  min-height: 360px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  position: relative;
+}
+
+.activity-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+}
+
+/* Both cards have same exact dimensions */
 .activity-card {
   background: white;
   border-radius: 12px;
-  padding: 32px 24px;
+  padding: 40px 28px;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  text-decoration: none;
+  transition: all 0.4s ease;
   color: inherit;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   border: 2px solid transparent;
-  min-height: 300px;
-  flex: 1 1 calc(33.333% - 20px);
-  min-width: 280px;
-  max-width: 400px;
+  min-height: 360px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-.activity-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
-  border-color: #667eea;
+/* Front card - visible by default */
+.activity-card-front {
+  z-index: 2;
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+/* Back card - hidden by default */
+.activity-card-back {
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0.98);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  pointer-events: none;
+}
+
+/* On hover - flip with fade and scale */
+.activity-card-wrapper:hover .activity-card-front {
+  opacity: 0;
+  transform: scale(0.98);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.activity-card-wrapper:hover .activity-card-back {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 2;
+  pointer-events: auto;
 }
 
 .activity-icon {
   font-size: 4rem;
   margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.activity-icon.completed {
+  filter: drop-shadow(0 0 8px #10b981) hue-rotate(90deg) saturate(2);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px #10b981) hue-rotate(90deg) saturate(2);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px #10b981) hue-rotate(90deg) saturate(2.5);
+  }
 }
 
 .activity-title {
@@ -72,6 +134,120 @@
   margin-top: 8px;
 }
 
+.flip-hint {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.click-hint {
+  font-size: 0.8rem;
+  margin-top: 8px;
+  opacity: 0.9;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Card Back (Stats) */
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 12px;
+  text-align: center;
+}
+
+.stats-icon {
+  font-size: 3rem;
+  transition: all 0.3s ease;
+}
+
+.stats-icon.completed {
+  filter: drop-shadow(0 0 12px #10b981) hue-rotate(90deg) saturate(2);
+  animation: pulse-green 2s infinite;
+}
+
+.stats-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.stats-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 12px 0;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: 2.25rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  opacity: 1;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.stat-divider {
+  font-size: 2rem;
+  font-weight: 300;
+  opacity: 0.7;
+}
+
+/* Progress Bar Container */
+.progress-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.progress-bar-outer {
+  width: 75%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 1px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+  border-radius: 3px;
+  transition: width 0.8s ease-out;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+  min-width: 0;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
   .activities {
@@ -82,7 +258,7 @@
     gap: 24px;
   }
   
-  .activity-card {
+  .activity-card-wrapper {
     flex: 1 1 calc(50% - 12px);
     min-width: 260px;
   }
@@ -102,11 +278,14 @@
     gap: 20px;
   }
 
+  .activity-card-wrapper {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 220px;
+  }
+  
   .activity-card {
     padding: 24px 20px;
     min-height: 260px;
-    flex: 1 1 calc(50% - 10px);
-    min-width: 220px;
   }
 
   .activity-icon {
@@ -132,12 +311,22 @@
     justify-content: center;
   }
 
+  .activity-card-wrapper {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  
   .activity-card {
     padding: 20px 16px;
     min-height: 240px;
-    flex: 1 1 100%;
-    min-width: 200px;
-    max-width: 100%;
+  }
+
+  .activity-icon {
+    font-size: 2.5rem;
+  }
+
+  .activity-title {
+    font-size: 1.2rem;
   }
 }
 
@@ -155,9 +344,12 @@
     gap: 16px;
   }
 
+  .activity-card-wrapper {
+    min-height: 220px;
+  }
+  
   .activity-card {
     min-height: 220px;
-    flex: 1 1 100%;
   }
 
   .activity-icon {
