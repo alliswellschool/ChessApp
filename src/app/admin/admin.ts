@@ -12,7 +12,7 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./admin.css']
 })
 export class Admin implements OnInit {
-  activeTab: 'questions' | 'import' | 'analytics' = 'questions';
+  activeTab: 'dashboard' | 'questions' | 'import' | 'analytics' = 'dashboard';
   
   // Questions management
   questions: Question[] = [];

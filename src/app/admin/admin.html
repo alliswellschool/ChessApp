@@ -8,6 +8,12 @@
   <div class="tabs">
     <button 
       class="tab" 
+      [class.active]="activeTab === 'dashboard'"
+      (click)="activeTab = 'dashboard'">
+      📊 Dashboard
+    </button>
+    <button 
+      class="tab" 
       [class.active]="activeTab === 'questions'"
       (click)="activeTab = 'questions'">
       📝 Questions ({{ questions.length }})
@@ -22,8 +28,109 @@
       class="tab" 
       [class.active]="activeTab === 'analytics'"
       (click)="activeTab = 'analytics'; loadPerformance()">
-      📊 Analytics
+      📈 Analytics
     </button>
+  </div>
+
+  <!-- Dashboard Tab -->
+  <div *ngIf="activeTab === 'dashboard'" class="tab-content">
+    <div class="dashboard-header">
+      <h2>📊 Overview Dashboard</h2>
+      <p class="dashboard-subtitle">Quick insights about your chess app</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📝</div>
+        <div class="stat-info">
+          <h3 class="stat-value">{{ questions.length }}</h3>
+          <p class="stat-label">Quiz Questions</p>
+          <p class="stat-detail">Across all difficulty levels</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <h3 class="stat-value">{{ performance.length }}</h3>
+          <p class="stat-label">Active Users</p>
+          <p class="stat-detail">With quiz attempts</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-info">
+          <h3 class="stat-value">{{ stats.totalQuizzes || 0 }}</h3>
+          <p class="stat-label">Total Quiz Attempts</p>
+          <p class="stat-detail">Avg score: {{ (stats.avgScore || 0).toFixed(1) }}%</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <h3>🎯 Recent Activity</h3>
+        <div class="activity-list">
+          <div class="activity-item">
+            <span class="activity-icon">📝</span>
+            <div class="activity-content">
+              <p class="activity-title">Quiz System</p>
+              <p class="activity-desc">{{ questions.length }} questions ready for students</p>
+            </div>
+          </div>
+          <div class="activity-item">
+            <span class="activity-icon">📊</span>
+            <div class="activity-content">
+              <p class="activity-title">User Performance</p>
+              <p class="activity-desc">{{ performance.length }} users have taken quizzes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💡 Quick Actions</h3>
+        <div class="quick-actions">
+          <button class="action-btn" (click)="activeTab = 'questions'">
+            <span class="action-icon">➕</span>
+            <span>Add Quiz Question</span>
+          </button>
+          <button class="action-btn" (click)="activeTab = 'questions'">
+            <span class="action-icon">📝</span>
+            <span>Add Quiz Question</span>
+          </button>
+          <button class="action-btn" (click)="activeTab = 'import'">
+            <span class="action-icon">📁</span>
+            <span>Import Questions</span>
+          </button>
+          <button class="action-btn" (click)="activeTab = 'analytics'">
+            <span class="action-icon">📈</span>
+            <span>View Analytics</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📌 App Status</h3>
+      <div class="status-grid">
+        <div class="status-item">
+          <span class="status-icon green">✓</span>
+          <div>
+            <p class="status-title">Quiz System</p>
+            <p class="status-detail">{{ questions.length }} questions available</p>
+          </div>
+        </div>
+        <div class="status-item">
+          <span class="status-icon green">✓</span>
+          <div>
+            <p class="status-title">User Engagement</p>
+            <p class="status-detail">{{ performance.length }} active learners</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Questions Tab -->

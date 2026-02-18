@@ -160,6 +160,18 @@ export class GameOfIndependence {
     }
   }
 
+  isCompletedBoardSize(boardSize: number): boolean {
+    if (!this.userProgressData?.completedPuzzles || this.mode === 'team') {
+      return false;
+    }
+    
+    const completedPuzzleIds = this.userProgressData.completedPuzzles as number[];
+    const pieceIndex = this.pieces.indexOf(this.selected);
+    const puzzleId = parseInt(`${pieceIndex}${boardSize}`);
+    
+    return completedPuzzleIds.includes(puzzleId);
+  }
+
   getPieceSymbol(p: Piece) { return p ? getPieceSymbol(p as PieceType) : ''; }
   getPieceImage(p: Piece) { return p ? getPieceImage(p as PieceType) : ''; }
   fileLabel(i: number) { return fileLabel(i); }

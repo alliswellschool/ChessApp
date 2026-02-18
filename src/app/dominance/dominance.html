@@ -23,6 +23,7 @@
     <label>Board Size:</label>
     <button *ngFor="let s of availableSizes" 
             [class.active]="size === s"
+            [class.completed]="isCompletedBoardSize(s)"
             (click)="changeSize(s)">
       {{ s }}×{{ s }}
     </button>
@@ -39,6 +40,7 @@
         [selectedPiece]="selectedPiece"
         [showCounts]="true"
         [pieceCounts]="pieceCountsMap"
+        [completedPieces]="completedPieces"
         (pieceSelected)="selectPiece($event)">
       </app-piece-selector>
 

@@ -64,6 +64,18 @@
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
+.size-controls button.completed {
+  background: #27ae60;
+  color: #fff;
+  border-color: #27ae60;
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.size-controls button.completed:hover {
+  background: #229954;
+  box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
+}
+
 /* How to Play Panel - Right Side */
 .info-panel-right {
   background: #f0f4ff;

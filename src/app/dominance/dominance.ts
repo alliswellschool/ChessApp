@@ -91,6 +91,9 @@ export class Dominance {
     pawn: 0
   };
   
+  // User progress data for tracking completed board sizes
+  private userProgressData: any = null;
+  
   // Team mode removed; keeping single-player only
   
   // Exact number of pieces required for each board size from constants
@@ -98,6 +101,15 @@ export class Dominance {
   
   constructor() {
     this.initializeBoard();
+    this.loadProgressData();
+  }
+  
+  async loadProgressData(): Promise<void> {
+    try {
+      this.userProgressData = await this.progressService.getPuzzleProgress('dominance');
+    } catch (error) {
+      console.error('Error loading progress data:', error);
+    }
   }
   
   initializeBoard(): void {
@@ -173,6 +185,48 @@ export class Dominance {
     if (this.mode === 'single') {
       this.resetBoard(type);
     }
+  }
+
+  isCompletedBoardSize(boardSize: number): boolean {
+    if (!this.userProgressData?.completedPuzzles || this.mode === 'team') {
+      return false;
+    }
+    
+    const completedPuzzleIds = this.userProgressData.completedPuzzles as number[];
+    const pieceIndex = ALL_PIECE_TYPES.indexOf(this.selectedPiece);
+    const puzzleId = parseInt(`${pieceIndex}${boardSize}`);
+    
+    return completedPuzzleIds.includes(puzzleId);
+  }
+  
+  get completedPieces(): Set<PieceType> {
+    const completed = new Set<PieceType>();
+    
+    if (!this.userProgressData?.completedPuzzles || this.mode === 'team') {
+      return completed;
+    }
+    
+    const completedPuzzleIds = this.userProgressData.completedPuzzles as number[];
+    
+    // Check if all board sizes (4-8) are completed for each piece
+    ALL_PIECE_TYPES.forEach(piece => {
+      const pieceIndex = ALL_PIECE_TYPES.indexOf(piece);
+      let allSizesComplete = true;
+      
+      for (let size = 4; size <= 8; size++) {
+        const puzzleId = parseInt(`${pieceIndex}${size}`);
+        if (!completedPuzzleIds.includes(puzzleId)) {
+          allSizesComplete = false;
+          break;
+        }
+      }
+      
+      if (allSizesComplete) {
+        completed.add(piece);
+      }
+    });
+    
+    return completed;
   }
   
   // Team mode controls removed
@@ -262,10 +316,32 @@ export class Dominance {
   }
   
   get victoryButtons(): VictoryButton[] {
-    return [
-      { label: 'Try Again', action: 'try-again', style: 'secondary' },
-      { label: 'Continue', action: 'close', style: 'primary' }
+    const buttons: VictoryButton[] = [
+      { label: 'Try Again', action: 'try-again', style: 'secondary' }
     ];
+    
+    // Add "Next Board" button if there are more board sizes for this piece
+    if (this.hasNextBoardSize) {
+      buttons.push({ label: 'Next Board', action: 'next-board', style: 'primary' });
+    } else if (this.hasNextPuzzle) {
+      // Only show "Next Piece" when all boards for current piece are complete
+      buttons.push({ label: 'Next Piece', action: 'next-piece', style: 'primary' });
+    } else {
+      buttons.push({ label: 'Continue', action: 'close', style: 'primary' });
+    }
+    
+    return buttons;
+  }
+  
+  get hasNextBoardSize(): boolean {
+    const nextSize = this.availableSizes[this.availableSizes.indexOf(this.size) + 1];
+    return nextSize !== undefined;
+  }
+  
+  get hasNextPuzzle(): boolean {
+    const currentPieces = this.availablePieces;
+    const currentIndex = currentPieces.findIndex(p => p.type === this.selectedPiece);
+    return currentIndex < currentPieces.length - 1;
   }
   
   get fullCoverageButtons(): VictoryButton[] {
@@ -287,7 +363,20 @@ export class Dominance {
   handleVictoryAction(action: string): void {
     if (action === 'try-again') {
       this.resetBoard();
+    } else if (action === 'next-board') {
+      this.selectNextBoardSize();
+    } else if (action === 'next-piece') {
+      this.selectNextPiece();
     } else if (action === 'close') {
+      this.showVictoryModal = false;
+    }
+  }
+  
+  selectNextBoardSize(): void {
+    const currentIndex = this.availableSizes.indexOf(this.size);
+    if (currentIndex < this.availableSizes.length - 1) {
+      const nextSize = this.availableSizes[currentIndex + 1];
+      this.changeSize(nextSize);
       this.showVictoryModal = false;
     }
   }

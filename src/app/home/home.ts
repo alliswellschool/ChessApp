@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 interface Announcement {
   id: number;
@@ -12,7 +13,7 @@ interface Announcement {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
@@ -21,23 +22,23 @@ export class Home {
   announcements: Announcement[] = [
     {
       id: 1,
-      title: 'Welcome to Chess Activities!',
-      content: 'Start your chess learning journey with our interactive activities and puzzles.',
-      date: new Date('2025-11-27'),
-      type: 'info'
+      title: 'New Interactive Chess Puzzles Available!',
+      content: 'We\'ve added over 200 new tactical puzzles with detailed explanations. Start challenging yourself today!',
+      date: new Date('2026-02-18'),
+      type: 'success'
     },
     {
       id: 2,
-      title: 'New Feature: Adaptive Quiz',
-      content: 'Try our new adaptive quiz system that adjusts difficulty based on your performance!',
-      date: new Date('2025-11-27'),
+      title: 'Adaptive Quiz System Launch',
+      content: 'Our new AI-powered adaptive quiz system now adjusts difficulty based on your performance for optimal learning.',
+      date: new Date('2026-02-16'),
       type: 'success'
     },
     {
       id: 3,
-      title: "Knight's Tour Available",
-      content: 'Challenge yourself with the classic Knight\'s Tour puzzle.',
-      date: new Date('2025-11-27'),
+      title: 'Spring Chess Challenge Started',
+      content: 'Join our exciting spring chess challenge with prizes and recognition for top performers!',
+      date: new Date('2026-02-14'),
       type: 'info'
     }
   ];

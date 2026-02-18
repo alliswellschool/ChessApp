@@ -1,48 +1,19 @@
 <div class="books-container">
   <!-- Header Section -->
   <section class="header-section">
-    <h1 class="page-title">♔ Chess Books Store</h1>
-    <p class="page-subtitle">Expand your chess knowledge with curated books from grandmasters and experts</p>
+    <h1 class="page-title">📚 Chess Books & Learning Materials</h1>
+    <p class="page-subtitle">Curated books available on Amazon - click to purchase</p>
   </section>
 
-  <!-- Search and Filter Bar -->
+  <!-- Search Bar -->
   <section class="controls-section">
     <div class="search-box">
       <input 
         type="text" 
         [(ngModel)]="searchQuery" 
-        placeholder="Search books, authors..." 
+        placeholder="Search books..." 
         class="search-input">
       <span class="search-icon">🔍</span>
-    </div>
-
-    <div class="sort-box">
-      <label for="sort">Sort by:</label>
-      <select id="sort" [(ngModel)]="sortBy" class="sort-select">
-        <option value="popular">Most Popular</option>
-        <option value="rating">Highest Rated</option>
-        <option value="price-low">Price: Low to High</option>
-        <option value="price-high">Price: High to Low</option>
-      </select>
-    </div>
-
-    <button class="cart-toggle" (click)="toggleCart()">
-      🛒 Cart ({{ cartItemCount }})
-      <span class="cart-badge" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
-    </button>
-  </section>
-
-  <!-- Category Filter -->
-  <section class="category-section">
-    <div class="category-buttons">
-      <button 
-        *ngFor="let category of categories"
-        [class.active]="selectedCategory === category.id"
-        (click)="filterByCategory(category.id)"
-        class="category-btn">
-        <span class="category-icon">{{ category.icon }}</span>
-        <span class="category-name">{{ category.name }}</span>
-      </button>
     </div>
   </section>
 
@@ -50,47 +21,19 @@
   <section class="books-section">
     <div class="books-grid" *ngIf="filteredBooks.length > 0">
       <div *ngFor="let book of filteredBooks" class="book-card">
-        <div class="book-badges">
-          <span class="badge bestseller" *ngIf="book.bestseller">🌟 Bestseller</span>
-          <span class="badge out-of-stock" *ngIf="!book.inStock">Out of Stock</span>
-        </div>
-
         <div class="book-image">
           <img [src]="book.image" [alt]="book.title" class="book-img">
         </div>
 
         <div class="book-info">
           <h3 class="book-title">{{ book.title }}</h3>
-          <p class="book-author">by {{ book.author }}</p>
-
-          <!-- Rating and reviews - commented out for future use
-          <div class="book-rating">
-            <div class="stars">
-              <span *ngFor="let filled of getStarArray(book.rating)" class="star">
-                {{ filled ? '⭐' : '☆' }}
-              </span>
-              <span class="rating-number">{{ book.rating }}</span>
-            </div>
-            <span class="reviews-count">({{ book.reviews }} reviews)</span>
-          </div>
-          -->
-
           <p class="book-description">{{ book.description }}</p>
 
-          <div class="book-category-tag">
-            <span class="category-tag">{{ book.category }}</span>
-          </div>
-
           <div class="book-footer">
-            <div class="price-container">
-              <span class="price">${{ book.price }}</span>
-              <span class="original-price" *ngIf="book.originalPrice">${{ book.originalPrice }}</span>
-            </div>
             <button 
-              class="btn-add-cart" 
-              (click)="addToCart(book)"
-              [disabled]="!book.inStock">
-              {{ book.inStock ? 'Add to Cart' : 'Out of Stock' }}
+              class="btn-amazon" 
+              (click)="buyOnAmazon(book)">
+              🛒 Buy on Amazon
             </button>
           </div>
         </div>
@@ -99,88 +42,18 @@
 
     <div class="empty-state" *ngIf="filteredBooks.length === 0">
       <div class="empty-icon">📚</div>
-      <p>No books found matching your criteria</p>
+      <p>No books found</p>
+      <p class="empty-subtitle">Try adjusting your search</p>
     </div>
   </section>
 
-  <!-- Shopping Cart Sidebar -->
-  <div class="cart-sidebar" [class.open]="showCart">
-    <div class="cart-header">
-      <h2>Shopping Cart</h2>
-      <button class="close-cart" (click)="toggleCart()">✕</button>
-    </div>
-
-    <div class="cart-content">
-      <div *ngIf="cart.length === 0" class="cart-empty">
-        <div class="empty-cart-icon">🛒</div>
-        <p>Your cart is empty</p>
-      </div>
-
-      <div *ngIf="cart.length > 0">
-        <div *ngFor="let item of cart" class="cart-item">
-          <div class="cart-item-info">
-            <h4>{{ item.title }}</h4>
-            <p class="cart-item-author">{{ item.author }}</p>
-            <p class="cart-item-price">${{ item.price }} each</p>
-          </div>
-          <div class="cart-item-controls">
-            <div class="quantity-control">
-              <button (click)="updateQuantity(item.id, item.quantity - 1)" class="qty-btn">-</button>
-              <input 
-                type="number" 
-                [value]="item.quantity" 
-                (change)="updateQuantity(item.id, +$any($event.target).value)"
-                class="qty-input"
-                min="1">
-              <button (click)="updateQuantity(item.id, item.quantity + 1)" class="qty-btn">+</button>
-            </div>
-            <button (click)="removeFromCart(item.id)" class="btn-remove">Remove</button>
-          </div>
-          <div class="cart-item-total">
-            ${{ (item.price * item.quantity).toFixed(2) }}
-          </div>
-        </div>
-
-        <div class="cart-footer">
-          <div class="cart-total">
-            <span>Total:</span>
-            <span class="total-amount">${{ cartTotal.toFixed(2) }}</span>
-          </div>
-          <button class="btn-checkout" (click)="checkout()">
-            Proceed to Checkout
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Overlay -->
-  <div class="cart-overlay" [class.visible]="showCart" (click)="toggleCart()"></div>
-
-  <!-- Benefits Section -->
-  <section class="benefits-section">
-    <h2 class="section-title">Why Buy From Us?</h2>
-    <div class="benefits-grid">
-      <div class="benefit-card">
-        <div class="benefit-icon">📦</div>
-        <h3>Fast Shipping</h3>
-        <p>Get your books delivered within 3-5 business days</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">💯</div>
-        <h3>Quality Guaranteed</h3>
-        <p>Original books from trusted publishers</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">💰</div>
-        <h3>Best Prices</h3>
-        <p>Competitive pricing with regular discounts</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon">🔄</div>
-        <h3>Easy Returns</h3>
-        <p>30-day return policy, no questions asked</p>
-      </div>
+  <!-- About Section -->
+  <section class="about-section">
+    <h2 class="section-title">📖 About These Books</h2>
+    <div class="about-content">
+      <p>All books are carefully selected and available on Amazon. 
+      Purchase directly from Amazon to support the author and ensure best pricing and delivery options.</p>
+      <p>Each book is designed to enhance your chess learning journey with expert insights and practical exercises.</p>
     </div>
   </section>
 </div>

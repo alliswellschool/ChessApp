@@ -13,7 +13,7 @@ export const environment = {
     appId: "1:873425350058:web:e5c5c60fa967ff5e210fd3"
   },
   business: {
-    name: 'Chess Activities',
+    name: 'All is well school of chess',
     email: 'support@chessactivities.com',
     domain: 'chessactivities.com', // Update this once you get your domain
     description: 'Master chess through interactive puzzles, quizzes, and training activities'

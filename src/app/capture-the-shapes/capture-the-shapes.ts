@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { ChessboardComponent, ChessCell } from '../shared/chessboard/chessboard.component';
+import { PieceSelectorComponent } from '../shared/piece-selector/piece-selector.component';
 import {
   PieceType,
   getPieceImage,
@@ -11,7 +11,7 @@ import {
 } from '../shared/chess.constants';
 import { ProgressService } from '../services/progress.service';
 
-type ShapeType = 'star' | 'circle' | 'diamond' | 'triangle' | 'heart' | 'square';
+type ShapeType = 'star' | 'circle' | 'diamond' | 'triangle' | 'heart' | 'square' | 'pentagon' | 'hexagon';
 
 interface ShapePosition {
   row: number;
@@ -36,7 +36,7 @@ interface PuzzleData {
 @Component({
   selector: 'app-capture-the-shapes',
   standalone: true,
-  imports: [CommonModule, FormsModule, ChessboardComponent],
+  imports: [CommonModule, ChessboardComponent, PieceSelectorComponent],
   templateUrl: './capture-the-shapes.html',
   styleUrls: ['./capture-the-shapes.css']
 })
@@ -45,7 +45,8 @@ export class CaptureTheShapes {
   
   size = 8;
   
-  currentPuzzleIndex = 0;
+  currentBoardIndex = 0;
+  currentPositionIndex = 0;
   shapes: ShapePosition[] = [];
   
   // Movement-based system
@@ -57,355 +58,141 @@ export class CaptureTheShapes {
   showValidMoves = true;
   gameCompleted = false;
   
+  // User progress data for tracking completed puzzles
+  private userProgressData: any = null;
+  
   // Piece filter
   selectedPieceFilter: PieceType | 'all' = 'all';
   availablePieces: PieceType[] = ['rook', 'knight', 'bishop', 'queen', 'king'];
 
-  // Puzzle definitions - each starting position is a separate puzzle
+  // Board shape configurations
+  private board1Shapes = [
+    { row: 6, col: 0, shape: 'triangle' as ShapeType },
+    { row: 4, col: 1, shape: 'diamond' as ShapeType },
+    { row: 2, col: 2, shape: 'star' as ShapeType },
+    { row: 1, col: 3, shape: 'circle' as ShapeType },
+    { row: 5, col: 4, shape: 'square' as ShapeType },
+    { row: 6, col: 5, shape: 'pentagon' as ShapeType },
+    { row: 1, col: 6, shape: 'hexagon' as ShapeType },
+    { row: 3, col: 7, shape: 'heart' as ShapeType },
+  ];
+
+  private board2Shapes = [
+    { row: 3, col: 0, shape: 'triangle' as ShapeType },
+    { row: 6, col: 1, shape: 'diamond' as ShapeType },
+    { row: 1, col: 2, shape: 'star' as ShapeType },
+    { row: 2, col: 3, shape: 'circle' as ShapeType },
+    { row: 4, col: 4, shape: 'square' as ShapeType },
+    { row: 1, col: 5, shape: 'pentagon' as ShapeType },
+    { row: 6, col: 6, shape: 'hexagon' as ShapeType },
+    { row: 5, col: 7, shape: 'heart' as ShapeType },
+  ];
+
+  private board3Shapes = [
+    { row: 4, col: 0, shape: 'triangle' as ShapeType },
+    { row: 1, col: 1, shape: 'star' as ShapeType },
+    { row: 3, col: 2, shape: 'circle' as ShapeType },
+    { row: 6, col: 3, shape: 'diamond' as ShapeType },
+    { row: 1, col: 4, shape: 'pentagon' as ShapeType },
+    { row: 4, col: 5, shape: 'square' as ShapeType },
+    { row: 2, col: 6, shape: 'heart' as ShapeType },
+    { row: 5, col: 7, shape: 'hexagon' as ShapeType },
+  ];
+
+  // Puzzle definitions - 48 total puzzles (3 boards x 16 variations per board)
   puzzles: PuzzleData[] = [
-    // Set 1 - Rook puzzles
-    {
-      id: 1,
-      pieceType: 'rook',
-      startSquare: 'a1',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 2,
-      pieceType: 'rook',
-      startSquare: 'h1',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 3,
-      pieceType: 'rook',
-      startSquare: 'a8',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 4,
-      pieceType: 'rook',
-      startSquare: 'h8',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    // Set 1 - Knight puzzles
-    {
-      id: 5,
-      pieceType: 'knight',
-      startSquare: 'b1',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 6,
-      pieceType: 'knight',
-      startSquare: 'g1',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 7,
-      pieceType: 'knight',
-      startSquare: 'b8',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 8,
-      pieceType: 'knight',
-      startSquare: 'g8',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    // Set 1 - Bishop puzzles
-    {
-      id: 9,
-      pieceType: 'bishop',
-      startSquare: 'c1',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 10,
-      pieceType: 'bishop',
-      startSquare: 'f1',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 11,
-      pieceType: 'bishop',
-      startSquare: 'c8',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 12,
-      pieceType: 'bishop',
-      startSquare: 'f8',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    // Set 1 - Queen puzzles
-    {
-      id: 13,
-      pieceType: 'queen',
-      startSquare: 'd1',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 14,
-      pieceType: 'queen',
-      startSquare: 'd8',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    // Set 1 - King puzzles
-    {
-      id: 15,
-      pieceType: 'king',
-      startSquare: 'e1',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    {
-      id: 16,
-      pieceType: 'king',
-      startSquare: 'e8',
-      shapes: [
-        { row: 2, col: 1, shape: 'star' },
-        { row: 2, col: 3, shape: 'circle' },
-        { row: 4, col: 5, shape: 'diamond' },
-        { row: 5, col: 2, shape: 'triangle' },
-        { row: 6, col: 6, shape: 'heart' },
-      ]
-    },
-    // Set 2 - Rook puzzles
-    {
-      id: 17,
-      pieceType: 'rook',
-      startSquare: 'a1',
-      shapes: [
-        { row: 1, col: 2, shape: 'circle' },
-        { row: 3, col: 4, shape: 'star' },
-        { row: 3, col: 6, shape: 'diamond' },
-        { row: 5, col: 1, shape: 'square' },
-        { row: 5, col: 5, shape: 'heart' },
-        { row: 6, col: 3, shape: 'triangle' },
-      ]
-    },
-    {
-      id: 18,
-      pieceType: 'rook',
-      startSquare: 'h1',
-      shapes: [
-        { row: 1, col: 2, shape: 'circle' },
-        { row: 3, col: 4, shape: 'star' },
-        { row: 3, col: 6, shape: 'diamond' },
-        { row: 5, col: 1, shape: 'square' },
-        { row: 5, col: 5, shape: 'heart' },
-        { row: 6, col: 3, shape: 'triangle' },
-      ]
-    },
-    // Set 2 - Knight puzzles
-    {
-      id: 19,
-      pieceType: 'knight',
-      startSquare: 'b1',
-      shapes: [
-        { row: 1, col: 2, shape: 'circle' },
-        { row: 3, col: 4, shape: 'star' },
-        { row: 3, col: 6, shape: 'diamond' },
-        { row: 5, col: 1, shape: 'square' },
-        { row: 5, col: 5, shape: 'heart' },
-        { row: 6, col: 3, shape: 'triangle' },
-      ]
-    },
-    {
-      id: 20,
-      pieceType: 'knight',
-      startSquare: 'g1',
-      shapes: [
-        { row: 1, col: 2, shape: 'circle' },
-        { row: 3, col: 4, shape: 'star' },
-        { row: 3, col: 6, shape: 'diamond' },
-        { row: 5, col: 1, shape: 'square' },
-        { row: 5, col: 5, shape: 'heart' },
-        { row: 6, col: 3, shape: 'triangle' },
-      ]
-    },
-    {
-      id: 21,
-      pieceType: 'knight',
-      startSquare: 'c8',
-      shapes: [
-        { row: 1, col: 2, shape: 'circle' },
-        { row: 3, col: 4, shape: 'star' },
-        { row: 3, col: 6, shape: 'diamond' },
-        { row: 5, col: 1, shape: 'square' },
-        { row: 5, col: 5, shape: 'heart' },
-        { row: 6, col: 3, shape: 'triangle' },
-      ]
-    },
-    // Set 2 - Bishop puzzles
-    {
-      id: 22,
-      pieceType: 'bishop',
-      startSquare: 'c1',
-      shapes: [
-        { row: 1, col: 2, shape: 'circle' },
-        { row: 3, col: 4, shape: 'star' },
-        { row: 3, col: 6, shape: 'diamond' },
-        { row: 5, col: 1, shape: 'square' },
-        { row: 5, col: 5, shape: 'heart' },
-        { row: 6, col: 3, shape: 'triangle' },
-      ]
-    },
-    {
-      id: 23,
-      pieceType: 'bishop',
-      startSquare: 'f8',
-      shapes: [
-        { row: 1, col: 2, shape: 'circle' },
-        { row: 3, col: 4, shape: 'star' },
-        { row: 3, col: 6, shape: 'diamond' },
-        { row: 5, col: 1, shape: 'square' },
-        { row: 5, col: 5, shape: 'heart' },
-        { row: 6, col: 3, shape: 'triangle' },
-      ]
-    },
-    // Set 2 - Queen puzzles
-    {
-      id: 24,
-      pieceType: 'queen',
-      startSquare: 'd1',
-      shapes: [
-        { row: 1, col: 2, shape: 'circle' },
-        { row: 3, col: 4, shape: 'star' },
-        { row: 3, col: 6, shape: 'diamond' },
-        { row: 5, col: 1, shape: 'square' },
-        { row: 5, col: 5, shape: 'heart' },
-        { row: 6, col: 3, shape: 'triangle' },
-      ]
-    },
-    // Set 2 - King puzzles
-    {
-      id: 25,
-      pieceType: 'king',
-      startSquare: 'e1',
-      shapes: [
-        { row: 1, col: 2, shape: 'circle' },
-        { row: 3, col: 4, shape: 'star' },
-        { row: 3, col: 6, shape: 'diamond' },
-        { row: 5, col: 1, shape: 'square' },
-        { row: 5, col: 5, shape: 'heart' },
-        { row: 6, col: 3, shape: 'triangle' },
-      ]
-    },
-    {
-      id: 26,
-      pieceType: 'king',
-      startSquare: 'e8',
-      shapes: [
-        { row: 1, col: 2, shape: 'circle' },
-        { row: 3, col: 4, shape: 'star' },
-        { row: 3, col: 6, shape: 'diamond' },
-        { row: 5, col: 1, shape: 'square' },
-        { row: 5, col: 5, shape: 'heart' },
-        { row: 6, col: 3, shape: 'triangle' },
-      ]
-    }
+    // BOARD 1 - Rook puzzles (4)
+    { id: 1, pieceType: 'rook', startSquare: 'a1', shapes: this.board1Shapes },
+    { id: 2, pieceType: 'rook', startSquare: 'a8', shapes: this.board1Shapes },
+    { id: 3, pieceType: 'rook', startSquare: 'h1', shapes: this.board1Shapes },
+    { id: 4, pieceType: 'rook', startSquare: 'h8', shapes: this.board1Shapes },
+    // BOARD 1 - Knight puzzles (4)
+    { id: 5, pieceType: 'knight', startSquare: 'b1', shapes: this.board1Shapes },
+    { id: 6, pieceType: 'knight', startSquare: 'b8', shapes: this.board1Shapes },
+    { id: 7, pieceType: 'knight', startSquare: 'g1', shapes: this.board1Shapes },
+    { id: 8, pieceType: 'knight', startSquare: 'g8', shapes: this.board1Shapes },
+    // BOARD 1 - Bishop puzzles (4)
+    { id: 9, pieceType: 'bishop', startSquare: 'c1', shapes: this.board1Shapes },
+    { id: 10, pieceType: 'bishop', startSquare: 'c8', shapes: this.board1Shapes },
+    { id: 11, pieceType: 'bishop', startSquare: 'f1', shapes: this.board1Shapes },
+    { id: 12, pieceType: 'bishop', startSquare: 'f8', shapes: this.board1Shapes },
+    // BOARD 1 - Queen puzzles (2)
+    { id: 13, pieceType: 'queen', startSquare: 'd1', shapes: this.board1Shapes },
+    { id: 14, pieceType: 'queen', startSquare: 'd8', shapes: this.board1Shapes },
+    // BOARD 1 - King puzzles (2)
+    { id: 15, pieceType: 'king', startSquare: 'e1', shapes: this.board1Shapes },
+    { id: 16, pieceType: 'king', startSquare: 'e8', shapes: this.board1Shapes },
+
+    // BOARD 2 - Rook puzzles (4)
+    { id: 17, pieceType: 'rook', startSquare: 'a1', shapes: this.board2Shapes },
+    { id: 18, pieceType: 'rook', startSquare: 'a8', shapes: this.board2Shapes },
+    { id: 19, pieceType: 'rook', startSquare: 'h1', shapes: this.board2Shapes },
+    { id: 20, pieceType: 'rook', startSquare: 'h8', shapes: this.board2Shapes },
+    // BOARD 2 - Knight puzzles (4)
+    { id: 21, pieceType: 'knight', startSquare: 'b1', shapes: this.board2Shapes },
+    { id: 22, pieceType: 'knight', startSquare: 'b8', shapes: this.board2Shapes },
+    { id: 23, pieceType: 'knight', startSquare: 'g1', shapes: this.board2Shapes },
+    { id: 24, pieceType: 'knight', startSquare: 'g8', shapes: this.board2Shapes },
+    // BOARD 2 - Bishop puzzles (4)
+    { id: 25, pieceType: 'bishop', startSquare: 'c1', shapes: this.board2Shapes },
+    { id: 26, pieceType: 'bishop', startSquare: 'c8', shapes: this.board2Shapes },
+    { id: 27, pieceType: 'bishop', startSquare: 'f1', shapes: this.board2Shapes },
+    { id: 28, pieceType: 'bishop', startSquare: 'f8', shapes: this.board2Shapes },
+    // BOARD 2 - Queen puzzles (2)
+    { id: 29, pieceType: 'queen', startSquare: 'd1', shapes: this.board2Shapes },
+    { id: 30, pieceType: 'queen', startSquare: 'd8', shapes: this.board2Shapes },
+    // BOARD 2 - King puzzles (2)
+    { id: 31, pieceType: 'king', startSquare: 'e1', shapes: this.board2Shapes },
+    { id: 32, pieceType: 'king', startSquare: 'e8', shapes: this.board2Shapes },
+
+    // BOARD 3 - Rook puzzles (4)
+    { id: 33, pieceType: 'rook', startSquare: 'a1', shapes: this.board3Shapes },
+    { id: 34, pieceType: 'rook', startSquare: 'a8', shapes: this.board3Shapes },
+    { id: 35, pieceType: 'rook', startSquare: 'h1', shapes: this.board3Shapes },
+    { id: 36, pieceType: 'rook', startSquare: 'h8', shapes: this.board3Shapes },
+    // BOARD 3 - Knight puzzles (4)
+    { id: 37, pieceType: 'knight', startSquare: 'b1', shapes: this.board3Shapes },
+    { id: 38, pieceType: 'knight', startSquare: 'b8', shapes: this.board3Shapes },
+    { id: 39, pieceType: 'knight', startSquare: 'g1', shapes: this.board3Shapes },
+    { id: 40, pieceType: 'knight', startSquare: 'g8', shapes: this.board3Shapes },
+    // BOARD 3 - Bishop puzzles (4)
+    { id: 41, pieceType: 'bishop', startSquare: 'c1', shapes: this.board3Shapes },
+    { id: 42, pieceType: 'bishop', startSquare: 'c8', shapes: this.board3Shapes },
+    { id: 43, pieceType: 'bishop', startSquare: 'f1', shapes: this.board3Shapes },
+    { id: 44, pieceType: 'bishop', startSquare: 'f8', shapes: this.board3Shapes },
+    // BOARD 3 - Queen puzzles (2)
+    { id: 45, pieceType: 'queen', startSquare: 'd1', shapes: this.board3Shapes },
+    { id: 46, pieceType: 'queen', startSquare: 'd8', shapes: this.board3Shapes },
+    // BOARD 3 - King puzzles (2)
+    { id: 47, pieceType: 'king', startSquare: 'e1', shapes: this.board3Shapes },
+    { id: 48, pieceType: 'king', startSquare: 'e8', shapes: this.board3Shapes },
   ];
 
   get filteredPuzzles(): PuzzleData[] {
+    // Get puzzles for current board only (16 per board: ids 1-16, 17-32, 33-48)
+    const startId = this.currentBoardIndex * 16 + 1;
+    const endId = startId + 16;
+    const boardPuzzles = this.puzzles.filter(p => p.id >= startId && p.id < endId);
+    
+    // Filter by selected piece type
     if (this.selectedPieceFilter === 'all') {
-      return this.puzzles;
+      return boardPuzzles;
     }
-    return this.puzzles.filter(p => p.pieceType === this.selectedPieceFilter);
+    return boardPuzzles.filter(p => p.pieceType === this.selectedPieceFilter);
+  }
+
+  get maxPositions(): number {
+    if (this.selectedPieceFilter === 'all') return 16;
+    // Rook, Knight, Bishop: 4 positions each
+    // Queen, King: 2 positions each
+    if (this.selectedPieceFilter === 'queen' || this.selectedPieceFilter === 'king') {
+      return 2;
+    }
+    return 4;
   }
 
   get currentPuzzle(): PuzzleData {
-    return this.filteredPuzzles[this.currentPuzzleIndex];
+    return this.filteredPuzzles[this.currentPositionIndex];
   }
 
   get capturedCount(): number {
@@ -421,14 +208,35 @@ export class CaptureTheShapes {
   }
 
   constructor() {
-    this.loadPuzzle(this.currentPuzzleIndex);
+    this.loadPuzzle();
+    this.loadProgressData();
+  }
+  
+  async loadProgressData(): Promise<void> {
+    try {
+      this.userProgressData = await this.progressService.getPuzzleProgress('captureTheShapes');
+    } catch (error) {
+      console.error('Error loading progress data:', error);
+    }
+  }
+  
+  isCompletedBoard(boardIndex: number): boolean {
+    if (!this.userProgressData?.completedPuzzles) {
+      return false;
+    }
+    
+    const completedPuzzleIds = this.userProgressData.completedPuzzles as number[];
+    const startId = boardIndex * 16 + 1;
+    const endId = startId + 16;
+    
+    // Check if at least one puzzle is completed in this board
+    return completedPuzzleIds.some(id => id >= startId && id < endId);
   }
 
-  loadPuzzle(index: number) {
-    const puzzle = this.filteredPuzzles[index];
+  loadPuzzle() {
+    const puzzle = this.currentPuzzle;
     this.shapes = puzzle.shapes.map(s => ({ ...s, captured: false }));
     this.gameCompleted = false;
-    this.currentPuzzleIndex = index;
     this.loadBestScores();
     
     // Auto-place piece at starting position
@@ -447,8 +255,76 @@ export class CaptureTheShapes {
 
   onPieceFilterChange(pieceType: PieceType | 'all') {
     this.selectedPieceFilter = pieceType;
-    this.currentPuzzleIndex = 0;
-    this.loadPuzzle(0);
+    this.currentPositionIndex = 0; // Reset to first position when piece filter changes
+    this.loadPuzzle();
+  }
+
+  onPieceSelected(pieceType: PieceType): void {
+    this.onPieceFilterChange(pieceType);
+  }
+
+  get availablePieceInfo() {
+    return this.availablePieces.map(type => ({
+      type,
+      name: type.charAt(0).toUpperCase() + type.slice(1),
+      symbol: getPieceSymbol(type),
+      image: getPieceImage(type)
+    }));
+  }
+
+  get completedPieces(): Set<PieceType> {
+    const completed = new Set<PieceType>();
+    
+    if (!this.userProgressData?.completedPuzzles) {
+      return completed;
+    }
+    
+    const completedPuzzleIds = this.userProgressData.completedPuzzles as number[];
+    
+    // Check if all puzzles for each piece are completed (4 positions per piece type, 3 boards)
+    // Rook: ids 1-4, 17-20, 33-36 (12 puzzles total)
+    // Knight: ids 5-8, 21-24, 37-40
+    // Bishop: ids 9-12, 25-28, 41-44
+    // Queen: ids 13-14, 29-30, 45-46 (6 puzzles total)
+    // King: ids 15-16, 31-32, 47-48 (6 puzzles total)
+    
+    const pieceRanges: Record<PieceType, number[][]> = {
+      rook: [[1, 4], [17, 20], [33, 36]],
+      knight: [[5, 8], [21, 24], [37, 40]],
+      bishop: [[9, 12], [25, 28], [41, 44]],
+      queen: [[13, 14], [29, 30], [45, 46]],
+      king: [[15, 16], [31, 32], [47, 48]],
+      pawn: [] // Pawn not used in Capture the Shapes
+    };
+    
+    this.availablePieces.forEach(piece => {
+      const ranges = pieceRanges[piece];
+      let allCompleted = true;
+      
+      for (const [start, end] of ranges) {
+        let rangeComplete = false;
+        for (let id = start; id <= end; id++) {
+          if (completedPuzzleIds.includes(id)) {
+            rangeComplete = true;
+            break;
+          }
+        }
+        if (!rangeComplete) {
+          allCompleted = false;
+          break;
+        }
+      }
+      
+      if (allCompleted) {
+        completed.add(piece);
+      }
+    });
+    
+    return completed;
+  }
+
+  get currentSelectedPieceType(): PieceType {
+    return this.selectedPieceFilter === 'all' ? 'queen' : this.selectedPieceFilter;
   }
 
 
@@ -636,6 +512,7 @@ export class CaptureTheShapes {
         if (shape) {
           customClasses.push('has-shape');
           customClasses.push(shape.captured ? 'captured' : 'uncaptured');
+          customClasses.push(`shape-${shape.shape}`);
         }
 
         rowCells.push({
@@ -662,13 +539,15 @@ export class CaptureTheShapes {
       'diamond': '◆',
       'triangle': '▲',
       'heart': '♥',
-      'square': '■'
+      'square': '■',
+      'pentagon': '⬠',
+      'hexagon': '⬡'
     };
     return symbols[shape] || '';
   }
 
   reset() {
-    this.loadPuzzle(this.currentPuzzleIndex);
+    this.loadPuzzle();
   }
 
   undoMove() {
@@ -699,19 +578,33 @@ export class CaptureTheShapes {
     });
   }
 
-  nextPuzzle() {
-    if (this.currentPuzzleIndex < this.filteredPuzzles.length - 1) {
-      this.loadPuzzle(this.currentPuzzleIndex + 1);
-    } else {
-      this.loadPuzzle(0); // Loop back to first puzzle
+  nextBoard() {
+    if (this.currentBoardIndex < 2) {
+      this.currentBoardIndex++;
+      this.currentPositionIndex = 0;
+      this.loadPuzzle();
     }
   }
 
-  previousPuzzle() {
-    if (this.currentPuzzleIndex > 0) {
-      this.loadPuzzle(this.currentPuzzleIndex - 1);
-    } else {
-      this.loadPuzzle(this.puzzles.length - 1); // Loop to last puzzle
+  previousBoard() {
+    if (this.currentBoardIndex > 0) {
+      this.currentBoardIndex--;
+      this.currentPositionIndex = 0;
+      this.loadPuzzle();
+    }
+  }
+
+  nextPosition() {
+    if (this.currentPositionIndex < this.filteredPuzzles.length - 1) {
+      this.currentPositionIndex++;
+      this.loadPuzzle();
+    }
+  }
+
+  previousPosition() {
+    if (this.currentPositionIndex > 0) {
+      this.currentPositionIndex--;
+      this.loadPuzzle();
     }
   }
 

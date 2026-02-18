@@ -265,6 +265,18 @@
   border-color: transparent;
 }
 
+.size-btn.completed {
+  background: #27ae60;
+  color: #fff;
+  border-color: #27ae60;
+  box-shadow: 0 8px 20px rgba(39, 174, 96, 0.25);
+}
+
+.size-btn.completed:hover {
+  background: #229954;
+  box-shadow: 0 10px 24px rgba(39, 174, 96, 0.35);
+}
+
 /* Make sure the size pill appears centered under the header */
 .header .size-controls { display: inline-flex; }
 

@@ -109,8 +109,9 @@
   margin-right: 32px;
 }
 
-.piece-filter {
-  display: inline-flex;
+.piece-selector-wrapper {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 12px;
   padding: 12px 24px;
@@ -120,34 +121,87 @@
   position: relative;
 }
 
-.piece-filter label {
+.piece-selector-wrapper label {
   font-weight: 700;
   color: #111827;
   font-size: 0.95rem;
 }
 
-.piece-dropdown {
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: 2px solid #667eea;
-  background: #fff;
-  color: #111827;
-  font-weight: 600;
-  font-size: 0.95rem;
+.position-info-panel {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 16px;
+  color: #fff;
+}
+
+.position-info-panel h4 {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.position-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.position-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.position-btn {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
   transition: all 0.18s ease;
-  min-width: 180px;
 }
 
-.piece-dropdown:hover {
-  border-color: #5568d3;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+.position-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.35);
 }
 
-.piece-dropdown:focus {
-  outline: none;
-  border-color: #5568d3;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+.position-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.position-number {
+  font-weight: 700;
+  font-size: 0.95rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+.current-position {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.position-label {
+  font-weight: 600;
+}
+
+.position-value {
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 .puzzle-nav {
@@ -189,6 +243,14 @@
   font-weight: 700;
   color: #111827;
   white-space: nowrap;
+}
+
+.puzzle-number.completed {
+  color: #27ae60;
+  background: rgba(39, 174, 96, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.15);
 }
 
 .message-bar {
@@ -786,6 +848,39 @@
 
 ::ng-deep .has-shape.captured .cell-label {
   color: #4CAF50;
+}
+
+/* Shape specific colors */
+::ng-deep .has-shape .cell-label {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* All shapes: Same color when uncaptured, green when captured */
+::ng-deep .shape-star.uncaptured .cell-label,
+::ng-deep .shape-circle.uncaptured .cell-label,
+::ng-deep .shape-diamond.uncaptured .cell-label,
+::ng-deep .shape-triangle.uncaptured .cell-label,
+::ng-deep .shape-heart.uncaptured .cell-label,
+::ng-deep .shape-square.uncaptured .cell-label,
+::ng-deep .shape-pentagon.uncaptured .cell-label,
+::ng-deep .shape-hexagon.uncaptured .cell-label {
+  color: #1E90FF !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 1px #1E90FF !important;
+}
+
+::ng-deep .shape-star.captured .cell-label,
+::ng-deep .shape-circle.captured .cell-label,
+::ng-deep .shape-diamond.captured .cell-label,
+::ng-deep .shape-triangle.captured .cell-label,
+::ng-deep .shape-heart.captured .cell-label,
+::ng-deep .shape-square.captured .cell-label,
+::ng-deep .shape-pentagon.captured .cell-label,
+::ng-deep .shape-hexagon.captured .cell-label {
+  color: #32CD32 !important;
+  font-weight: 900 !important;
+  text-shadow: 0 0 1px #32CD32, 0 0 2px #32CD32 !important;
 }
 
 ::ng-deep .valid-start {

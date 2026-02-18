@@ -3,26 +3,14 @@
     <h1>Capture the Shapes</h1>
    
     
-    <div class="filter-nav-container">
-      <div class="piece-filter">
-        <label for="piece-select">Filter by Piece:</label>
-        <select id="piece-select" [(ngModel)]="selectedPieceFilter" (change)="onPieceFilterChange(selectedPieceFilter)" class="piece-dropdown">
-          <option value="all">All Pieces</option>
-          <option *ngFor="let piece of availablePieces" [value]="piece">
-            {{ getPieceSymbol(piece) }} {{ piece | titlecase }}
-          </option>
-        </select>
-      </div>
-      
-      <div class="puzzle-nav">
-        <button class="nav-btn" (click)="previousPuzzle()" [disabled]="currentPuzzleIndex === 0">
-          ← Previous
-        </button>
-        <span class="puzzle-number">Puzzle {{ currentPuzzleIndex + 1 }} / {{ filteredPuzzles.length }}</span>
-        <button class="nav-btn" (click)="nextPuzzle()" [disabled]="currentPuzzleIndex === filteredPuzzles.length - 1">
-          Next →
-        </button>
-      </div>
+    <div class="puzzle-nav">
+      <button class="nav-btn" (click)="previousBoard()" [disabled]="currentBoardIndex === 0">
+        ← Previous Board
+      </button>
+      <span class="puzzle-number" [class.completed]="isCompletedBoard(currentBoardIndex)">Board {{ currentBoardIndex + 1 }} / 3</span>
+      <button class="nav-btn" (click)="nextBoard()" [disabled]="currentBoardIndex === 2">
+        Next Board →
+      </button>
     </div>
 
     <div class="message-bar">
@@ -37,15 +25,27 @@
 
   <div class="controls-and-board">
     <div class="left">
-      <div class="puzzle-info-panel">
-        <h4>Puzzle {{ currentPuzzleIndex + 1 }}</h4>
-        <div class="puzzle-details">
-          <div class="detail-row">
-            <span class="piece-icon large">{{ getPieceSymbol(currentPuzzle.pieceType) }}</span>
-            <div class="detail-text">
-              <span class="piece-name">{{ currentPuzzle.pieceType | titlecase }}</span>
-              <span class="start-square">Start: {{ currentPuzzle.startSquare }}</span>
-            </div>
+      <div class="piece-selector-wrapper">
+        <label>Select Piece:</label>
+        <app-piece-selector
+          [pieces]="availablePieceInfo"
+          [selectedPiece]="currentSelectedPieceType"
+          [completedPieces]="completedPieces"
+          (pieceSelected)="onPieceSelected($event)">
+        </app-piece-selector>
+      </div>
+      
+      <div class="position-info-panel">
+        <h4>Position Variant</h4>
+        <div class="position-details">
+          <div class="position-nav-row">
+            <button class="position-btn" (click)="previousPosition()" [disabled]="currentPositionIndex === 0">←</button>
+            <span class="position-number">{{ currentPositionIndex + 1 }} / {{ maxPositions }}</span>
+            <button class="position-btn" (click)="nextPosition()" [disabled]="currentPositionIndex === maxPositions - 1">→</button>
+          </div>
+          <div class="current-position">
+            <span class="position-label">Start Square:</span>
+            <span class="position-value">{{ currentPuzzle.startSquare }}</span>
           </div>
         </div>
       </div>
@@ -128,7 +128,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="modal-btn primary" (click)="nextPuzzle()">Next Puzzle</button>
+        <button class="modal-btn primary" (click)="nextPosition()">Next Position</button>
         <button class="modal-btn secondary" (click)="reset()">Try Again</button>
       </div>
     </div>

@@ -14,7 +14,7 @@ export const environment = {
     measurementId: "YOUR_MEASUREMENT_ID"
   },
   business: {
-    name: 'Chess Activities',
+    name: 'All is well school of chess',
     email: 'support@chessactivities.com',
     domain: 'chessactivities.com',
     description: 'Master chess through interactive puzzles, quizzes, and training activities'

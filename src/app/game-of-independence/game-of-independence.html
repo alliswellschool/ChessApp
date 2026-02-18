@@ -7,7 +7,11 @@
     <div class="size-controls" *ngIf="mode==='single'">
       <label class="size-label">Board Size:</label>
       <div class="size-buttons">
-        <button *ngFor="let s of availableSizes" class="size-btn" [class.active]="size===s" (click)="setSize(s)">{{s}}×{{s}}</button>
+        <button *ngFor="let s of availableSizes" 
+                class="size-btn" 
+                [class.active]="size===s"
+                [class.completed]="isCompletedBoardSize(s)"
+                (click)="setSize(s)">{{s}}×{{s}}</button>
       </div>
     </div>
   </div>
