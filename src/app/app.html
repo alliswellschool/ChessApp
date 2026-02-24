@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="navbar">
 		<div class="nav-content">
-			<h3>♔ All is well school of chess</h3>
+			<h3>♔ All is Well School of Chess</h3>
 
 			<!-- Desktop Navigation -->
 			<ul class="desktop-nav">
@@ -9,7 +9,6 @@
 				<li class="dropdown" [class.open]="dropdownOpen">
 					<a class="dropdown-toggle" (click)="toggleDropdown(); $event.stopPropagation()">About ▾</a>
 					<ul class="dropdown-menu" *ngIf="dropdownOpen">
-						<li><a routerLink="/about-school" routerLinkActive="active" (click)="closeDropdown()">Our School</a></li>
 						<li><a routerLink="/coaches" routerLinkActive="active" (click)="closeDropdown()">Our Coaches</a></li>
 						<li><a routerLink="/testimonials" routerLinkActive="active" (click)="closeDropdown()">Testimonials</a></li>
 						<li><a routerLink="/gallery" routerLinkActive="active" (click)="closeDropdown()">Gallery</a></li>
@@ -60,7 +59,6 @@
 			<ul>
 				<li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Home</a></li>
 				<li class="mobile-section-header">About Us</li>
-				<li class="mobile-submenu-item"><a routerLink="/about-school" routerLinkActive="active" (click)="closeMobileMenu()">Our School</a></li>
 				<li class="mobile-submenu-item"><a routerLink="/coaches" routerLinkActive="active" (click)="closeMobileMenu()">Our Coaches</a></li>
 				<li class="mobile-submenu-item"><a routerLink="/testimonials" routerLinkActive="active" (click)="closeMobileMenu()">Testimonials</a></li>
 				<li class="mobile-submenu-item"><a routerLink="/gallery" routerLinkActive="active" (click)="closeMobileMenu()">Gallery</a></li>
@@ -91,17 +89,17 @@
 	<footer class="footer">
 		<div class="footer-content">
 			<div class="footer-section">
-				<h4>♔ All is well school of chess</h4>
-				<p>Master chess through interactive puzzles, quizzes, and training activities.</p>
+				<h4>♔ All is Well School of Chess</h4>
+				<p>Master Your Next Best Move</p>
 			</div>
 			
 			<div class="footer-section">
 				<h4>Quick Links</h4>
 				<ul>
 					<li><a routerLink="/">Home</a></li>
-					<li><a routerLink="/classes">Classes</a></li>
-				<li><a routerLink="/chess-lab">Puzzles</a></li>
+					<li><a routerLink="/chess-lab">Chess Lab</a></li>
 					<li><a routerLink="/books">Books</a></li>
+					<li><a routerLink="/quiz">Quiz</a></li>
 					<li><a routerLink="/donate">Donate</a></li>
 				</ul>
 			</div>
@@ -109,11 +107,10 @@
 			<div class="footer-section">
 				<h4>About</h4>
 				<ul>
-					<li><a routerLink="/about-school">Our School</a></li>
-					<li><a routerLink="/coaches">Coaches</a></li>
+					<li><a routerLink="/coaches">Our Coaches</a></li>
 					<li><a routerLink="/testimonials">Testimonials</a></li>
 					<li><a routerLink="/gallery">Gallery</a></li>
-					<li><a routerLink="/contact">Contact</a></li>
+					<li><a routerLink="/classes">Classes</a></li>
 				</ul>
 			</div>
 			
@@ -127,13 +124,13 @@
 			
 			<div class="footer-section">
 				<h4>Support</h4>
-				<p>Questions? Email us:</p>
-				<a href="mailto:support@chessactivities.com">support&#64;chessactivities.com</a>
+				<p></p>
+				<a href="mailto:spraveen2@gmail.com">spraveen2&#64;gmail.com</a>
 			</div>
 		</div>
 		
 		<div class="footer-bottom">
-			<p>&copy; {{ currentYear }} All is well school of chess. All rights reserved.</p>
+			<p>&copy; 2013 All is Well School of Chess. All rights reserved.</p>
 		</div>
 	</footer>
 </div>

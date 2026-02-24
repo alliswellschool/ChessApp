@@ -4,7 +4,7 @@ import { authGuard, adminGuard, guestGuard } from './guards/auth.guards';
 export const routes: Routes = [
     {
         path: '',
-        loadComponent: () => import('./home/home').then(m => m.Home)
+        loadComponent: () => import('./about-school/about-school').then(m => m.AboutSchool)
     },
     {
         path: 'login',
@@ -67,7 +67,8 @@ export const routes: Routes = [
     },
     {
         path: 'about-school',
-        loadComponent: () => import('./about-school/about-school').then(m => m.AboutSchool)
+        redirectTo: '',
+        pathMatch: 'full'
     },
     {
         path: 'coaches',
@@ -87,7 +88,6 @@ export const routes: Routes = [
     },
     {
         path: 'classes',
-        redirectTo: 'about-school',
-        pathMatch: 'full'
+        loadComponent: () => import('./classes/classes').then(m => m.Classes)
     }
 ];

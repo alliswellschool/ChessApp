@@ -14,7 +14,7 @@ export const environment = {
   },
   business: {
     name: 'All is well school of chess',
-    email: 'support@chessactivities.com',
+    email: 'spraveen2@gmail.com',
     domain: 'chessactivities.com', // Update this once you get your domain
     description: 'Master chess through interactive puzzles, quizzes, and training activities'
   },

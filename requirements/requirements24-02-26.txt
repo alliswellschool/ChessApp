@@ -1,0 +1,7 @@
+Requirements note (text only)
+
+Add requirement text data here later.
+No implementation in this step.
+
+Issue 1:
+Whenever any link is opened, the destination page should open from the start (top of the page), not from the middle.
