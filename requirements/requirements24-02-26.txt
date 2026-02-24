@@ -3,5 +3,19 @@ Requirements note (text only)
 Add requirement text data here later.
 No implementation in this step.
 
-Issue 1:
+Issue 1: ✅ RESOLVED
 Whenever any link is opened, the destination page should open from the start (top of the page), not from the middle.
+Fixed by: Added withInMemoryScrolling configuration to router with scrollPositionRestoration: 'top' in app.config.ts
+
+Issue 2:
+For Capture the Shapes, rework the placement of variants and the board so the UI is more interactive and easy to navigate.
+
+Issue 3:
+For users who are not logged in, remove the dynamic flip behavior in Chess Lab puzzles because it appears empty; show a normal static block instead of a white screen on hover.
+Also, before login, the Quiz should be accessible in the navigation bar.
+
+Issue 4:
+Replace the current email/password login and signup flow with "Continue with Google" only authentication. Remove email verification process entirely and streamline authentication to Google sign-in only.
+
+Issue 5:
+Add both USA Amazon link and India Amazon link for books (support both regional Amazon stores).

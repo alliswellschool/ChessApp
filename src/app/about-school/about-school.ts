@@ -30,6 +30,8 @@ interface ClassSchedule {
   styleUrls: ['./about-school.css']
 })
 export class AboutSchool {
+  currentYear: number = new Date().getFullYear();
+  year:number = 2013;
   selectedLevel: string = 'all';
   selectedMode: string = 'all';
   selectedClass: ClassSchedule | null = null;
@@ -55,7 +57,7 @@ export class AboutSchool {
     vision: 'To help every student discover the joy of chess and the life skills it inspires through structured, learner-centric approach that develops not just chess players, but strategic thinkers and confident individuals.',
     achievements: [
       { icon: '👥', title: 'Students Trained', count: '400+', description: 'Beginners and intermediate players worldwide' },
-      { icon: '🎓', title: 'Years of Excellence', count: '11+', description: 'Since 2013' },
+      { icon: '🎓', title: 'Years of Excellence', count: `${this.currentYear - this.year}+`, description: 'Since 2013' },
       { icon: '🌍', title: 'Global Reach', count: 'Worldwide', description: 'Online and in-person classes' },
       { icon: '⭐', title: 'Amazing Testimonials', count: 'Many', description: 'From parents and students' }
     ],

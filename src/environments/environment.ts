@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyDpW8OGi_4ohV2AZFF7b2EEELSe_txoS08",
+    apiKey: "AIzaSyB_gBXQ58MhOheXKAK03HYccKZUvQfOkLk",
     authDomain: "chess-app-41191.firebaseapp.com",
     projectId: "chess-app-41191",
     storageBucket: "chess-app-41191.firebasestorage.app",
