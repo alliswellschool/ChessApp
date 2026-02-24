@@ -1,5 +1,5 @@
 {
-  "name": "chess-app",
+  "name": "chessapp",
   "compatibility_date": "2025-12-31",
   "assets": {
     "directory": "dist/ChessApp/browser",
