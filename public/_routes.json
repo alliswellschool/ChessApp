@@ -1,5 +1,12 @@
 {
   "version": 1,
+  "description": "Angular SPA routing configuration",
   "include": ["/*"],
-  "exclude": ["/assets/*", "/*.js", "/*.css", "/*.ico", "/*.json"]
+  "exclude": ["/assets/*", "/*.js", "/*.css", "/*.ico", "/*.svg", "/*.webmanifest"],
+  "routes": [
+    {
+      "pattern": "^.*$",
+      "fallthrough": true
+    }
+  ]
 }
