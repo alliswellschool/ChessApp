@@ -1,13 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -22,8 +22,16 @@ export class Login {
   showPassword = signal(false);
 
   async onSubmit(): Promise<void> {
-    if (!this.email() || !this.password()) {
-      this.errorMessage.set('Please fill in all fields');
+    const emailValue = this.email().trim();
+    const passwordValue = this.password().trim();
+
+    if (!emailValue || !passwordValue) {
+      this.errorMessage.set('Please enter your Gmail and password.');
+      return;
+    }
+
+    if (!emailValue.toLowerCase().endsWith('@gmail.com')) {
+      this.errorMessage.set('Please use your Gmail address to sign in.');
       return;
     }
 
@@ -31,10 +39,10 @@ export class Login {
     this.errorMessage.set('');
 
     try {
-      await this.authService.signIn(this.email(), this.password());
+      await this.authService.signIn(emailValue, passwordValue);
       this.router.navigate(['/']);
     } catch (error: any) {
-      this.errorMessage.set(error.message);
+      this.errorMessage.set(error?.message || 'Sign in failed. Please try again.');
     } finally {
       this.isLoading.set(false);
     }
@@ -53,7 +61,6 @@ export class Login {
       this.isLoading.set(false);
     }
   }
-
 
   togglePasswordVisibility(): void {
     this.showPassword.set(!this.showPassword());

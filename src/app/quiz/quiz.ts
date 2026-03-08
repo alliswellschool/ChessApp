@@ -40,8 +40,12 @@ export class Quiz implements OnInit {
   hasAnswered = false;
 
   currentQuestions: Question[] = [];
+  isUpcoming = true;
 
   ngOnInit(): void {
+    if (this.isUpcoming) {
+      return;
+    }
     this.generateQuestions();
   }
 

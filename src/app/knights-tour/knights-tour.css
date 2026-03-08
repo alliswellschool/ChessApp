@@ -64,13 +64,27 @@
   padding: 24px;
   box-shadow: 0 8px 32px rgba(0,0,0,0.15);
   max-width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* Content row with left panel, board, and right panel */
 .game-content > div:not(.info-panel-top) {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 260px;
+  gap: 24px;
+  align-items: start;
+}
+
+.board-column {
+  min-width: 0;
   display: flex;
-  gap: 32px;
-  align-items: flex-start;
+  justify-content: center;
+}
+
+.board-column app-chessboard {
+  max-width: 100%;
 }
 
 /* How to Play Panel - Right Side */
@@ -79,8 +93,8 @@
   padding: 20px;
   border-radius: 12px;
   border: 2px solid #c7d2fe;
-  min-width: 240px;
-  max-width: 280px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .info-panel-right h3 {
@@ -114,7 +128,8 @@
 }
 
 .left-panel {
-  width: 280px;
+  width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -243,9 +258,23 @@
     max-width: 100%;
   }
 
+  .game-content > div:not(.info-panel-top) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .board-column {
+    order: 1;
+  }
+
   .left-panel {
+    order: 2;
     width: 100%;
     max-width: 100%;
+  }
+
+  .info-panel-right {
+    order: 3;
   }
 
   .board-container {
@@ -313,11 +342,12 @@
 
   .controls {
     display: flex;
+    flex-direction: column;
     gap: 10px;
   }
 
   .reset-btn {
-    flex: 1;
+    width: 100%;
     padding: 10px 14px;
     font-size: 0.9em;
   }
@@ -346,6 +376,9 @@
   .message-bar {
     padding: 0 6px;
     margin-top: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .info,
@@ -390,7 +423,7 @@
   .progress-bar {
     height: 16px;
   }
-
+  min-width: 0;
   .info-panel li {
     font-size: 0.8em;
     padding: 4px 0;
@@ -401,15 +434,15 @@
     flex-direction: column;
     gap: 8px;
   }
-
-  .reset-btn {
-    width: 100%;
-    padding: 10px 12px;
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px;
+    max-width: 100%;
     font-size: 0.85em;
   }
 
-  .board-container {
     width: 100%;
+    min-width: 0;
     padding: 0;
   }
 

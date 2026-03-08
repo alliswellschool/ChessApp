@@ -17,7 +17,7 @@
 				</li>
 				<li><a routerLink="/chess-lab" routerLinkActive="active">Chess Lab</a></li>
 				<li><a routerLink="/books" routerLinkActive="active">Books</a></li>
-				<li *ngIf="authService.isAuthenticated()"><a routerLink="/quiz" routerLinkActive="active">Quiz</a></li>
+				<li><a routerLink="/quiz" routerLinkActive="active">Quiz</a></li>
 				<li *ngIf="authService.isAdmin()"><a routerLink="/admin" routerLinkActive="active">Admin</a></li>
 				<li><a routerLink="/donate" routerLinkActive="active" class="donate-link">☕ Donate</a></li>
 			</ul>
@@ -38,8 +38,7 @@
 			<!-- Auth Buttons (Desktop) -->
 			<div class="auth-buttons desktop-auth">
 				<ng-container *ngIf="!authService.isAuthenticated()">
-					<a routerLink="/login" class="btn-auth btn-login">Login</a>
-					<a routerLink="/signup" class="btn-auth btn-signup">Sign Up</a>
+					<a routerLink="/login" class="btn-auth btn-signup">Get Started</a>
 				</ng-container>
 				<ng-container *ngIf="authService.isAuthenticated()">
 					<button (click)="logout()" class="btn-auth btn-logout">Logout</button>
@@ -66,14 +65,13 @@
 				<li class="mobile-section-divider"></li>
 				<li><a routerLink="/chess-lab" routerLinkActive="active" (click)="closeMobileMenu()">Chess Lab</a></li>
 				<li><a routerLink="/books" routerLinkActive="active" (click)="closeMobileMenu()">Books</a></li>
-				<li *ngIf="authService.isAuthenticated()"><a routerLink="/quiz" routerLinkActive="active" (click)="closeMobileMenu()">Quiz</a></li>
+				<li><a routerLink="/quiz" routerLinkActive="active" (click)="closeMobileMenu()">Quiz</a></li>
 				<li><a routerLink="/donate" routerLinkActive="active" class="donate-link" (click)="closeMobileMenu()">☕ Donate</a></li>
 				<li *ngIf="authService.isAdmin()"><a routerLink="/admin" routerLinkActive="active" (click)="closeMobileMenu()">Admin</a></li>
 			</ul>
 			<div class="mobile-auth-buttons">
 				<ng-container *ngIf="!authService.isAuthenticated()">
-					<a routerLink="/login" class="btn-auth btn-login" (click)="closeMobileMenu()">Login</a>
-					<a routerLink="/signup" class="btn-auth btn-signup" (click)="closeMobileMenu()">Sign Up</a>
+					<a routerLink="/login" class="btn-auth btn-signup" (click)="closeMobileMenu()">Get Started</a>
 				</ng-container>
 				<ng-container *ngIf="authService.isAuthenticated()">
 					<button (click)="logout()" class="btn-auth btn-logout">Logout</button>

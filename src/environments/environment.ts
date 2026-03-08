@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyB_gBXQ58MhOheXKAK03HYccKZUvQfOkLk",
+    apiKey: "AIzaSyCECR4FK_tqD2JB1k2FAtPQOtRiAz2bcZU",
     authDomain: "chess-app-41191.firebaseapp.com",
     projectId: "chess-app-41191",
     storageBucket: "chess-app-41191.firebasestorage.app",
@@ -15,7 +15,7 @@ export const environment = {
   business: {
     name: 'All is well school of chess',
     email: 'spraveen2@gmail.com',
-    domain: 'chessactivities.com', // Update this once you get your domain
+    domain: 'alliswellschoolofchess.com', // Update this once you get your domain
     description: 'Master chess through interactive puzzles, quizzes, and training activities'
   },
   razorpay: {

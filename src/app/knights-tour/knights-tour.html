@@ -16,7 +16,7 @@
   </div>
 
   <div class="game-content">
-    <div>
+    <div class="layout-row">
       <div class="left-panel">
         <div class="stats-panel">
           <h3>Tour Progress</h3>
@@ -47,14 +47,16 @@
         </div>
       </div>
 
-      <!-- Reusable Chessboard Component -->
-      <app-chessboard
-        [size]="size"
-        [cells]="cells"
-        [showCoordinates]="true"
-        [interactive]="true"
-        (cellClick)="onCellClick($event)">
-      </app-chessboard>
+      <div class="board-column">
+        <!-- Reusable Chessboard Component -->
+        <app-chessboard
+          [size]="size"
+          [cells]="cells"
+          [showCoordinates]="true"
+          [interactive]="true"
+          (cellClick)="onCellClick($event)">
+        </app-chessboard>
+      </div>
 
       <!-- How to Play Section - Right Side -->
       <div class="info-panel-right">

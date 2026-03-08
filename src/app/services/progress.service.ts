@@ -4,8 +4,6 @@ import {
   doc,
   setDoc,
   getDoc,
-  updateDoc,
-  collection,
   increment,
   serverTimestamp
 } from '@angular/fire/firestore';
@@ -37,6 +35,63 @@ export interface UserProgress {
 export class ProgressService {
   private firestore = inject(Firestore);
   private authService = inject(AuthService);
+  private readonly cacheTtlMs = 60_000;
+  private progressCache = new Map<string, { data: UserProgress; fetchedAt: number }>();
+  private inFlightRequests = new Map<string, Promise<UserProgress>>();
+
+  private getProgressKey(puzzleType: string): keyof UserProgress {
+    const camelCaseKey = puzzleType.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+    return camelCaseKey as keyof UserProgress;
+  }
+
+  private isCacheValid(userId: string): boolean {
+    const cached = this.progressCache.get(userId);
+    if (!cached) return false;
+    return Date.now() - cached.fetchedAt < this.cacheTtlMs;
+  }
+
+  private invalidateUserCache(userId: string): void {
+    this.progressCache.delete(userId);
+    this.inFlightRequests.delete(userId);
+  }
+
+  private async fetchAllProgressForUser(userId: string): Promise<UserProgress> {
+    const puzzleTypes = ['coordinates', 'knightsTour', 'captureTheShapes', 'independence', 'dominance', 'quiz'];
+    const progress: UserProgress = {};
+
+    const mainProgressRef = doc(this.firestore, `userProgress/${userId}`);
+    const mainDocPromise = getDoc(mainProgressRef);
+
+    const puzzleDocPromises = puzzleTypes.map(async (type) => {
+      const progressRef = doc(this.firestore, `userProgress/${userId}/puzzles/${type}`);
+      const progressDoc = await getDoc(progressRef);
+      return { type, progressDoc };
+    });
+
+    const [mainDoc, puzzleDocs] = await Promise.all([
+      mainDocPromise,
+      Promise.all(puzzleDocPromises)
+    ]);
+
+    if (mainDoc.exists()) {
+      const data = mainDoc.data();
+      progress.totalPuzzles = data['totalPuzzles'];
+      progress.lastUpdated = data['lastUpdated'];
+    }
+
+    for (const { type, progressDoc } of puzzleDocs) {
+      if (!progressDoc.exists()) continue;
+      const key = this.getProgressKey(type);
+      progress[key] = progressDoc.data() as PuzzleStats;
+    }
+
+    this.progressCache.set(userId, {
+      data: progress,
+      fetchedAt: Date.now()
+    });
+
+    return progress;
+  }
 
   /**
    * Track puzzle completion
@@ -109,6 +164,8 @@ export class ProgressService {
         { merge: true }
       );
 
+      this.invalidateUserCache(user.uid);
+
       console.log(`Progress tracked for ${puzzleType}:`, updates);
     } catch (error) {
       console.error('Error tracking progress:', error);
@@ -121,6 +178,12 @@ export class ProgressService {
   async getPuzzleProgress(puzzleType: string): Promise<PuzzleStats | null> {
     const user = this.authService.currentUser();
     if (!user) return null;
+
+    const key = this.getProgressKey(puzzleType);
+    if (this.isCacheValid(user.uid)) {
+      const cached = this.progressCache.get(user.uid)!.data;
+      return (cached[key] as PuzzleStats | undefined) || null;
+    }
 
     try {
       const progressRef = doc(
@@ -138,40 +201,26 @@ export class ProgressService {
   /**
    * Get all user progress
    */
-  async getAllProgress(): Promise<UserProgress> {
+  async getAllProgress(forceRefresh = false): Promise<UserProgress> {
     const user = this.authService.currentUser();
     if (!user) return {};
 
+    if (!forceRefresh && this.isCacheValid(user.uid)) {
+      return this.progressCache.get(user.uid)!.data;
+    }
+
+    if (!forceRefresh && this.inFlightRequests.has(user.uid)) {
+      return this.inFlightRequests.get(user.uid)!;
+    }
+
+    const request = this.fetchAllProgressForUser(user.uid).finally(() => {
+      this.inFlightRequests.delete(user.uid);
+    });
+
+    this.inFlightRequests.set(user.uid, request);
+
     try {
-      const puzzleTypes = [
-        'coordinates',
-        'knightsTour',
-        'captureTheShapes',
-        'independence',
-        'dominance',
-        'quiz'
-      ];
-
-      const progress: UserProgress = {};
-
-      // Get main progress doc
-      const mainProgressRef = doc(this.firestore, `userProgress/${user.uid}`);
-      const mainDoc = await getDoc(mainProgressRef);
-      if (mainDoc.exists()) {
-        const data = mainDoc.data();
-        progress.totalPuzzles = data['totalPuzzles'];
-        progress.lastUpdated = data['lastUpdated'];
-      }
-
-      // Get individual puzzle progress
-      for (const type of puzzleTypes) {
-        const stats = await this.getPuzzleProgress(type);
-        if (stats) {
-          progress[type as keyof UserProgress] = stats;
-        }
-      }
-
-      return progress;
+      return await request;
     } catch (error) {
       console.error('Error getting all progress:', error);
       return {};
@@ -212,6 +261,7 @@ export class ProgressService {
         completedPuzzles: [],
         lastPlayed: serverTimestamp()
       });
+      this.invalidateUserCache(user.uid);
       console.log(`Reset progress for ${puzzleType}`);
     } catch (error) {
       console.error('Error resetting progress:', error);

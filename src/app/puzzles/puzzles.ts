@@ -1,8 +1,10 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ProgressService, UserProgress } from '../services/progress.service';
 import { AuthService } from '../services/auth.service';
+
 interface Activity {
   id: string;
   title: string;
@@ -10,6 +12,14 @@ interface Activity {
   icon: string;
   route: string;
 }
+
+interface ActivityCardView extends Activity {
+  completed: number;
+  total: number;
+  percentage: number;
+  isComplete: boolean;
+}
+
 @Component({
   selector: 'app-puzzles',
   standalone: true,
@@ -21,14 +31,12 @@ interface Activity {
 export class Puzzles implements OnInit {
   private progressService = inject(ProgressService);
   private authService = inject(AuthService);
-  private cdr = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
   
   userProgress: UserProgress = {};
+  activityCards: ActivityCardView[] = [];
   isLoggedIn = false;
   isLoading = true;
-  
-  // Make Math available in template
-  Math = Math;
 
   // Total puzzles available per activity (adjust based on your actual counts)
   totalPuzzles: Record<string, number> = {
@@ -86,70 +94,75 @@ export class Puzzles implements OnInit {
   ];
 
   async ngOnInit() {
+    this.isLoggedIn = this.authService.isAuthenticated();
+    this.buildActivityCards();
+
+    this.authService.user$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((user) => {
+        this.isLoggedIn = !!user;
+
+        if (!this.isLoggedIn) {
+          this.userProgress = {};
+          this.isLoading = false;
+          this.buildActivityCards();
+          return;
+        }
+
+        void this.loadProgress();
+      });
+  }
+
+  private async loadProgress(): Promise<void> {
+    this.isLoading = true;
     try {
-      this.isLoading = true;
-      this.isLoggedIn = this.authService.currentUser() !== null;
-      
-      if (this.isLoggedIn) {
-        // Wait a bit for Firebase to initialize if needed
-        await new Promise(resolve => setTimeout(resolve, 100));
-        this.userProgress = await this.progressService.getAllProgress();
-      }
+      this.userProgress = await this.progressService.getAllProgress();
     } catch (error) {
       console.error('Error loading progress:', error);
     } finally {
       this.isLoading = false;
-      // Force change detection
-      this.cdr.detectChanges();
+      this.buildActivityCards();
     }
   }
 
-  getProgress(puzzleKey: string): number {
-    const key = puzzleKey as keyof UserProgress;
-    return this.userProgress[key]?.completed || 0;
-  }
-
-  getTotalPuzzles(activityId: string): number {
-    return this.totalPuzzles[activityId] || 0;
-  }
-
-  getCompletedPuzzles(activityId: string): number {
+  private getCompletedPuzzles(activityId: string): number {
     const key = this.toCamelCase(activityId) as keyof UserProgress;
     const progressData = this.userProgress[key];
     
     if (!progressData) return 0;
-    
-    // Try completedPuzzles array length first, then completed property
-    if (progressData.completedPuzzles && Array.isArray(progressData.completedPuzzles)) {
-      return progressData.completedPuzzles.length;
-    }
-    
-    return progressData.completed || 0;
+
+    const completedFromCounter = progressData.completed || 0;
+    const completedFromList = Array.isArray(progressData.completedPuzzles)
+      ? progressData.completedPuzzles.length
+      : 0;
+
+    return Math.max(completedFromCounter, completedFromList);
   }
 
-  getProgressPercentage(activityId: string): number {
-    const completed = this.getCompletedPuzzles(activityId);
-    const total = this.getTotalPuzzles(activityId);
-    
-    if (!total || total === 0) return 0;
-    if (!completed || completed === 0) return 0;
-    
-    // Calculate and round to whole number
-    const percentage = Math.round((completed / total) * 100);
-    
-    // Cap at 100%
-    return Math.min(percentage, 100);
+  private buildActivityCards(): void {
+    this.activityCards = this.activities.map((activity) => {
+      const total = this.totalPuzzles[activity.id] || 0;
+      const completed = this.getCompletedPuzzles(activity.id);
+      const percentage = total > 0 ? Math.min(Math.round((completed / total) * 100), 100) : 0;
+
+      return {
+        ...activity,
+        completed,
+        total,
+        percentage,
+        isComplete: total > 0 && completed >= total
+      };
+    });
   }
 
-  isActivityComplete(activityId: string): boolean {
-    const completed = this.getCompletedPuzzles(activityId);
-    const total = this.getTotalPuzzles(activityId);
-    
-    if (!total || total === 0) return false;
-    
-    return completed >= total;
+  trackByActivityId(_: number, activity: ActivityCardView): string {
+    return activity.id;
   }
 
+  isFinitePuzzle(total: number): boolean {
+    return total < 999;
+  }
+    
   private toCamelCase(str: string): string {
     return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
   }
