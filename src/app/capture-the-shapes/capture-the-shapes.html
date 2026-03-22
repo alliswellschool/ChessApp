@@ -133,7 +133,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="modal-btn primary" (click)="nextPosition()">Next Position</button>
+        <button class="modal-btn primary" (click)="nextPosition()" [disabled]="currentPositionIndex === maxPositions - 1">Next Position</button>
         <button class="modal-btn secondary" (click)="reset()">Try Again</button>
       </div>
     </div>

@@ -10,8 +10,8 @@
 					<a class="dropdown-toggle" (click)="toggleDropdown(); $event.stopPropagation()">About ▾</a>
 					<ul class="dropdown-menu" *ngIf="dropdownOpen">
 						<li><a routerLink="/coaches" routerLinkActive="active" (click)="closeDropdown()">Our Coaches</a></li>
-						<li><a routerLink="/testimonials" routerLinkActive="active" (click)="closeDropdown()">Testimonials</a></li>
-						<li><a routerLink="/gallery" routerLinkActive="active" (click)="closeDropdown()">Gallery</a></li>
+						<!-- <li><a routerLink="/testimonials" routerLinkActive="active" (click)="closeDropdown()">Testimonials</a></li> -->
+						<!-- <li><a routerLink="/gallery" routerLinkActive="active" (click)="closeDropdown()">Gallery</a></li> -->
 						<li><a routerLink="/classes" routerLinkActive="active" (click)="closeDropdown()">Classes</a></li>
 					</ul>
 				</li>
@@ -59,8 +59,8 @@
 				<li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Home</a></li>
 				<li class="mobile-section-header">About Us</li>
 				<li class="mobile-submenu-item"><a routerLink="/coaches" routerLinkActive="active" (click)="closeMobileMenu()">Our Coaches</a></li>
-				<li class="mobile-submenu-item"><a routerLink="/testimonials" routerLinkActive="active" (click)="closeMobileMenu()">Testimonials</a></li>
-				<li class="mobile-submenu-item"><a routerLink="/gallery" routerLinkActive="active" (click)="closeMobileMenu()">Gallery</a></li>
+			<!-- <li class="mobile-submenu-item"><a routerLink="/testimonials" routerLinkActive="active" (click)="closeMobileMenu()">Testimonials</a></li> -->
+			<!-- <li class="mobile-submenu-item"><a routerLink="/gallery" routerLinkActive="active" (click)="closeMobileMenu()">Gallery</a></li> -->
 				<li class="mobile-submenu-item"><a routerLink="/classes" routerLinkActive="active" (click)="closeMobileMenu()">Classes</a></li>
 				<li class="mobile-section-divider"></li>
 				<li><a routerLink="/chess-lab" routerLinkActive="active" (click)="closeMobileMenu()">Chess Lab</a></li>
@@ -106,8 +106,8 @@
 				<h4>About</h4>
 				<ul>
 					<li><a routerLink="/coaches">Our Coaches</a></li>
-					<li><a routerLink="/testimonials">Testimonials</a></li>
-					<li><a routerLink="/gallery">Gallery</a></li>
+					<!-- <li><a routerLink="/testimonials">Testimonials</a></li> -->
+					<!-- <li><a routerLink="/gallery">Gallery</a></li> -->
 					<li><a routerLink="/classes">Classes</a></li>
 				</ul>
 			</div>
@@ -121,9 +121,11 @@
 			</div>
 			
 			<div class="footer-section">
-				<h4>Support</h4>
-				<p></p>
-				<a href="mailto:spraveen2@gmail.com">spraveen2&#64;gmail.com</a>
+				<h4>Contact us</h4>
+				<p>
+					<a href="tel:+919962550573">+91 - 9962550573</a><br>
+					<a href="mailto:spraveen2@gmail.com">spraveen2&#64;gmail.com</a>
+				</p>
 			</div>
 		</div>
 		

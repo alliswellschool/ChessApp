@@ -20,7 +20,7 @@ export class Donate {
   user$ = user(this.auth);
 
   // Predefined amounts
-  amounts = [50, 100, 200, 500, 1000];
+  amounts = [100, 200, 500, 1000];
   customAmount: number | null = null;
   selectedAmount: number | null = null;
   
