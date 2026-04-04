@@ -22,6 +22,14 @@ export class PieceSelectorComponent {
   @Input() completedPieces?: Set<PieceType>;
   @Output() pieceSelected = new EventEmitter<PieceType>();
 
+  private readonly displayOrder: PieceType[] = ['rook', 'bishop', 'queen', 'knight', 'king', 'pawn'];
+
+  get orderedPieces(): PieceInfo[] {
+    return [...this.pieces].sort(
+      (a, b) => this.displayOrder.indexOf(a.type) - this.displayOrder.indexOf(b.type)
+    );
+  }
+
   onPieceClick(type: PieceType): void {
     this.pieceSelected.emit(type);
   }

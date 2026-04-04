@@ -186,7 +186,15 @@ export class CaptureTheShapes {
   }
 
   get canGoNextPosition(): boolean {
-    return this.currentPositionIndex < this.maxPositions - 1;
+    if (this.currentPositionIndex < this.maxPositions - 1) {
+      return true;
+    }
+
+    if (this.selectedPieceFilter === 'all') {
+      return false;
+    }
+
+    return this.getNextPieceType(this.selectedPieceFilter) !== null;
   }
 
   get currentPuzzle(): PuzzleData {
@@ -594,9 +602,29 @@ export class CaptureTheShapes {
 
   nextPosition() {
     if (this.canGoNextPosition) {
-      this.currentPositionIndex++;
-      this.loadPuzzle();
+      if (this.currentPositionIndex < this.maxPositions - 1) {
+        this.currentPositionIndex++;
+        this.loadPuzzle();
+        return;
+      }
+
+      if (this.selectedPieceFilter !== 'all') {
+        const nextPiece = this.getNextPieceType(this.selectedPieceFilter);
+        if (nextPiece) {
+          this.selectedPieceFilter = nextPiece;
+          this.currentPositionIndex = 0;
+          this.loadPuzzle();
+        }
+      }
     }
+  }
+
+  private getNextPieceType(pieceType: PieceType): PieceType | null {
+    const currentIndex = this.availablePieces.indexOf(pieceType);
+    if (currentIndex === -1 || currentIndex >= this.availablePieces.length - 1) {
+      return null;
+    }
+    return this.availablePieces[currentIndex + 1];
   }
 
   previousPosition() {

@@ -2,7 +2,7 @@
   <h3>Select Piece</h3>
   <div class="piece-buttons">
     <button 
-      *ngFor="let piece of pieces" 
+      *ngFor="let piece of orderedPieces" 
       class="piece-btn" 
       [class.selected]="selectedPiece === piece.type"
       [class.completed]="isPieceCompleted(piece.type)"
