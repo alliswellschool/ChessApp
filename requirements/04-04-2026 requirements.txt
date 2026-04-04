@@ -1,0 +1,17 @@
+Date: 04-04-2026
+Project: Chess Lab - New Requirements
+
+1. Capture the Shapes: After reaching the last position, disable the Next Position button so users cannot navigate past the final position.
+
+2. Books Page: Replace text buttons "shop at amazon.com" and "shop at amazon.in" with image-based buttons for Amazon.com and Amazon.in.
+
+3. Books Page Sizing:
+- Tamil Puzzle Book should be slightly reduced (A5 size presentation).
+- Fun with Chess should be displayed larger than the other books (A4 size presentation).
+- All other books should appear as A5 size.
+
+4. Capture the Shapes: Fix Show Valid Moves so valid target squares are properly highlighted when toggled on.
+
+5. Games of Dominance: Fix progress/usage tracking so completions are reliably recorded.
+
+6. Game of Independence: Verify and apply the same progress/usage tracking reliability improvements.

@@ -9,6 +9,7 @@ interface Book {
   amazonUrl: string;
   amazonInUrl?: string;
   image: string;
+  displaySize?: 'a4' | 'a5-small';
 }
 
 @Component({
@@ -28,7 +29,8 @@ export class Books {
       description: 'A comprehensive Learning & Training Guide that makes chess fun and accessible for students of all levels. This book covers essential chess concepts through engaging exercises and clear explanations.',
       amazonUrl: 'https://www.amazon.com/Fun-Chess-Learning-Training-Guide-ebook/dp/B0851GB62S/ref=sr_1_1?sr=8-1',
       amazonInUrl: 'https://www.amazon.in/Fun-Chess-Learning-Training-Guide/dp/B0D9QFLFLH?ref_=ast_author_dp_rw&th=1&psc=1&dib=eyJ2IjoiMSJ9.5QJTOturg2CiKjoLqM5crzPUnFR6lx2mfF9GhNGIiPd5Q15U0nrWSIZR1KIGxUEV2LB6i6ZEgE2fvVrThNSCxVLSqH2nK8NXP59n7znYAJI.v1IYAPsRu6R3O6-UBeE2_sPRlyWGwweyTKdWhgb9anw&dib_tag=AUTHOR',
-      image: '/books/Fun with Chess_3D cover.jpg (1).jpeg'
+      image: '/books/Fun with Chess_3D cover.jpg (1).jpeg',
+      displaySize: 'a4'
     },
     {
       id: 2,
@@ -60,9 +62,14 @@ export class Books {
       description: 'தமிழில் சிந்தனையைத் தூண்டும் புதிர்கள் தொகுப்பு - engaging Tamil puzzles to sharpen logical thinking and reasoning skills.',
       amazonUrl: '#',
       amazonInUrl: 'https://www.amazon.in/Sinthanayai-Thoondum-Puthirgal-%E0%AE%9A%E0%AE%BF%E0%AE%A8%E0%AF%8D%E0%AE%A4%E0%AE%A9%E0%AF%88%E0%AE%AF%E0%AF%88-%E0%AE%AA%E0%AF%81%E0%AE%A4%E0%AE%BF%E0%AE%B0%E0%AF%8D%E0%AE%95%E0%AE%B3%E0%AF%8D/dp/B0CLZMY9VX?ref_=ast_author_dp_rw&th=1&psc=1&dib=eyJ2IjoiMSJ9.5QJTOturg2CiKjoLqM5crzPUnFR6lx2mfF9GhNGIiPd5Q15U0nrWSIZR1KIGxUEV2LB6i6ZEgE2fvVrThNSCxVLSqH2nK8NXP59n7znYAJI.v1IYAPsRu6R3O6-UBeE2_sPRlyWGwweyTKdWhgb9anw&dib_tag=AUTHOR',
-      image: '/books/Tamil Puzzle book 3d cover.png'
+      image: '/books/Tamil Puzzle book 3d cover.png',
+      displaySize: 'a5-small'
     }
   ];
+
+  getImageSizeClass(book: Book): string {
+    return book.displaySize || '';
+  }
 
   get filteredBooks(): Book[] {
     if (!this.searchQuery.trim()) {

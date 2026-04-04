@@ -318,7 +318,7 @@ export class GameOfIndependence {
     return true;
   }
 
-  placeOrRemove(row: number, col: number): void {
+  async placeOrRemove(row: number, col: number): Promise<void> {
     const existing = this.board[row][col].piece;
     if (existing) {
       this.board[row][col] = { piece: '', valid: true };
@@ -334,29 +334,30 @@ export class GameOfIndependence {
     this.recalculateValidPieces();
     
     // Check for victory after placing a piece
-    this.checkVictory();
+    await this.checkVictory();
   }
   
-  checkVictory(): void {
+  async checkVictory(): Promise<void> {
     if (this.mode === 'single' && this.isSolvedSingle) {
       const pieceName = this.selected.charAt(0).toUpperCase() + this.selected.slice(1);
       this.victoryMessage = `Perfect! All ${this.requiredPieces} ${pieceName}s placed correctly.`;
       // Track progress - create unique puzzle ID based on piece and size
       const puzzleId = parseInt(`${this.pieces.indexOf(this.selected)}${this.size}`);
-      this.progressService.trackCompletion('independence', {
+      await this.progressService.trackCompletion('independence', {
         score: this.size * 10,
         puzzleId
       });
       // Reload progress data to update completion status
-      this.loadProgressData();
+      await this.loadProgressData();
       this.showVictoryModal = true;
     } else if (this.mode === 'team' && this.isSolved) {
       this.victoryMessage = 'All pieces placed — you win!';
       // Track team mode completion
-      this.progressService.trackCompletion('independence', {
+      await this.progressService.trackCompletion('independence', {
         score: 100,
         level: 999 // Special ID for team mode
       });
+      await this.loadProgressData();
       this.showVictoryModal = true;
     }
   }

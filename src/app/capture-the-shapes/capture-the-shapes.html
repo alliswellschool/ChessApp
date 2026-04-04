@@ -31,7 +31,7 @@
             <div class="position-nav-row">
               <button class="position-btn" (click)="previousPosition()" [disabled]="currentPositionIndex === 0">←</button>
               <span class="position-number">{{ currentPositionIndex + 1 }} / {{ maxPositions }}</span>
-              <button class="position-btn" (click)="nextPosition()" [disabled]="currentPositionIndex === maxPositions - 1">→</button>
+              <button class="position-btn" (click)="nextPosition()" [disabled]="!canGoNextPosition">→</button>
             </div>
             <div class="current-position">
               <span class="position-label">Start Square:</span>
@@ -133,7 +133,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="modal-btn primary" (click)="nextPosition()" [disabled]="currentPositionIndex === maxPositions - 1">Next Position</button>
+        <button class="modal-btn primary" (click)="nextPosition()" [disabled]="!canGoNextPosition">Next Position</button>
         <button class="modal-btn secondary" (click)="reset()">Try Again</button>
       </div>
     </div>

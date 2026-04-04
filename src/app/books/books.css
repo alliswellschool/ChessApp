@@ -89,46 +89,29 @@
 }
 
 .btn-amazon {
-  padding: 10px 20px;
-  background: linear-gradient(135deg, #FF9900 0%, #FF7A00 100%);
-  color: white;
+  padding: 6px;
+  background: #ffffff;
   border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  min-width: 140px;
-  text-align: center;
+  min-width: 150px;
+  border: 1px solid #d1d5db;
 }
 
 .btn-amazon:hover {
-  background: linear-gradient(135deg, #FFB000 0%, #FF9000 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 127, 0, 0.3);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
 }
 
-.cart-icon {
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.shop-line {
-  font-size: 0.75rem;
-  line-height: 1.1;
-  text-transform: lowercase;
-  opacity: 0.95;
-}
-
-.store-line {
-  font-size: 0.9rem;
-  line-height: 1.1;
-  font-weight: 700;
+.amazon-badge-img {
+  width: 132px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
 }
 
 .cart-toggle {
@@ -274,6 +257,15 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.book-image.a4 .book-img {
+  transform: scale(1.14);
+}
+
+.book-image.a5-small .book-img {
+  transform: scale(0.88);
 }
 
 .image-placeholder {
@@ -351,7 +343,8 @@
 
 .book-footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 10px;
   align-items: center;
   padding-top: 15px;
   border-top: 1px solid #f0f0f0;

@@ -21,7 +21,7 @@
   <section class="books-section">
     <div class="books-grid" *ngIf="filteredBooks.length > 0">
       <div *ngFor="let book of filteredBooks" class="book-card">
-        <div class="book-image">
+        <div class="book-image" [ngClass]="getImageSizeClass(book)">
           <img [src]="book.image" [alt]="book.title" class="book-img">
         </div>
 
@@ -34,17 +34,13 @@
               class="btn-amazon" 
               *ngIf="book.amazonUrl && book.amazonUrl !== '#'"
               (click)="buyOnAmazon(book)">
-              <span class="cart-icon">🛒</span>
-              <span class="shop-line">shop at</span>
-              <span class="store-line">Amzon.com</span>
+              <img src="/books/amazon-com-badge.svg" alt="Shop on Amazon.com" class="amazon-badge-img">
             </button>
             <button
               class="btn-amazon"
               *ngIf="book.amazonInUrl && book.amazonInUrl !== '#'"
               (click)="buyOnAmazonIndia(book)">
-              <span class="cart-icon">🛒</span>
-              <span class="shop-line">shop at</span>
-              <span class="store-line">Amazon.in</span>
+              <img src="/books/amazon-in-badge.svg" alt="Shop on Amazon.in" class="amazon-badge-img">
             </button>
           </div>
         </div>

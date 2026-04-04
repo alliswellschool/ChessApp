@@ -182,13 +182,11 @@ export class CaptureTheShapes {
   }
 
   get maxPositions(): number {
-    if (this.selectedPieceFilter === 'all') return 16;
-    // Rook, Knight, Bishop: 4 positions each
-    // Queen, King: 2 positions each
-    if (this.selectedPieceFilter === 'queen' || this.selectedPieceFilter === 'king') {
-      return 2;
-    }
-    return 4;
+    return this.filteredPuzzles.length;
+  }
+
+  get canGoNextPosition(): boolean {
+    return this.currentPositionIndex < this.maxPositions - 1;
   }
 
   get currentPuzzle(): PuzzleData {
@@ -595,7 +593,7 @@ export class CaptureTheShapes {
   }
 
   nextPosition() {
-    if (this.currentPositionIndex < this.filteredPuzzles.length - 1) {
+    if (this.canGoNextPosition) {
       this.currentPositionIndex++;
       this.loadPuzzle();
     }

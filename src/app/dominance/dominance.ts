@@ -238,7 +238,7 @@ export class Dominance {
     return true;
   }
   
-  placeOrRemovePiece(row: number, col: number): void {
+  async placeOrRemovePiece(row: number, col: number): Promise<void> {
     // Prevent placing new pieces after 100% coverage is achieved
     if (this.dominationPercentage === 100 && !this.board[row][col]) {
       return;
@@ -261,12 +261,7 @@ export class Dominance {
     // Check for victory or full coverage after placing
     if (this.dominationPercentage === 100) {
       if (this.hasWon) {
-        // Track progress - create unique puzzle ID based on piece and size
-        const puzzleId = parseInt(`${ALL_PIECE_TYPES.indexOf(this.selectedPiece)}${this.size}`);
-        this.progressService.trackCompletion('dominance', {
-          score: this.size * 10,
-          puzzleId
-        });
+        await this.trackDominanceCompletion();
         this.showVictoryModal = true;
       } else {
         this.showFullCoverageModal = true;
@@ -275,7 +270,27 @@ export class Dominance {
   }
 
   onCellClick(event: { row: number; col: number; cell: ChessCell }): void {
-    this.placeOrRemovePiece(event.row, event.col);
+    void this.placeOrRemovePiece(event.row, event.col);
+  }
+
+  private async trackDominanceCompletion(): Promise<void> {
+    try {
+      if (this.mode === 'team') {
+        await this.progressService.trackCompletion('dominance', {
+          score: 100,
+          level: 999
+        });
+      } else {
+        const puzzleId = parseInt(`${ALL_PIECE_TYPES.indexOf(this.selectedPiece)}${this.size}`);
+        await this.progressService.trackCompletion('dominance', {
+          score: this.size * 10,
+          puzzleId
+        });
+      }
+      await this.loadProgressData();
+    } catch (error) {
+      console.error('Error tracking dominance completion:', error);
+    }
   }
 
   updateCells(): void {
